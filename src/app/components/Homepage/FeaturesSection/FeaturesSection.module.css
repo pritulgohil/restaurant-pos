@@ -1,0 +1,77 @@
+.mainContainer {
+  background-color: black;
+  width: 100%;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 50px;
+  padding: 100px 48px;
+}
+
+.sectionHeader h3 {
+  font-size: 40px;
+  font-family: "Epilogue";
+}
+
+.flexCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 33.33%;
+  gap: 20px;
+}
+
+.cardIcon {
+  width: 30px;
+  height: 30px;
+}
+
+.flexContainer {
+  display: flex;
+  gap: 50px;
+  text-align: center;
+}
+
+.cardHeader {
+  font-size: 24px;
+  font-family: "Epilogue";
+}
+
+.cardButton {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* 📱 Mobile Styles and 📟 Tablet Styles */
+@media (max-width: 1024px) {
+  .mainContainer {
+    padding: 64px 24px;
+  }
+
+  .flexContainer {
+    flex-direction: column;
+  }
+
+  .flexCard {
+    width: 100%;
+  }
+
+  .sectionHeader h3 {
+    font-size: 30px;
+    text-align: center;
+  }
+}
+
+/* 🔳 Large Screen Styles */
+@media (min-width: 1800px) {
+  .mainHeader {
+    font-size: 80px;
+  }
+
+  .flexContainer {
+    width: 80%;
+  }
+}

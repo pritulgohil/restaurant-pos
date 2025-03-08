@@ -1,0 +1,120 @@
+/* 💻 Default Styles */
+.mainContainer {
+  height: calc(100vh - 90px);
+  width: 100%;
+  padding: 0px 48px;
+  display: flex;
+  align-items: center;
+  gap: 50px;
+}
+
+.leftSideContainer {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.rightSideContainer {
+  width: 50%;
+}
+
+.mainHeader {
+  font-size: 60px;
+  font-weight: 400;
+  line-height: 1.2;
+  font-family: "Epilogue";
+}
+
+.description {
+  font-size: 16px;
+  font-family: "DM Sans", sans-serif;
+  line-height: 2;
+}
+
+.heroImage {
+  border-radius: 12px;
+}
+
+.buttonsContainer {
+  display: flex;
+  gap: 15px;
+}
+
+.learnMore {
+  padding: 8px 16px;
+  background-color: #fcd7c4;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.learnMore:hover {
+  background-color: rgb(252, 197, 169);
+}
+
+.signUp {
+  padding: 8px 16px;
+  border: 1.5px solid black;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.signUp:hover {
+  background-color: black;
+  color: white;
+}
+
+/* 📱 Mobile Styles */
+@media (max-width: 640px) {
+  .mainContainer {
+    flex-direction: column-reverse;
+    height: unset;
+    padding: 24px;
+  }
+
+  .leftSideContainer {
+    width: 100%;
+    align-items: center;
+    text-align: center;
+  }
+
+  .rightSideContainer {
+    width: 100%;
+    align-items: center;
+  }
+
+  .mainHeader {
+    font-size: 40px;
+  }
+}
+
+/* 📟 Tablet Styles */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .mainContainer {
+    flex-direction: column-reverse;
+    height: unset;
+    padding: 24px;
+  }
+
+  .leftSideContainer {
+    width: 100%;
+    align-items: center;
+    text-align: center;
+  }
+
+  .rightSideContainer {
+    width: 100%;
+    align-items: center;
+  }
+
+  .mainHeader {
+    font-size: 40px;
+  }
+}
+
+/* 🔳 Large Screen Styles */
+@media (min-width: 1800px) {
+  .mainHeader {
+    font-size: 80px;
+  }
+}

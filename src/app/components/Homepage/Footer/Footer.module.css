@@ -1,0 +1,117 @@
+.mainContainer {
+  padding: 80px 48px;
+}
+
+.subContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.footerLogoContainer {
+  font-family: "Epilogue";
+  font-weight: 500;
+  font-size: 20px;
+}
+
+.leftSideContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sectionHeader {
+  font-size: 14px;
+  font-weight: 500;
+  font-family: "Epilogue";
+}
+
+.sectionDescription {
+  font-size: 14px;
+}
+
+.socialMediaIcons {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.iconContainer {
+  width: 20px;
+  height: 20px;
+}
+
+.youtubeContainer {
+  width: 25px;
+  height: 25px;
+}
+
+.rightSideContainer {
+  display: flex;
+  gap: 100px;
+}
+
+.column ul {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.divider {
+  margin-top: 80px;
+}
+
+.divider hr {
+  height: 20px;
+  border-width: 4px;
+  border-bottom: none;
+  border-left: none;
+  border-right: none;
+}
+
+.footerBottom {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  color: rgb(65, 65, 65);
+}
+
+.copyright {
+  font-size: 14px;
+}
+
+.footerLinks ul {
+  display: flex;
+  gap: 20px;
+  font-size: 14px;
+}
+
+/* 📱 Mobile Styles */
+@media (max-width: 640px) {
+  .mainContainer {
+    padding: 64px 24px;
+  }
+  .subContainer {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .rightSideContainer {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .divider {
+    margin-top: 40px;
+  }
+
+  .footerBottom {
+    flex-direction: column-reverse;
+    gap: 40px;
+  }
+
+  .footerLinks ul {
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,191 @@
+/* 💻 Default Styles */
+.navbarContainer {
+  padding: 24px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logoContainer {
+  font-family: "Epilogue", sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.siteLogo {
+  width: 30px;
+  height: 30px;
+}
+
+.hamBurgerIcon {
+  display: none;
+}
+
+.menuItemsContainer {
+  display: flex;
+  gap: 50px;
+}
+
+.signUpButton {
+  background-color: #fcd7c4;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.signUpButton:hover {
+  background-color: rgb(252, 197, 169);
+}
+
+.mobileMenuContainer {
+  display: none;
+}
+
+/* 📱 Mobile Styles */
+@media (max-width: 640px) {
+  .menuContainer {
+    display: none;
+  }
+
+  .navbarContainer {
+    padding: 24px;
+  }
+
+  .logoContainer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .hamBurgerIcon {
+    display: flex;
+    width: 35px;
+    padding: 4px;
+  }
+
+  .hamBurgerIcon:hover {
+    background-color: #f5ad89;
+    cursor: pointer;
+    border-radius: 100%;
+  }
+
+  .mobileMenuContainer {
+    padding: 24px;
+    background-color: #fcd7c4;
+    position: absolute;
+    top: 0;
+    left: -300px;
+    width: 50%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    transition: left 0.3s ease-in-out;
+  }
+
+  .showMobileMenuContainer {
+    left: 0;
+  }
+
+  .mobileLogoContainer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 30px;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .mobileMenuCloseIcon {
+    width: 35px;
+    padding: 4px;
+  }
+
+  .mobileMenuCloseIcon:hover {
+    background-color: #f5ad89;
+    cursor: pointer;
+    border-radius: 100%;
+  }
+
+  .menuItemsContainer {
+    flex-direction: column;
+  }
+}
+
+/* 📟 Tablet Styles */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .menuContainer {
+    display: none;
+  }
+
+  .navbarContainer {
+    padding: 24px;
+  }
+
+  .logoContainer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .hamBurgerIcon {
+    display: flex;
+    width: 35px;
+    padding: 4px;
+  }
+
+  .hamBurgerIcon:hover {
+    background-color: #f5ad89;
+    cursor: pointer;
+    border-radius: 100%;
+  }
+
+  .mobileMenuContainer {
+    padding: 24px;
+    background-color: #fcd7c4;
+    position: absolute;
+    top: 0;
+    left: -550px;
+    width: 50%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    transition: left 0.3s ease-in-out;
+  }
+
+  .showMobileMenuContainer {
+    left: 0;
+  }
+
+  .mobileLogoContainer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 30px;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .mobileMenuCloseIcon {
+    width: 35px;
+    padding: 4px;
+  }
+
+  .mobileMenuCloseIcon:hover {
+    background-color: #f5ad89;
+    cursor: pointer;
+    border-radius: 100%;
+  }
+
+  .menuItemsContainer {
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,73 @@
+.mainContainer {
+  position: relative;
+  height: 350px;
+  width: 100%;
+}
+
+.backgroundImageContainer {
+  height: 350px;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.backgroundImage {
+  height: 350px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.bodyContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: white;
+  padding-left: 48px;
+  gap: 24px;
+}
+
+.sectionHeader {
+  position: relative;
+  z-index: 2;
+  font-size: 44px;
+  font-family: "Epilogue";
+}
+
+.sectionDescription {
+  margin-top: -14px;
+}
+
+.sectionButtons {
+  display: flex;
+  gap: 12px;
+}
+
+.demoButton {
+  background-color: black;
+  padding: 8px 16px;
+  border-radius: 4px;
+}
+
+.contactButton {
+  padding: 8px 16px;
+  border: 1px solid white;
+  border-radius: 4px;
+}
+
+/* 📱 Mobile Styles */
+@media (max-width: 640px) {
+  .sectionHeader {
+    font-size: 30px;
+  }
+
+  .bodyContainer {
+    padding: 24px;
+  }
+}
