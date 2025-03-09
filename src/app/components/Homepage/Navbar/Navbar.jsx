@@ -1,8 +1,14 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import styles from "./Navbar.module.css";
 const Navbar = () => {
   const [mobileMenuVisibility, setMobileMenuVisibility] = useState(false);
+  const router = useRouter();
+
+  const handleSignUpClick = () => {
+    router.push("/signup");
+  };
 
   const handleMobileMenuVisibility = () => {
     setMobileMenuVisibility(true);
@@ -53,7 +59,10 @@ const Navbar = () => {
             </nav>
           </div>
           <div className={styles.signUpButtonContainer}>
-            <button className={`${styles.signUpButton} shadow-sm`}>
+            <button
+              onClick={handleSignUpClick}
+              className={`${styles.signUpButton} shadow-sm`}
+            >
               Sign Up
             </button>
           </div>
