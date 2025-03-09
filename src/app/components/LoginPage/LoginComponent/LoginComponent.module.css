@@ -1,0 +1,112 @@
+.mainContainer {
+  height: 100vh;
+  display: flex;
+}
+
+.leftSide {
+  width: 50%;
+}
+
+.rightSide {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0% 8%;
+  gap: 40px;
+}
+
+.topSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.pageDescription {
+  text-align: center;
+  color: gray;
+  font-size: 14px;
+  padding: 0px 40px;
+  line-height: 25px;
+}
+
+.imageContainer {
+  padding: 24px;
+  height: 100vh;
+}
+
+.imageContainer img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+.pageHeader {
+  font-family: "Epilogue";
+  font-size: 36px;
+  font-weight: 500;
+}
+
+.signupForm {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.emailContainer {
+  width: 100%;
+}
+
+.formLabel {
+  font-size: 14px;
+}
+
+.inputContainer input {
+  height: 45px;
+}
+
+.signupButton {
+  font-family: "Epilogue";
+  width: 100%;
+}
+
+.buttonContainer {
+  margin-top: 10px;
+}
+
+.buttonContainer button {
+  background-color: #681f00;
+  height: 45px;
+}
+
+.buttonContainer button:hover {
+  background-color: #982e01;
+}
+
+.elementContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.formBottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.rememberMe {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* 🔳 Large Screen Styles */
+@media (min-width: 1800px) {
+  .pageDescription {
+    padding: 0px 100px;
+  }
+}
