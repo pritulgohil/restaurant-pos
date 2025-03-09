@@ -1,5 +1,9 @@
-import React from "react";
-import LoginComponent from "../components/LoginPage/LoginComponent/LoginComponent";
+import LoginComponent from "../components/Signup/Signup";
+
+export const metadata = {
+  title: "Sign Up - Plates Up",
+  description: "Sign up to create an account",
+};
 
 const page = () => {
   return (

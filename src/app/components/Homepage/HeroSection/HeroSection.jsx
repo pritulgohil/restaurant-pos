@@ -1,6 +1,14 @@
+"use client";
+
 import styles from "./HeroSection.module.css";
+import { useRouter } from "next/navigation";
 
 const HeroSection = () => {
+  const router = useRouter();
+
+  const handleSignUpClick = () => {
+    router.push("/signup");
+  };
   return (
     <>
       <div className={styles.mainContainer}>
@@ -19,7 +27,12 @@ const HeroSection = () => {
             <button className={`${styles.learnMore} shadow-sm`}>
               Learn More
             </button>
-            <button className={`${styles.signUp} shadow-sm`}>Sign Up</button>
+            <button
+              onClick={handleSignUpClick}
+              className={`${styles.signUp} shadow-sm`}
+            >
+              Sign Up
+            </button>
           </div>
         </div>
         <div className={styles.rightSideContainer}>

@@ -1,6 +1,6 @@
 "use client";
 
-import styles from "./LoginComponent.module.css";
+import styles from "./Signup.module.css";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -17,7 +17,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-// Define validation schema
 const FormSchema = z.object({
   email: z.string().email({ message: "Invalid email address." }),
   password: z
@@ -40,7 +39,6 @@ const LoginComponent = () => {
 
   return (
     <div className={styles.mainContainer}>
-      {/* Left Side - Image Section */}
       <div className={styles.leftSide}>
         <div className={styles.imageContainer}>
           <img
@@ -50,8 +48,6 @@ const LoginComponent = () => {
           />
         </div>
       </div>
-
-      {/* Right Side - Form Section */}
       <div className={styles.rightSide}>
         <div className={styles.topSection}>
           <div className={styles.pageHeader}>
@@ -64,14 +60,11 @@ const LoginComponent = () => {
             </p>
           </div>
         </div>
-
-        {/* Form Component */}
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
             className={styles.signupForm}
           >
-            {/* Email Input */}
             <FormField
               control={form.control}
               name="email"
@@ -91,8 +84,6 @@ const LoginComponent = () => {
                 </FormItem>
               )}
             />
-
-            {/* Password Input */}
             <FormField
               control={form.control}
               name="password"
@@ -116,8 +107,6 @@ const LoginComponent = () => {
                 </FormItem>
               )}
             />
-
-            {/* Remember Me & Forgot Password */}
             <div className={styles.formBottom}>
               <div className={styles.rememberMe}>
                 <Checkbox id="rememberMe" />
@@ -127,8 +116,6 @@ const LoginComponent = () => {
                 <Button variant="link">Forgot password?</Button>
               </div>
             </div>
-
-            {/* Submit Button */}
             <div className={styles.elementContainer}>
               <div className={styles.buttonContainer}>
                 <Button type="submit" className={styles.signupButton}>
