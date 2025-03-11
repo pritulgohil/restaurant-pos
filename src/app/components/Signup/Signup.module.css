@@ -1,19 +1,8 @@
 .mainContainer {
-  height: 100vh;
-  display: flex;
-}
-
-.leftSide {
-  width: 50%;
-}
-
-.rightSide {
-  width: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 0% 8%;
   gap: 40px;
 }
 
@@ -30,18 +19,6 @@
   font-size: 14px;
   padding: 0px 40px;
   line-height: 25px;
-}
-
-.imageContainer {
-  padding: 24px;
-  height: 100vh;
-}
-
-.imageContainer img {
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-  border-radius: 16px;
 }
 
 .pageHeader {
@@ -113,7 +90,10 @@
 
 /* 🔳 Large Screen Styles */
 @media (min-width: 1800px) {
+  .mainContainer {
+    padding: 0% 4%;
+  }
   .pageDescription {
-    padding: 0px 100px;
+    padding: 0px 80px;
   }
 }

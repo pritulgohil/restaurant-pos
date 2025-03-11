@@ -1,4 +1,6 @@
+import styles from "./page.module.css";
 import LoginComponent from "../components/Signup/Signup";
+import SignupImage from "../components/Signup/SignupImage";
 
 export const metadata = {
   title: "Sign Up - Plates Up",
@@ -8,7 +10,14 @@ export const metadata = {
 const page = () => {
   return (
     <>
-      <LoginComponent />
+      <div className={styles.mainContainer}>
+        <div className={styles.leftSide}>
+          <SignupImage />
+        </div>
+        <div className={styles.rightSide}>
+          <LoginComponent />
+        </div>
+      </div>
     </>
   );
 };

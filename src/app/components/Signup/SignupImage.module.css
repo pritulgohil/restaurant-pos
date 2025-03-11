@@ -1,0 +1,11 @@
+.imageContainer {
+  padding: 24px;
+  height: 100vh;
+}
+
+.imageContainer img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+}

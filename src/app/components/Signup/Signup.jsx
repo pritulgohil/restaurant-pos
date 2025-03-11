@@ -61,110 +61,95 @@ const LoginComponent = () => {
 
   return (
     <div className={styles.mainContainer}>
-      <div className={styles.leftSide}>
-        <div className={styles.imageContainer}>
-          <img
-            className="shadow-2xl"
-            src="loginpage/login-background.jpg"
-            alt="Login Background"
-          />
+      <div className={styles.topSection}>
+        <div className={styles.pageHeader}>
+          <h1>Plates Up</h1>
+        </div>
+        <div className={styles.pageDescription}>
+          <p>
+            Streamline your orders, track inventory, and manage staff with ease.
+            Join us today to simplify your restaurant operations!
+          </p>
         </div>
       </div>
-      <div className={styles.rightSide}>
-        <div className={styles.topSection}>
-          <div className={styles.pageHeader}>
-            <h1>Plates Up</h1>
-          </div>
-          <div className={styles.pageDescription}>
-            <p>
-              Streamline your orders, track inventory, and manage staff with
-              ease. Join us today to simplify your restaurant operations!
-            </p>
-          </div>
-        </div>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className={styles.signupForm}
-          >
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem className={styles.elementContainer}>
-                  <div className={styles.labelContainer}>
-                    <FormLabel className={styles.formLabel} htmlFor="email">
-                      Email
-                    </FormLabel>
-                  </div>
-                  <div className={styles.inputContainer}>
-                    <FormControl>
-                      <Input type="email" placeholder="Email" {...field} />
-                    </FormControl>
-                  </div>
-                  <FormMessage className="flex items-center gap-1">
-                    {errorMessage && (
-                      <>
-                        <TriangleAlert
-                          strokeWidth={3}
-                          className={styles.triangleIcon}
-                        />
-                        An account already exists with this email address.
-                      </>
-                    )}
-                  </FormMessage>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem className={styles.elementContainer}>
-                  <div className={styles.labelContainer}>
-                    <FormLabel className={styles.formLabel} htmlFor="password">
-                      Password
-                    </FormLabel>
-                  </div>
-                  <div className={styles.inputContainer}>
-                    <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="Password"
-                        {...field}
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className={styles.signupForm}
+        >
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem className={styles.elementContainer}>
+                <div className={styles.labelContainer}>
+                  <FormLabel className={styles.formLabel} htmlFor="email">
+                    Email
+                  </FormLabel>
+                </div>
+                <div className={styles.inputContainer}>
+                  <FormControl>
+                    <Input type="email" placeholder="Email" {...field} />
+                  </FormControl>
+                </div>
+                <FormMessage className="flex items-center gap-1">
+                  {errorMessage && (
+                    <>
+                      <TriangleAlert
+                        strokeWidth={3}
+                        className={styles.triangleIcon}
                       />
-                    </FormControl>
-                  </div>
-                  <FormMessage />
-                </FormItem>
+                      An account already exists with this email address.
+                    </>
+                  )}
+                </FormMessage>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem className={styles.elementContainer}>
+                <div className={styles.labelContainer}>
+                  <FormLabel className={styles.formLabel} htmlFor="password">
+                    Password
+                  </FormLabel>
+                </div>
+                <div className={styles.inputContainer}>
+                  <FormControl>
+                    <Input type="password" placeholder="Password" {...field} />
+                  </FormControl>
+                </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div className={styles.formBottom}>
+            <div className={styles.rememberMe}>
+              <Checkbox id="rememberMe" />
+              <Label htmlFor="rememberMe">Remember me</Label>
+            </div>
+            <div className={styles.forgot}>
+              <Button variant="link">Forgot password?</Button>
+            </div>
+          </div>
+          <div className={styles.elementContainer}>
+            <div className={styles.buttonContainer}>
+              {signupState ? (
+                <Button className={styles.signupButton} disabled>
+                  <LoaderCircle className="animate-spin" />
+                  Signing Up...
+                </Button>
+              ) : (
+                <Button type="submit" className={styles.signupButton}>
+                  Sign Up
+                </Button>
               )}
-            />
-            <div className={styles.formBottom}>
-              <div className={styles.rememberMe}>
-                <Checkbox id="rememberMe" />
-                <Label htmlFor="rememberMe">Remember me</Label>
-              </div>
-              <div className={styles.forgot}>
-                <Button variant="link">Forgot password?</Button>
-              </div>
             </div>
-            <div className={styles.elementContainer}>
-              <div className={styles.buttonContainer}>
-                {signupState ? (
-                  <Button className={styles.signupButton} disabled>
-                    <LoaderCircle className="animate-spin" />
-                    Signing Up...
-                  </Button>
-                ) : (
-                  <Button type="submit" className={styles.signupButton}>
-                    Sign Up
-                  </Button>
-                )}
-              </div>
-            </div>
-          </form>
-        </Form>
-      </div>
+          </div>
+        </form>
+      </Form>
     </div>
   );
 };
