@@ -1,5 +1,7 @@
 "use client";
-
+import { LoaderCircle } from "lucide-react";
+import { TriangleAlert } from "lucide-react";
+import { useState } from "react";
 import styles from "./Signup.module.css";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -25,6 +27,9 @@ const FormSchema = z.object({
 });
 
 const LoginComponent = () => {
+  const [signupState, setSignupState] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(false);
+
   const form = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -33,9 +38,26 @@ const LoginComponent = () => {
     },
   });
 
-  function onSubmit(data) {
-    console.log("Form submitted with data:", data);
-  }
+  const onSubmit = async (data) => {
+    setErrorMessage(false);
+    try {
+      const response = await fetch("/api/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setSignupState(true);
+      } else {
+        setErrorMessage(true);
+      }
+    } catch (error) {}
+  };
 
   return (
     <div className={styles.mainContainer}>
@@ -80,7 +102,17 @@ const LoginComponent = () => {
                       <Input type="email" placeholder="Email" {...field} />
                     </FormControl>
                   </div>
-                  <FormMessage />
+                  <FormMessage className="flex items-center gap-1">
+                    {errorMessage && (
+                      <>
+                        <TriangleAlert
+                          strokeWidth={3}
+                          className={styles.triangleIcon}
+                        />
+                        An account already exists with this email address.
+                      </>
+                    )}
+                  </FormMessage>
                 </FormItem>
               )}
             />
@@ -118,9 +150,16 @@ const LoginComponent = () => {
             </div>
             <div className={styles.elementContainer}>
               <div className={styles.buttonContainer}>
-                <Button type="submit" className={styles.signupButton}>
-                  Sign Up
-                </Button>
+                {signupState ? (
+                  <Button className={styles.signupButton} disabled>
+                    <LoaderCircle className="animate-spin" />
+                    Signing Up...
+                  </Button>
+                ) : (
+                  <Button type="submit" className={styles.signupButton}>
+                    Sign Up
+                  </Button>
+                )}
               </div>
             </div>
           </form>

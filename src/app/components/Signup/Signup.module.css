@@ -72,6 +72,8 @@
 .signupButton {
   font-family: "Epilogue";
   width: 100%;
+  display: flex;
+  align-items: center;
 }
 
 .buttonContainer {
@@ -102,6 +104,11 @@
   display: flex;
   align-items: center;
   gap: 5px;
+}
+
+.triangleIcon {
+  width: 18px;
+  height: 18px;
 }
 
 /* 🔳 Large Screen Styles */
