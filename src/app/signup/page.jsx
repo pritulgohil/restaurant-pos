@@ -1,5 +1,5 @@
 import styles from "./page.module.css";
-import LoginComponent from "../components/Signup/Signup";
+import Signup from "../components/Signup/Signup";
 import SignupImage from "../components/Signup/SignupImage";
 
 export const metadata = {
@@ -15,7 +15,7 @@ const page = () => {
           <SignupImage />
         </div>
         <div className={styles.rightSide}>
-          <LoginComponent />
+          <Signup />
         </div>
       </div>
     </>

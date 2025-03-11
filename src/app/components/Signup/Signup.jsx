@@ -26,7 +26,7 @@ const FormSchema = z.object({
     .min(6, { message: "Password must be at least 6 characters." }),
 });
 
-const LoginComponent = () => {
+const Signup = () => {
   const [signupState, setSignupState] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
 
@@ -154,4 +154,4 @@ const LoginComponent = () => {
   );
 };
 
-export default LoginComponent;
+export default Signup;
