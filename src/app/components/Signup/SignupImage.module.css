@@ -1,6 +1,6 @@
 .imageContainer {
   padding: 24px;
-  height: 100vh;
+  height: calc(100vh - 100px);
 }
 
 .imageContainer img {

@@ -1,21 +1,27 @@
+"use client";
+
+import { useState } from "react";
 import styles from "./page.module.css";
 import Signup from "../components/Signup/Signup";
 import SignupImage from "../components/Signup/SignupImage";
-
-export const metadata = {
-  title: "Sign Up - Plates Up",
-  description: "Sign up to create an account",
-};
+import SignupOnboarding from "../components/Signup/SignupOnboarding";
+import Navbar from "../components/Homepage/Navbar/Navbar";
 
 const page = () => {
+  const [onboardingVisibility, setOnboardingVisibility] = useState(false);
   return (
     <>
+      <Navbar />
       <div className={styles.mainContainer}>
         <div className={styles.leftSide}>
           <SignupImage />
         </div>
         <div className={styles.rightSide}>
-          <Signup />
+          {onboardingVisibility ? (
+            <SignupOnboarding />
+          ) : (
+            <Signup setOnboardingVisibility={setOnboardingVisibility} />
+          )}
         </div>
       </div>
     </>

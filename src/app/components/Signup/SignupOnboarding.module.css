@@ -1,0 +1,119 @@
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+}
+
+.topSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.pageDescription {
+  text-align: center;
+  color: gray;
+  font-size: 14px;
+  padding: 0px 40px;
+  line-height: 25px;
+}
+
+.pageHeader {
+  font-family: "Epilogue";
+  font-size: 36px;
+  font-weight: 500;
+}
+
+.signupForm {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.emailContainer {
+  width: 100%;
+}
+
+.formLabel {
+  font-size: 14px;
+}
+
+.inputContainer input {
+  height: 45px;
+}
+
+.signupButton {
+  font-family: "Epilogue";
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.buttonContainer {
+  margin-top: 10px;
+}
+
+.buttonContainer button {
+  background-color: #681f00;
+  height: 45px;
+}
+
+.buttonContainer button:hover {
+  background-color: #982e01;
+}
+
+.elementContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.formBottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.rememberMe {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.formFirstRow {
+  display: flex;
+  gap: 15px;
+  width: 100%;
+}
+
+.formRow {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.inputContainer {
+  width: 100%;
+}
+
+.formControl {
+  width: 100%;
+}
+
+.input {
+  width: 100%;
+}
+
+/* 🔳 Large Screen Styles */
+@media (min-width: 1800px) {
+  .mainContainer {
+    padding: 0% 4%;
+  }
+  .pageDescription {
+    padding: 0px 80px;
+  }
+}

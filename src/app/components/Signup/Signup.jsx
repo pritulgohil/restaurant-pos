@@ -18,6 +18,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { useAuthContext } from "@/context/AuthContext";
 
 const FormSchema = z.object({
   email: z.string().email({ message: "Invalid email address." }),
@@ -26,9 +27,10 @@ const FormSchema = z.object({
     .min(6, { message: "Password must be at least 6 characters." }),
 });
 
-const Signup = () => {
+const Signup = ({ setOnboardingVisibility }) => {
   const [signupState, setSignupState] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
+  const { loggedInUser, setLoggedInUser } = useAuthContext();
 
   const form = useForm({
     resolver: zodResolver(FormSchema),
@@ -52,7 +54,12 @@ const Signup = () => {
       const result = await response.json();
 
       if (response.ok) {
+        // console.log(result.user._id);
+        setLoggedInUser(result.user._id);
         setSignupState(true);
+        setTimeout(() => {
+          setOnboardingVisibility(true);
+        }, 3000);
       } else {
         setErrorMessage(true);
       }
