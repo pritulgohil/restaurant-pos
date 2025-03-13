@@ -1,13 +1,14 @@
 "use client";
 
 import styles from "./SignupOnboarding.module.css";
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { Check } from "lucide-react";
+import { LoaderCircle } from "lucide-react";
 import {
   Form,
   FormControl,
@@ -26,6 +27,7 @@ const FormSchema = z.object({
 });
 
 const SignupOnboarding = () => {
+  const [signupButtonState, setSignupButtonState] = useState(false);
   const { loggedInUser, setLoggedInUser } = useAuthContext();
   console.log("Currently logged in user", loggedInUser);
   const form = useForm({
@@ -54,6 +56,7 @@ const SignupOnboarding = () => {
 
       if (response.ok) {
         console.log("Restaurant created successfully:", result);
+        setSignupButtonState(true);
       } else {
         console.error("Error:", result.error);
       }
@@ -194,9 +197,17 @@ const SignupOnboarding = () => {
           </div>
           <div className={styles.elementContainer}>
             <div className={styles.buttonContainer}>
-              <Button type="submit" className={styles.signupButton}>
-                Complete Signup
-              </Button>
+              {signupButtonState ? (
+                <Button type="submit" className={styles.signupButton} disabled>
+                  <LoaderCircle className="animate-spin" />
+                  Creating your account...
+                </Button>
+              ) : (
+                <Button type="submit" className={styles.signupButton}>
+                  <Check />
+                  Complete Signup
+                </Button>
+              )}
             </div>
           </div>
         </form>
