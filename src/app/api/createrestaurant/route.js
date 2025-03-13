@@ -6,10 +6,9 @@ export async function POST(req) {
   try {
     await dbConnect();
 
-    const { firstName, lastName, restaurantName, cuisineType, userId } =
-      await req.json();
+    const { restaurantName, cuisineType, userId } = await req.json();
 
-    if (!firstName || !lastName || !restaurantName || !cuisineType || !userId) {
+    if (!restaurantName || !cuisineType || !userId) {
       return NextResponse.json(
         { error: "All fields are required, including user ID" },
         { status: 400 }
@@ -17,8 +16,6 @@ export async function POST(req) {
     }
 
     const newRestaurant = new Restaurant({
-      firstName,
-      lastName,
       restaurantName,
       cuisineType,
       userId, // Store the loggedInUser ID

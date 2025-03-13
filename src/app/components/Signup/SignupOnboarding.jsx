@@ -44,21 +44,46 @@ const SignupOnboarding = () => {
     console.log("Submitting data:", { ...data, userId: loggedInUser });
 
     try {
-      const response = await fetch("/api/createrestaurant", {
+      // First API Call: Update the user's firstname and lastname
+      const userUpdateResponse = await fetch(`/api/signup/${loggedInUser}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          firstname: data.firstName,
+          lastname: data.lastName,
+        }),
+      });
+
+      const userUpdateResult = await userUpdateResponse.json();
+
+      if (!userUpdateResponse.ok) {
+        console.error("User update error:", userUpdateResult.error);
+        return; // If updating the user fails, exit the function
+      }
+      console.log("User updated successfully:", userUpdateResult);
+
+      // Second API Call: Create the restaurant
+      const restaurantResponse = await fetch("/api/createrestaurant", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ ...data, userId: loggedInUser }),
+        body: JSON.stringify({
+          restaurantName: data.restaurantName,
+          cuisineType: data.cuisineType,
+          userId: loggedInUser,
+        }),
       });
 
-      const result = await response.json();
+      const restaurantResult = await restaurantResponse.json();
 
-      if (response.ok) {
-        console.log("Restaurant created successfully:", result);
-        setSignupButtonState(true);
+      if (restaurantResponse.ok) {
+        console.log("Restaurant created successfully:", restaurantResult);
+        setSignupButtonState(true); // Update the button state if successful
       } else {
-        console.error("Error:", result.error);
+        console.error("Restaurant creation error:", restaurantResult.error);
       }
     } catch (error) {
       console.error("Request failed:", error);
@@ -101,7 +126,7 @@ const SignupOnboarding = () => {
                     <div className={styles.inputContainer}>
                       <FormControl>
                         <Input
-                          type="firstName"
+                          type="text"
                           placeholder="First Name"
                           {...field}
                         />
