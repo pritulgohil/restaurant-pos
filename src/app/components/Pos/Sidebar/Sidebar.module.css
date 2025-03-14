@@ -1,0 +1,24 @@
+.mainContainer {
+  padding: 32px 24px;
+  width: 250px;
+  height: calc(100vh - 68px);
+  font-family: "Epilogue";
+}
+
+.topSidebar ul {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  font-size: 14px;
+}
+
+.topSidebar ul li {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.sidebarIcon {
+  width: 20px;
+  height: 20px;
+}
