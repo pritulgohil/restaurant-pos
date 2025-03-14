@@ -1,0 +1,60 @@
+.mainContainer {
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logoContainer {
+  font-family: "Epilogue";
+  font-weight: 600;
+}
+
+.bellIconContainer {
+  padding: 8px;
+  border: 1px solid rgb(225, 225, 225);
+  border-radius: 100%;
+}
+
+.bellIcon {
+  width: 16px;
+  height: 16px;
+  color: gray;
+  stroke-width: 2px;
+}
+
+.adminContainer {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.avatarContainer {
+  width: 35px;
+  height: 35px;
+}
+
+.avatarContainer img {
+  width: 35px;
+  height: 35px;
+  object-fit: cover;
+  object-position: top;
+  border-radius: 100%;
+}
+
+.userContainer {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-family: "Epilogue";
+}
+
+.name {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.role {
+  font-size: 10px;
+  color: gray;
+}
