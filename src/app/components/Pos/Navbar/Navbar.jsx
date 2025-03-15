@@ -47,8 +47,10 @@ const Navbar = () => {
               <img src="user-avatar/chef.jpg" alt="" />
             </div>
             <div className={styles.userName}>
-              <div className={styles.name}>{user.firstname}</div>
-              <div className={styles.role}>{user.lastname}</div>
+              <div className={styles.name}>
+                {user.firstname} {user.lastname}
+              </div>
+              <div className={styles.role}>Admin</div>
             </div>
           </div>
         </div>
