@@ -5,7 +5,9 @@ import { createContext, useState, useContext } from "react";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [loggedInUser, setLoggedInUser] = useState({ user: null });
+  const [loggedInUser, setLoggedInUser] = useState(
+    localStorage.getItem("loggedInUser") || null
+  );
 
   return (
     <AuthContext.Provider value={{ loggedInUser, setLoggedInUser }}>

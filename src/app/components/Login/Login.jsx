@@ -59,6 +59,7 @@ const Login = () => {
       if (response.ok) {
         console.log("login successful", result);
         setSignupState(true);
+        localStorage.setItem("loggedInUser", result.user.userId);
         setLoggedInUser(result.user.userId);
         setTimeout(() => {
           router.push("/pos");
