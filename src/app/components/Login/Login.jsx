@@ -20,6 +20,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuthContext } from "@/context/AuthContext";
 
 const FormSchema = z.object({
   email: z.string().email({ message: "Invalid email address." }),
@@ -32,6 +33,7 @@ const Login = () => {
   const router = useRouter();
   const [signupState, setSignupState] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
+  const { loggedInUser, setLoggedInUser } = useAuthContext();
 
   const form = useForm({
     resolver: zodResolver(FormSchema),
@@ -57,6 +59,7 @@ const Login = () => {
       if (response.ok) {
         console.log("login successful", result);
         setSignupState(true);
+        setLoggedInUser(result.user.userId);
         setTimeout(() => {
           router.push("/pos");
         }, 2000);

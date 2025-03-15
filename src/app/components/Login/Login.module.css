@@ -87,3 +87,18 @@
   width: 18px;
   height: 18px;
 }
+
+/* 🔳 Large Screen Styles */
+@media (min-width: 1800px) {
+  .formContainer {
+    width: 20%;
+  }
+
+  .pageHeader {
+    width: 20%;
+  }
+
+  .pageDescription {
+    width: 20%;
+  }
+}
