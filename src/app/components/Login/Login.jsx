@@ -19,6 +19,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
   email: z.string().email({ message: "Invalid email address." }),
@@ -28,6 +29,7 @@ const FormSchema = z.object({
 });
 
 const Login = () => {
+  const router = useRouter();
   const [signupState, setSignupState] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
 
@@ -55,6 +57,9 @@ const Login = () => {
       if (response.ok) {
         console.log("login successful", result);
         setSignupState(true);
+        setTimeout(() => {
+          router.push("/pos");
+        }, 2000);
       } else {
         setErrorMessage(true);
       }
