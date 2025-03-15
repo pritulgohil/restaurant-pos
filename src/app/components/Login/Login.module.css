@@ -1,0 +1,89 @@
+.mainContainer {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.pageHeader {
+  font-family: "Epilogue";
+  font-weight: 600;
+  width: 25%;
+}
+
+.pageHeader h1 {
+  font-size: 32px;
+}
+
+.formContainer {
+  width: 25%;
+}
+
+.pageDescription {
+  width: 25%;
+  margin-top: 8px;
+  color: gray;
+}
+
+.signupForm {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 32px;
+}
+
+.emailContainer {
+  width: 100%;
+}
+
+.formLabel {
+  font-size: 14px;
+}
+
+.inputContainer input {
+  height: 45px;
+}
+
+.signupButton {
+  font-family: "Epilogue";
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.buttonContainer {
+  margin-top: 10px;
+}
+
+.buttonContainer button {
+  background-color: #681f00;
+  height: 45px;
+}
+
+.buttonContainer button:hover {
+  background-color: #982e01;
+}
+
+.elementContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.formBottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.rememberMe {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.triangleIcon {
+  width: 18px;
+  height: 18px;
+}
