@@ -11,6 +11,9 @@ export const AuthProvider = ({ children }) => {
     const storedUser = localStorage.getItem("loggedInUser");
     if (storedUser) {
       setLoggedInUser(storedUser);
+    } else {
+      // If no user, ensure that loggedInUser is null
+      setLoggedInUser(null);
     }
   }, []);
 

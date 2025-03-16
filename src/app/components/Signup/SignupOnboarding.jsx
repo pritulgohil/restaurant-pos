@@ -18,7 +18,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useAuthContext } from "@/context/AuthContext";
-import { useRouter } from "next/navigation"; // Import useRouter
+import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
   firstName: z.string().min(1, { message: "First Name is required" }),
@@ -28,7 +28,7 @@ const FormSchema = z.object({
 });
 
 const SignupOnboarding = () => {
-  const router = useRouter(); // Initialize useRouter
+  const router = useRouter();
   const [signupButtonState, setSignupButtonState] = useState(false);
   const { loggedInUser, setLoggedInUser } = useAuthContext();
   console.log("Currently logged in user", loggedInUser);
@@ -83,8 +83,10 @@ const SignupOnboarding = () => {
 
       if (restaurantResponse.ok) {
         console.log("Restaurant created successfully:", restaurantResult);
-        setSignupButtonState(true); // Update the button state if successful
-        router.push("/pos"); // Change this to your desired route
+        setSignupButtonState(true);
+        setTimeout(() => {
+          router.push("/pos");
+        }, 2000);
       } else {
         console.error("Restaurant creation error:", restaurantResult.error);
       }

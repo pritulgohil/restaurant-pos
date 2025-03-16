@@ -37,7 +37,7 @@ const Navbar = () => {
     };
 
     fetchUser();
-  }, []);
+  }, [loggedInUser]);
 
   return (
     <>
