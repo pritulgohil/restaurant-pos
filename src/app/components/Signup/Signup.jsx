@@ -54,8 +54,7 @@ const Signup = ({ setOnboardingVisibility }) => {
       const result = await response.json();
 
       if (response.ok) {
-        // console.log(result.user._id);
-        setLoggedInUser(result.user._id);
+        setLoggedInUser(result.userId);
         setSignupState(true);
         setTimeout(() => {
           setOnboardingVisibility(true);
