@@ -13,16 +13,23 @@ const Navbar = () => {
     if (!loggedInUser) return;
 
     const fetchUser = async () => {
+      const token = localStorage.getItem("token");
       try {
-        const res = await fetch(`/api/pos/fetch-user/${loggedInUser}`);
+        const res = await fetch(`/api/pos/fetch-user/${loggedInUser}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
         if (!res.ok) {
           throw new Error("Failed to fetch user data");
         }
         const data = await res.json();
         console.log("Fetched user data:", data);
         setUser({
-          firstname: data.user.firstname,
-          lastname: data.user.lastname,
+          firstname: data.firstname,
+          lastname: data.lastname,
         });
       } catch (err) {
         console.error("Error fetching user:", err);
@@ -34,7 +41,7 @@ const Navbar = () => {
 
   return (
     <>
-      <div className={`${styles.mainContainer} shadow-md`}>
+      <div className={`${styles.mainContainer} shadow-sm`}>
         <div className={styles.logoContainer}>
           <h1>Plates Up</h1>
         </div>

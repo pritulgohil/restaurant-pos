@@ -54,6 +54,7 @@ const Signup = ({ setOnboardingVisibility }) => {
       const result = await response.json();
 
       if (response.ok) {
+        localStorage.setItem("token", result.token);
         setLoggedInUser(result.userId);
         setSignupState(true);
         setTimeout(() => {
