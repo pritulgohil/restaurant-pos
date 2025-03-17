@@ -6,8 +6,8 @@ const Navbar = () => {
   const [mobileMenuVisibility, setMobileMenuVisibility] = useState(false);
   const router = useRouter();
 
-  const handleSignUpClick = () => {
-    router.push("/signup");
+  const handleLoginButton = () => {
+    router.push("/login");
   };
 
   const handleMobileMenuVisibility = () => {
@@ -60,10 +60,10 @@ const Navbar = () => {
           </div>
           <div className={styles.signUpButtonContainer}>
             <button
-              onClick={handleSignUpClick}
+              onClick={handleLoginButton}
               className={`${styles.signUpButton} shadow-sm`}
             >
-              Sign Up
+              Login
             </button>
           </div>
         </div>

@@ -7,6 +7,9 @@ import Sidebar from "../components/Pos/Sidebar/Sidebar";
 import { useAuthContext } from "@/context/AuthContext";
 
 const Page = () => {
+  useEffect(() => {
+    document.title = "POS - Plates Up";
+  }, []);
   const { loggedInUser } = useAuthContext();
   const router = useRouter();
 

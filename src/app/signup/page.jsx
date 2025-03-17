@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./page.module.css";
 import Signup from "../components/Signup/Signup";
 import SignupImage from "../components/Signup/SignupImage";
@@ -9,6 +9,9 @@ import Navbar from "../components/Homepage/Navbar/Navbar";
 
 const page = () => {
   const [onboardingVisibility, setOnboardingVisibility] = useState(false);
+  useEffect(() => {
+    document.title = "Sign Up - Plates Up";
+  }, []);
   return (
     <>
       <Navbar />
