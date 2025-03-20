@@ -37,23 +37,58 @@ const Sidebar = () => {
       <div className={`${styles.mainContainer} shadow-md`}>
         <div className={styles.topSidebar}>
           <ul>
-            <li>
+            <li
+              className={` ${
+                location.pathname === "/pos/dashboard"
+                  ? styles.active
+                  : styles.sidebarItem
+              }`}
+              onClick={() => handleNavigation("/pos/manage-dishes")}
+            >
               <LayoutDashboard className={styles.sidebarIcon} />
               Dashboard
             </li>
-            <li>
+            <li
+              className={` ${
+                location.pathname === "/pos/order-line"
+                  ? styles.active
+                  : styles.sidebarItem
+              }`}
+              onClick={() => handleNavigation("/pos/manage-dishes")}
+            >
               <ArrowRightLeft className={styles.sidebarIcon} />
               Order Line
             </li>
-            <li>
+            <li
+              className={` ${
+                location.pathname === "/pos/manage-table"
+                  ? styles.active
+                  : styles.sidebarItem
+              }`}
+              onClick={() => handleNavigation("/pos/manage-dishes")}
+            >
               <TableCellsMerge className={styles.sidebarIcon} />
               Manage Table
             </li>
-            <li onClick={() => handleNavigation("/pos/manage-dishes")}>
+            <li
+              className={` ${
+                location.pathname === "/pos/manage-dishes"
+                  ? styles.active
+                  : styles.sidebarItem
+              }`}
+              onClick={() => handleNavigation("/pos/manage-dishes")}
+            >
               <Soup className={styles.sidebarIcon} />
               Manage Dishes
             </li>
-            <li>
+            <li
+              className={` ${
+                location.pathname === "/pos/customers"
+                  ? styles.active
+                  : styles.sidebarItem
+              }`}
+              onClick={() => handleNavigation("/pos/manage-dishes")}
+            >
               <Users className={styles.sidebarIcon} />
               Customers
             </li>

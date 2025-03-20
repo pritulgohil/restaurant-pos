@@ -18,18 +18,18 @@
   font-size: 14px;
 }
 
-.topSidebar ul li {
+/* .topSidebar ul li {
   display: flex;
   align-items: center;
   gap: 15px;
   cursor: pointer;
   padding: 12px 24px;
-}
+} */
 
-.topSidebar ul li:hover {
-  background-color: rgb(200, 200, 200);
+/* .topSidebar ul li:hover {
+  background-color: rgb(242, 242, 242);
   border-radius: 4px;
-}
+} */
 
 .sidebarIcon {
   width: 20px;
@@ -63,4 +63,27 @@
 .sidebarIcon {
   width: 20px;
   height: 20px;
+}
+
+.active {
+  background-color: rgb(200, 200, 200);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  cursor: pointer;
+  padding: 12px 24px;
+}
+
+.sidebarItem {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  cursor: pointer;
+  padding: 12px 24px;
+}
+
+.sidebarItem:hover {
+  background-color: rgb(242, 242, 242);
+  border-radius: 4px;
 }
