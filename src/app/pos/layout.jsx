@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Navbar from "../components/Pos/Navbar/Navbar";
 import Sidebar from "../components/Pos/Sidebar/Sidebar";
 import { useAuthContext } from "@/context/AuthContext";
+import styles from "./layout.module.css";
 
 const Page = ({ children }) => {
   useEffect(() => {
@@ -33,9 +34,17 @@ const Page = ({ children }) => {
 
   return (
     <>
-      <Navbar />
-      <Sidebar />
-      <main>{children}</main>
+      <div className={styles.navbarContainer}>
+        <Navbar />
+      </div>
+      <div className={styles.mainContainer}>
+        <div className={styles.sidebarContainer}>
+          <Sidebar />
+        </div>
+        <div className={styles.componentContainer}>
+          <main>{children}</main>
+        </div>
+      </div>
     </>
   );
 };

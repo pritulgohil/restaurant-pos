@@ -1,0 +1,11 @@
+.mainContainer {
+  display: flex;
+}
+
+.sidebarContainer {
+  width: 200px;
+}
+
+.componentContainer {
+  width: 100%;
+}

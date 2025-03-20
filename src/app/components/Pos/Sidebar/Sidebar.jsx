@@ -28,6 +28,10 @@ const Sidebar = () => {
     }, 2000);
   };
 
+  const handleNavigation = (path) => {
+    router.push(path);
+  };
+
   return (
     <>
       <div className={`${styles.mainContainer} shadow-md`}>
@@ -45,7 +49,7 @@ const Sidebar = () => {
               <TableCellsMerge className={styles.sidebarIcon} />
               Manage Table
             </li>
-            <li>
+            <li onClick={() => handleNavigation("/pos/manage-dishes")}>
               <Soup className={styles.sidebarIcon} />
               Manage Dishes
             </li>
