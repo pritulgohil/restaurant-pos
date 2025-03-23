@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import styles from "./ManageDishes.module.css";
 import { Button } from "@/components/ui/button";
 import { SquarePlus } from "lucide-react";
@@ -15,6 +18,31 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
 const ManageDishes = () => {
+  const [categoryName, setCategoryName] = useState("");
+  const [description, setDescription] = useState("");
+
+  const handleSubmit = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await fetch("/api/pos/create-category/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ name: categoryName, description: description }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Something went wrong");
+
+      setCategoryName("");
+      setDescription("");
+    } catch (err) {
+    } finally {
+    }
+  };
+
   return (
     <>
       <div className={styles.mainContainer}>
@@ -77,6 +105,8 @@ const ManageDishes = () => {
                     id="categoryName"
                     className="col-span-3"
                     placeholder="Category Name"
+                    value={categoryName}
+                    onChange={(e) => setCategoryName(e.target.value)}
                   />
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
@@ -86,11 +116,13 @@ const ManageDishes = () => {
                   <Textarea
                     className={styles.textArea}
                     placeholder="Type your message here."
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
                   />
                 </div>
               </div>
               <DialogFooter>
-                <Button type="submit">Save Category</Button>
+                <Button onClick={handleSubmit}>Save Category</Button>
               </DialogFooter>
             </DialogContent>
           </Dialog>
