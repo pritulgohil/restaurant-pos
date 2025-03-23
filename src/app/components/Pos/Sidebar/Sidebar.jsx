@@ -12,10 +12,11 @@ import { LogOut } from "lucide-react";
 import { LoaderCircle } from "lucide-react";
 import { useState } from "react";
 import { useAuthContext } from "@/context/AuthContext";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 const Sidebar = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const [logoutState, setLogoutState] = useState(false);
   const { loggedInUser, setLoggedInUser } = useAuthContext();
 
@@ -39,7 +40,7 @@ const Sidebar = () => {
           <ul>
             <li
               className={` ${
-                location.pathname === "/pos/dashboard"
+                pathname === "/pos/dashboard"
                   ? styles.active
                   : styles.sidebarItem
               }`}
@@ -50,7 +51,7 @@ const Sidebar = () => {
             </li>
             <li
               className={` ${
-                location.pathname === "/pos/order-line"
+                pathname === "/pos/order-line"
                   ? styles.active
                   : styles.sidebarItem
               }`}
@@ -61,7 +62,7 @@ const Sidebar = () => {
             </li>
             <li
               className={` ${
-                location.pathname === "/pos/manage-table"
+                pathname === "/pos/manage-table"
                   ? styles.active
                   : styles.sidebarItem
               }`}
@@ -72,7 +73,7 @@ const Sidebar = () => {
             </li>
             <li
               className={` ${
-                location.pathname === "/pos/manage-dishes"
+                pathname === "/pos/manage-dishes"
                   ? styles.active
                   : styles.sidebarItem
               }`}
@@ -83,7 +84,7 @@ const Sidebar = () => {
             </li>
             <li
               className={` ${
-                location.pathname === "/pos/customers"
+                pathname === "/pos/customers"
                   ? styles.active
                   : styles.sidebarItem
               }`}

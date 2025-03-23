@@ -1,5 +1,4 @@
 .mainContainer {
-  /* height: calc(100vh - 168px); */
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -7,7 +6,8 @@
 }
 
 .subContainer {
-  background-color: ghostwhite;
+  /* background-color: ghostwhite; */
+  background-color: rgb(240, 240, 240);
   padding: 24px;
   overflow-y: auto;
   scrollbar-width: none;
@@ -33,11 +33,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #681f00;
-}
-
-.buttonContainer Button:hover {
-  background-color: #982e01;
 }
 
 .headerContainer h3 {
@@ -84,4 +79,8 @@
   background-color: rgb(240, 240, 240);
   padding: 4px 8px;
   border-radius: 200px;
+}
+
+.textArea {
+  width: 278px;
 }
