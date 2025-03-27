@@ -1,0 +1,16 @@
+.error {
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  color: red;
+  margin-top: -22px;
+  margin-left: 45px;
+  font-weight: 500;
+}
+
+.errorIcon {
+  width: 16px;
+  height: 16px;
+}
