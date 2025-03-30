@@ -35,7 +35,7 @@ const Login = () => {
   const [signupState, setSignupState] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
   const { loggedInUser, setLoggedInUser } = useAuthContext();
-  const { restaurant, setRestaurant } = useRestaurantContext();
+  const { setRestaurant } = useRestaurantContext();
 
   const form = useForm({
     resolver: zodResolver(FormSchema),
@@ -47,6 +47,8 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     setErrorMessage(false);
+
+    // Login API
     try {
       const response = await fetch("/api/login", {
         method: "POST",
@@ -59,13 +61,16 @@ const Login = () => {
       const result = await response.json();
 
       if (response.ok) {
-        console.log("Login successful", result);
         setSignupState(true);
-        localStorage.setItem("token", result.token);
-        localStorage.setItem("loggedInUser", result.user.userId);
 
-        // Update state for logged-in user
+        // Saving the JWT token in localStorage
+        localStorage.setItem("token", result.token);
+
+        // Saving logged in UserID in localStorage and state
+        localStorage.setItem("loggedInUser", result.user.userId);
         setLoggedInUser(result.user.userId);
+
+        // Navigate to /pos on successful login
         setTimeout(() => {
           router.push("/pos");
         }, 2000);
@@ -101,7 +106,7 @@ const Login = () => {
 
       const data = await res.json();
       if (Array.isArray(data) && data.length > 0) {
-        console.log("Setting Restaurant ID:", data[0]._id);
+        // Save restaurantId in state on login
         setRestaurant(data[0]._id);
       } else {
         console.warn("No restaurant found or data is not an array");
