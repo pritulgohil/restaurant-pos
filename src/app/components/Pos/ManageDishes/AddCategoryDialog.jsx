@@ -24,35 +24,8 @@ const AddCategoryDialog = ({ onCategoryAdded }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  //   setLoading(true);
 
-  //   try {
-  //     const response = await fetch("/api/pos/create-category/", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //       body: JSON.stringify({ name: categoryName, description }),
-  //     });
-
-  //     const data = await response.json();
-  //     if (!response.ok) throw new Error(data.error || "Something went wrong");
-  //     setTimeout(() => {
-  //       onCategoryAdded(data);
-  //       setCategoryName("");
-  //       setDescription("");
-  //       setIsOpen(false);
-  //       setLoading(false);
-  //     }, 2000);
-  //   } catch (err) {
-  //     console.error("Error adding category:", err);
-  //     setError(true);
-  //   } finally {
-  //   }
-  // };
-
-  const { restaurant, setRestaurant } = useRestaurantContext();
+  const { restaurant } = useRestaurantContext();
 
   const handleSubmit = async () => {
     const token = localStorage.getItem("token");
