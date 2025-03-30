@@ -63,9 +63,7 @@ const ManageDishes = () => {
               className={styles.cardContainer}
             >
               <div className={styles.leftSideContainer}>
-                <div className={styles.vectorContainer}>
-                  <img src="/food-icons/burger.png" alt="Category Icon" />
-                </div>
+                <div className={styles.vectorContainer}>🌮</div>
                 <div className={styles.categoryHeader}>
                   <h4>{category.name}</h4>
                 </div>

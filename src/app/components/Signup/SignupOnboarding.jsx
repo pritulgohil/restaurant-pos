@@ -49,17 +49,20 @@ const SignupOnboarding = () => {
     const token = localStorage.getItem("token");
     try {
       // First API Call: Update the user's firstname and lastname
-      const userUpdateResponse = await fetch(`/api/signup/${loggedInUser}`, {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          firstname: data.firstName,
-          lastname: data.lastName,
-        }),
-      });
+      const userUpdateResponse = await fetch(
+        `/api/auth/signup/${loggedInUser}`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            firstname: data.firstName,
+            lastname: data.lastName,
+          }),
+        }
+      );
 
       const userUpdateResult = await userUpdateResponse.json();
 
@@ -69,7 +72,7 @@ const SignupOnboarding = () => {
       }
 
       // Second API Call: Create the restaurant
-      const restaurantResponse = await fetch("/api/createrestaurant", {
+      const restaurantResponse = await fetch("/api/auth/createrestaurant", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

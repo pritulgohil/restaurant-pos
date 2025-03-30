@@ -43,7 +43,7 @@ const Signup = ({ setOnboardingVisibility }) => {
   const onSubmit = async (data) => {
     setErrorMessage(false);
     try {
-      const response = await fetch("/api/signup", {
+      const response = await fetch("/api/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
