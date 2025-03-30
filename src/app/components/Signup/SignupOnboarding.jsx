@@ -18,6 +18,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useAuthContext } from "@/context/AuthContext";
+import { useRestaurantContext } from "@/context/RestaurantContext";
 import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
@@ -31,6 +32,7 @@ const SignupOnboarding = () => {
   const router = useRouter();
   const [signupButtonState, setSignupButtonState] = useState(false);
   const { loggedInUser, setLoggedInUser } = useAuthContext();
+  const { restaurant, setRestaurant } = useRestaurantContext();
   console.log("Currently logged in user", loggedInUser);
   const form = useForm({
     resolver: zodResolver(FormSchema),
@@ -83,6 +85,7 @@ const SignupOnboarding = () => {
 
       if (restaurantResponse.ok) {
         console.log("Restaurant created successfully:", restaurantResult);
+        setRestaurant(restaurantResult.restaurant._id);
         setSignupButtonState(true);
         setTimeout(() => {
           router.push("/pos");

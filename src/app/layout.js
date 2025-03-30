@@ -3,6 +3,7 @@
 import { Epilogue, DM_Sans } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
+import { RestaurantProvider } from "@/context/RestaurantContext"; // Add the import for the RestaurantProvider
 
 const epilogue = Epilogue({
   subsets: ["latin"],
@@ -25,7 +26,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${epilogue.className} ${dmSans.className}`}>
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          <RestaurantProvider>{children}</RestaurantProvider>
+        </AuthProvider>
       </body>
     </html>
   );

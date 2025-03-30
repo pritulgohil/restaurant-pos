@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
-import Category from "@/models/category";
+import Restaurant from "@/models/restaurant";
 import jwt from "jsonwebtoken";
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
-export async function POST(req) {
+export async function GET(req, { params }) {
   try {
     await dbConnect();
 
@@ -26,23 +26,22 @@ export async function POST(req) {
       );
     }
 
-    const body = await req.json();
-    const { name, description, restaurantId } = body;
+    // Extract userId from dynamic route params
+    const { userId } = await params;
 
-    if (!name || !description || !restaurantId) {
+    // Fetch restaurants for the given userId
+    const restaurants = await Restaurant.find({ userId });
+
+    // If no restaurants found, return a 404
+    if (!restaurants.length) {
       return NextResponse.json(
-        { error: "All fields are required" },
-        { status: 400 }
+        { error: "No restaurants found for this user" },
+        { status: 404 }
       );
     }
 
-    const newCategory = new Category({ name, description, restaurantId });
-    await newCategory.save();
-
-    return NextResponse.json(
-      { message: "Category created successfully", category: newCategory },
-      { status: 201 }
-    );
+    // Return restaurants
+    return NextResponse.json(restaurants, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

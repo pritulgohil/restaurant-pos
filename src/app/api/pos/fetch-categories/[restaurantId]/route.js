@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
-export async function GET(req) {
+export async function GET(req, { params }) {
   try {
     await dbConnect();
 
@@ -26,11 +26,19 @@ export async function GET(req) {
       );
     }
 
-    // Assuming you only want categories if the user is authenticated
-    // You can implement role-based access here if needed
+    // Extract restaurantId from dynamic route params
+    const { restaurantId } = await params;
 
-    // Fetch all categories
-    const categories = await Category.find();
+    // Fetch categories for the given restaurantId
+    const categories = await Category.find({ restaurantId });
+
+    // If no categories found, return a 404
+    if (!categories.length) {
+      return NextResponse.json(
+        { error: "No categories found for this restaurant" },
+        { status: 404 }
+      );
+    }
 
     // Return categories
     return NextResponse.json(categories, { status: 200 });

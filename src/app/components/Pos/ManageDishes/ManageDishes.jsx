@@ -3,15 +3,52 @@
 import { useEffect, useState } from "react";
 import styles from "./ManageDishes.module.css";
 import AddCategoryDialog from "./AddCategoryDialog";
+import { useRestaurantContext } from "@/context/RestaurantContext";
+import { useAuthContext } from "@/context/AuthContext";
 
 const ManageDishes = () => {
   const [categories, setCategories] = useState([]); // Store categories in state
+  const { restaurant, setRestaurant } = useRestaurantContext();
+  const { loggedInUser, setLoggedInUser } = useAuthContext();
+
+  console.log("Current User", loggedInUser);
+
+  // const fetchRestaurant = async () => {
+  //   const token = localStorage.getItem("token");
+  //   try {
+  //     const res = await fetch(`/api/pos/fetch-restaurant/${loggedInUser}`, {
+  //       method: "GET",
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+  //     if (!res.ok) {
+  //       throw new Error("Failed to fetch categories");
+  //     }
+  //     const data = await res.json();
+  //     if (Array.isArray(data) && data.length > 0) {
+  //       console.log("Setting Restaurant ID:", data[0]._id);
+  //       setRestaurant(data[0]._id);
+  //     } else {
+  //       console.warn("No restaurant found or data is not an array");
+  //     }
+  //     setCategories(data); // Update categories in state
+  //     console.log("Current Restaurant", restaurant);
+  //   } catch (err) {
+  //     console.error("Error fetching categories:", err);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchRestaurant();
+  // }, []);
 
   // Function to fetch categories from API
   const fetchCategories = async () => {
     const token = localStorage.getItem("token");
     try {
-      const res = await fetch(`/api/pos/fetch-categories`, {
+      const res = await fetch(`/api/pos/fetch-categories/${restaurant}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,

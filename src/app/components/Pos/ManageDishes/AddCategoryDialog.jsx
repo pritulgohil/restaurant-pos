@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { LoaderCircle } from "lucide-react";
 import { TriangleAlert } from "lucide-react";
+import { useRestaurantContext } from "@/context/RestaurantContext";
 
 const AddCategoryDialog = ({ onCategoryAdded }) => {
   const [categoryName, setCategoryName] = useState("");
@@ -51,6 +52,8 @@ const AddCategoryDialog = ({ onCategoryAdded }) => {
   //   }
   // };
 
+  const { restaurant, setRestaurant } = useRestaurantContext();
+
   const handleSubmit = async () => {
     const token = localStorage.getItem("token");
 
@@ -63,7 +66,11 @@ const AddCategoryDialog = ({ onCategoryAdded }) => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ name: categoryName, description }),
+        body: JSON.stringify({
+          name: categoryName,
+          description,
+          restaurantId: restaurant,
+        }),
       });
 
       const data = await response.json();

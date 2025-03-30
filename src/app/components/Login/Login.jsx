@@ -1,5 +1,5 @@
 "use client";
-
+import { useEffect } from "react";
 import { LoaderCircle } from "lucide-react";
 import { TriangleAlert } from "lucide-react";
 import styles from "./Login.module.css";
@@ -21,6 +21,7 @@ import { z } from "zod";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthContext } from "@/context/AuthContext";
+import { useRestaurantContext } from "@/context/RestaurantContext";
 
 const FormSchema = z.object({
   email: z.string().email({ message: "Invalid email address." }),
@@ -34,6 +35,7 @@ const Login = () => {
   const [signupState, setSignupState] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
   const { loggedInUser, setLoggedInUser } = useAuthContext();
+  const { restaurant, setRestaurant } = useRestaurantContext();
 
   const form = useForm({
     resolver: zodResolver(FormSchema),
@@ -57,10 +59,12 @@ const Login = () => {
       const result = await response.json();
 
       if (response.ok) {
-        console.log("login successful", result);
+        console.log("Login successful", result);
         setSignupState(true);
         localStorage.setItem("token", result.token);
         localStorage.setItem("loggedInUser", result.user.userId);
+
+        // Update state for logged-in user
         setLoggedInUser(result.user.userId);
         setTimeout(() => {
           router.push("/pos");
@@ -68,8 +72,45 @@ const Login = () => {
       } else {
         setErrorMessage(true);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("Login error:", error);
+    }
   };
+
+  // Fetch restaurant only when loggedInUser is updated
+  useEffect(() => {
+    if (loggedInUser) {
+      fetchRestaurant();
+    }
+  }, [loggedInUser]);
+
+  const fetchRestaurant = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const res = await fetch(`/api/pos/fetch-restaurant/${loggedInUser}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch restaurant");
+      }
+
+      const data = await res.json();
+      if (Array.isArray(data) && data.length > 0) {
+        console.log("Setting Restaurant ID:", data[0]._id);
+        setRestaurant(data[0]._id);
+      } else {
+        console.warn("No restaurant found or data is not an array");
+      }
+    } catch (err) {
+      console.error("Error fetching restaurant:", err);
+    }
+  };
+
   return (
     <div className={styles.mainContainer}>
       <div className={styles.pageHeader}>
