@@ -30,7 +30,7 @@ const FormSchema = z.object({
 const Signup = ({ setOnboardingVisibility }) => {
   const [signupState, setSignupState] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
-  const { loggedInUser, setLoggedInUser } = useAuthContext();
+  const { setLoggedInUser } = useAuthContext();
 
   const form = useForm({
     resolver: zodResolver(FormSchema),
@@ -54,9 +54,14 @@ const Signup = ({ setOnboardingVisibility }) => {
       const result = await response.json();
 
       if (response.ok) {
+        // Saving token in localStorage
         localStorage.setItem("token", result.token);
+
+        //Saving logged in UserId in state for automatic signin on successful signup
         setLoggedInUser(result.userId);
         setSignupState(true);
+
+        // Navigate to POS
         setTimeout(() => {
           setOnboardingVisibility(true);
         }, 3000);

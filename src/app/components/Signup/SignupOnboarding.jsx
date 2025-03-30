@@ -31,9 +31,9 @@ const FormSchema = z.object({
 const SignupOnboarding = () => {
   const router = useRouter();
   const [signupButtonState, setSignupButtonState] = useState(false);
-  const { loggedInUser, setLoggedInUser } = useAuthContext();
-  const { restaurant, setRestaurant } = useRestaurantContext();
-  console.log("Currently logged in user", loggedInUser);
+  const { loggedInUser } = useAuthContext();
+  const { setRestaurant } = useRestaurantContext();
+
   const form = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -45,8 +45,6 @@ const SignupOnboarding = () => {
   });
 
   const onSubmit = async (data) => {
-    console.log("Submitting data:", { ...data, userId: loggedInUser });
-
     try {
       // First API Call: Update the user's firstname and lastname
       const userUpdateResponse = await fetch(`/api/signup/${loggedInUser}`, {
@@ -66,7 +64,6 @@ const SignupOnboarding = () => {
         console.error("User update error:", userUpdateResult.error);
         return; // If updating the user fails, exit the function
       }
-      console.log("User updated successfully:", userUpdateResult);
 
       // Second API Call: Create the restaurant
       const restaurantResponse = await fetch("/api/createrestaurant", {
@@ -84,9 +81,11 @@ const SignupOnboarding = () => {
       const restaurantResult = await restaurantResponse.json();
 
       if (restaurantResponse.ok) {
-        console.log("Restaurant created successfully:", restaurantResult);
+        // Save restaurantId when restaurant is created on signup
         setRestaurant(restaurantResult.restaurant._id);
         setSignupButtonState(true);
+
+        // Navigate to POS
         setTimeout(() => {
           router.push("/pos");
         }, 2000);
