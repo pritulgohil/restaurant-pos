@@ -112,6 +112,14 @@
   overflow-x: hidden;
 }
 
+.dishesContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.dishesContainer {
+  scrollbar-width: none;
+}
+
 .dottedBorder {
   border: 1px dashed black;
 }
