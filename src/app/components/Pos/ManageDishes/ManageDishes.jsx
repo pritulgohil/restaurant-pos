@@ -41,7 +41,7 @@ const ManageDishes = () => {
     <div className={styles.mainContainer}>
       <div className={styles.subContainer}>
         <div className={styles.headerContainer}>
-          <h3>Dishes Category</h3>
+          <h2>Dishes Category</h2>
         </div>
         <div className={styles.cardsContainer}>
           <div className={styles.cardContainer}>
