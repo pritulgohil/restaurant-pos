@@ -34,6 +34,7 @@
   margin-top: 25px;
   background-color: rgb(250, 250, 250);
   height: calc(100vh - 180px);
+  border-radius: 8px;
 }
 
 .componentHeader h3 {
@@ -122,6 +123,7 @@
 
 .dottedBorder {
   border: 1px dashed black;
+  cursor: default !important;
 }
 
 .solidBorder {
@@ -129,6 +131,33 @@
 }
 
 .addDishCardContainer {
+  width: 23.4%;
+  height: 200px;
+  border-radius: 8px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  padding: 24px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.addDishCardContainerList {
+  width: 48.9%;
+  height: 70px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 24px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.plusCardContainer {
   width: 23.4%;
   height: 200px;
   border-radius: 8px;
@@ -142,12 +171,37 @@
   cursor: pointer;
 }
 
+.plusCardContainerList {
+  width: 48.9%;
+  height: 70px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 24px;
+  background-color: white;
+  cursor: pointer;
+}
+
 .addIcon {
   width: 35px;
   height: 35px;
   background-color: black;
   color: white;
   border-radius: 6px;
+}
+
+.dishLeftSide {
+  display: flex;
+  flex-direction: column;
+}
+
+.dishLeftSideList {
+  display: flex;
+  width: 100%;
+  gap: 20px;
+  align-items: center;
 }
 
 .dishImage {
@@ -167,6 +221,12 @@
   font-family: "Epilogue";
 }
 
+.dishNameList {
+  font-size: 14px;
+  font-weight: 500;
+  width: 100%;
+}
+
 .dishDetails {
   display: flex;
   flex-direction: column;
@@ -177,4 +237,19 @@
 .dishPrice {
   width: 100%;
   text-align: left;
+}
+
+.dishPriceList {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+@media (min-width: 1800px) {
+  .addDishCardContainer {
+    max-width: 239px;
+  }
+
+  .addDishCardContainerList {
+    /* max-width: 239px; */
+  }
 }

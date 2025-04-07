@@ -26,7 +26,7 @@ const Dishes = () => {
     category: "Dessert",
     name: "Belgian Waffle",
     price: "$8.00",
-    emoji: "🥗",
+    emoji: "🍔",
   });
 
   return (
@@ -96,7 +96,11 @@ const Dishes = () => {
           </div>
           <div className={styles.dishesContainer}>
             <div
-              className={`${styles.addDishCardContainer} ${styles.dottedBorder}`}
+              className={`${
+                listView
+                  ? styles.plusCardContainerList
+                  : styles.plusCardContainer
+              } ${styles.dottedBorder}`}
             >
               <div className={styles.addIconContainer}>
                 <Button className={styles.addIcon}>
@@ -108,14 +112,38 @@ const Dishes = () => {
             {dishes.map((dish, index) => (
               <div
                 key={index}
-                className={`${styles.addDishCardContainer} ${styles.solidBorder}`}
+                className={`${
+                  listView
+                    ? styles.addDishCardContainerList
+                    : styles.addDishCardContainer
+                } ${styles.solidBorder}`}
               >
-                <div className={styles.dishImage}>{dish.emoji}</div>
-                <div className={styles.dishDetails}>
-                  <div className={styles.dishCategory}>{dish.category}</div>
-                  <div className={styles.dishName}>{dish.name}</div>
+                <div
+                  className={`${
+                    listView ? styles.dishLeftSideList : styles.dishLeftSide
+                  }`}
+                >
+                  <div className={styles.dishImage}>{dish.emoji}</div>
+                  <div className={styles.dishDetails}>
+                    <div className={styles.dishCategory}>{dish.category}</div>
+                    <div
+                      className={
+                        listView ? styles.dishNameList : styles.dishName
+                      }
+                    >
+                      {dish.name}
+                    </div>
+                  </div>
                 </div>
-                <div className={styles.dishPrice}>{dish.price}</div>
+                <div className={styles.dishRightSide}>
+                  <div
+                    className={
+                      listView ? styles.dishPriceList : styles.dishPrice
+                    }
+                  >
+                    {dish.price}
+                  </div>
+                </div>
               </div>
             ))}
           </div>
