@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import styles from "./ManageDishes.module.css";
+import styles from "./CategorySidebar.module.css";
 import AddCategoryDialog from "./AddCategoryDialog";
 import { useRestaurantContext } from "@/context/RestaurantContext";
 
-const ManageDishes = () => {
+const CategorySidebar = () => {
   const [categories, setCategories] = useState([]);
   const { restaurant } = useRestaurantContext();
 
@@ -84,4 +84,4 @@ const ManageDishes = () => {
   );
 };
 
-export default ManageDishes;
+export default CategorySidebar;

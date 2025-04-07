@@ -1,13 +1,13 @@
-import ManageDishes from "@/app/components/Pos/ManageDishes/ManageDishes";
+import CategorySidebar from "@/app/components/Pos/ManageDishes/CategorySidebar";
 import styles from "./page.module.css";
-import Dishes from "@/app/components/Pos/ManageDishes/Dishes";
+import DishesCards from "@/app/components/Pos/ManageDishes/DishesCards";
 
 const page = () => {
   return (
     <>
       <div className={styles.mainContainer}>
-        <ManageDishes />
-        <Dishes />
+        <CategorySidebar />
+        <DishesCards />
       </div>
     </>
   );

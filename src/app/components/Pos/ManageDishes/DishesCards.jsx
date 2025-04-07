@@ -1,12 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import styles from "./Dishes.module.css";
+import styles from "./DishesCards.module.css";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { SquarePlus } from "lucide-react";
-
 import { LayoutGrid } from "lucide-react";
 import { List } from "lucide-react";
 import { SlidersHorizontal } from "lucide-react";
