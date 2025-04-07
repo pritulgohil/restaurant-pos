@@ -7,7 +7,12 @@ import { useRestaurantContext } from "@/context/RestaurantContext";
 
 const CategorySidebar = () => {
   const [categories, setCategories] = useState([]);
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const { restaurant } = useRestaurantContext();
+
+  const handleAllDishesClick = () => {
+    setSelectedCategoryId(null);
+  };
 
   // Function to fetch categories from API
   const fetchCategories = async () => {
@@ -44,7 +49,12 @@ const CategorySidebar = () => {
           <h2>Dishes Category</h2>
         </div>
         <div className={styles.cardsContainer}>
-          <div className={styles.cardContainer}>
+          <div
+            className={`${styles.cardContainer} ${
+              selectedCategoryId === null ? styles.selectedCard : ""
+            }`}
+            onClick={handleAllDishesClick}
+          >
             <div className={styles.leftSideContainer}>
               <div className={styles.vectorContainer}>
                 <img src="/food-icons/burger.png" alt="Category Icon" />
@@ -60,7 +70,10 @@ const CategorySidebar = () => {
           {categories.map((category) => (
             <div
               key={category._id || `temp-${Date.now()}`}
-              className={styles.cardContainer}
+              onClick={() => setSelectedCategoryId(category._id)}
+              className={`${styles.cardContainer} ${
+                selectedCategoryId === category._id ? styles.selectedCard : ""
+              }`}
             >
               <div className={styles.leftSideContainer}>
                 <div className={styles.vectorContainer}>🌮</div>

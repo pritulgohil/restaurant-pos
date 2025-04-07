@@ -72,6 +72,7 @@
   border-radius: 6px;
   height: 48px;
   border: 1px solid rgb(220, 220, 220);
+  cursor: pointer;
 }
 
 .itemCount {
@@ -83,4 +84,8 @@
 
 .textArea {
   width: 278px;
+}
+
+.selectedCard {
+  border: 1px solid black;
 }
