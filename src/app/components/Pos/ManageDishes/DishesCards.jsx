@@ -4,22 +4,20 @@ import { useState } from "react";
 import styles from "./DishesCards.module.css";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
-import { SquarePlus } from "lucide-react";
-import { LayoutGrid } from "lucide-react";
-import { List } from "lucide-react";
-import { SlidersHorizontal } from "lucide-react";
+import {
+  Plus,
+  SquarePlus,
+  LayoutGrid,
+  List,
+  SlidersHorizontal,
+} from "lucide-react";
+import { DialogTrigger } from "@/components/ui/dialog";
+import AddDishDialog from "@/app/components/Pos/ManageDishes/AddDishDialog";
 
 const Dishes = () => {
   const [listView, setListView] = useState(false);
-
-  const handleListView = () => {
-    setListView(true);
-  };
-
-  const handleGridView = () => {
-    setListView(false);
-  };
+  const handleListView = () => setListView(true);
+  const handleGridView = () => setListView(false);
 
   const dishes = new Array(15).fill({
     category: "Dessert",
@@ -45,45 +43,44 @@ const Dishes = () => {
                 placeholder="Search dishes"
               />
             </div>
-            <div className={styles.addDishButton}>
-              <Button>
-                <SquarePlus />
-                Add New Dishes
-              </Button>
-            </div>
+            {/* First dialog trigger */}
+            <AddDishDialog>
+              <DialogTrigger asChild>
+                <Button>
+                  <SquarePlus className="mr-2" />
+                  Add New Dishes
+                </Button>
+              </DialogTrigger>
+            </AddDishDialog>
           </div>
         </div>
         <div className={styles.componentBody}>
           <div className={styles.componentHeaderContainer}>
             <div className={styles.leftSide}>
               <div className={styles.componentHeader}>
-                <h3>Desserts (19)</h3>
+                <h3>All Dishes (19)</h3>
               </div>
             </div>
             <div className={styles.rightSide}>
               <div className={styles.sliderContainer}>
-                <div>
-                  <Button
-                    variant="ghost"
-                    onClick={handleGridView}
-                    className={`${styles.iconLeftContainer} ${
-                      !listView ? styles.inactive : ""
-                    }`}
-                  >
-                    <LayoutGrid className={styles.sliderIcon} />
-                  </Button>
-                </div>
-                <div>
-                  <Button
-                    variant="ghost"
-                    onClick={handleListView}
-                    className={`${styles.iconRightContainer} ${
-                      listView ? styles.active : ""
-                    }`}
-                  >
-                    <List className={styles.sliderIcon} />
-                  </Button>
-                </div>
+                <Button
+                  variant="ghost"
+                  onClick={handleGridView}
+                  className={`${styles.iconLeftContainer} ${
+                    !listView ? styles.inactive : ""
+                  }`}
+                >
+                  <LayoutGrid className={styles.sliderIcon} />
+                </Button>
+                <Button
+                  variant="ghost"
+                  onClick={handleListView}
+                  className={`${styles.iconRightContainer} ${
+                    listView ? styles.active : ""
+                  }`}
+                >
+                  <List className={styles.sliderIcon} />
+                </Button>
               </div>
               <div className={styles.filterContainer}>
                 <Button variant="ghost" className={styles.filterButton}>
@@ -93,21 +90,27 @@ const Dishes = () => {
               </div>
             </div>
           </div>
+
           <div className={styles.dishesContainer}>
-            <div
-              className={`${
-                listView
-                  ? styles.plusCardContainerList
-                  : styles.plusCardContainer
-              } ${styles.dottedBorder}`}
-            >
-              <div className={styles.addIconContainer}>
-                <Button className={styles.addIcon}>
-                  <Plus />
-                </Button>
-              </div>
-              <div className={styles.cardText}>Add New Dish</div>
-            </div>
+            {/* Second dialog tigger */}
+            <AddDishDialog>
+              <DialogTrigger asChild>
+                <div
+                  className={`${
+                    listView
+                      ? styles.plusCardContainerList
+                      : styles.plusCardContainer
+                  } ${styles.dottedBorder}`}
+                >
+                  <div className={styles.addIconContainer}>
+                    <Button className={styles.addIcon}>
+                      <Plus />
+                    </Button>
+                  </div>
+                  <div className={styles.cardText}>Add New Dish</div>
+                </div>
+              </DialogTrigger>
+            </AddDishDialog>
             {dishes.map((dish, index) => (
               <div
                 key={index}

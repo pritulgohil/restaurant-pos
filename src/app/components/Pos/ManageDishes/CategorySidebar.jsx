@@ -10,6 +10,9 @@ const CategorySidebar = () => {
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const { restaurant } = useRestaurantContext();
 
+  console.log("This is the ID", selectedCategoryId);
+
+  // Setting null on clicking All Dishes category
   const handleAllDishesClick = () => {
     setSelectedCategoryId(null);
   };
