@@ -7,14 +7,12 @@ import { useRestaurantContext } from "@/context/RestaurantContext";
 
 const CategorySidebar = () => {
   const [categories, setCategories] = useState([]);
-  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const { restaurant } = useRestaurantContext();
-
-  console.log("This is the ID", selectedCategoryId);
+  const { categoryId, setCategoryId } = useRestaurantContext();
 
   // Setting null on clicking All Dishes category
   const handleAllDishesClick = () => {
-    setSelectedCategoryId(null);
+    setCategoryId(null);
   };
 
   // Function to fetch categories from API
@@ -54,7 +52,7 @@ const CategorySidebar = () => {
         <div className={styles.cardsContainer}>
           <div
             className={`${styles.cardContainer} ${
-              selectedCategoryId === null ? styles.selectedCard : ""
+              categoryId === null ? styles.selectedCard : ""
             }`}
             onClick={handleAllDishesClick}
           >
@@ -73,9 +71,9 @@ const CategorySidebar = () => {
           {categories.map((category) => (
             <div
               key={category._id || `temp-${Date.now()}`}
-              onClick={() => setSelectedCategoryId(category._id)}
+              onClick={() => setCategoryId(category._id)}
               className={`${styles.cardContainer} ${
-                selectedCategoryId === category._id ? styles.selectedCard : ""
+                categoryId === category._id ? styles.selectedCard : ""
               }`}
             >
               <div className={styles.leftSideContainer}>

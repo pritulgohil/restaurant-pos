@@ -2,7 +2,6 @@
 
 import {
   Dialog,
-  DialogTrigger,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -18,8 +17,11 @@ import {
   SelectItem,
   SelectValue,
 } from "@/components/ui/select";
+import { useRestaurantContext } from "@/context/RestaurantContext";
 
 const AddDishDialog = ({ children }) => {
+  const { restaurant } = useRestaurantContext();
+  const { categoryId } = useRestaurantContext();
   return (
     <Dialog>
       {children}
