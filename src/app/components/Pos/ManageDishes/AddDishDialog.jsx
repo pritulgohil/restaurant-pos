@@ -1,5 +1,5 @@
 "use client";
-
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -18,12 +18,51 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useRestaurantContext } from "@/context/RestaurantContext";
+import { LoaderCircle } from "lucide-react";
 
 const AddDishDialog = ({ children }) => {
+  const [dishName, setDishName] = useState("");
+  const [description, setDescription] = useState("");
+  const [emoji, setEmoji] = useState("");
+  const [price, setPrice] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [available, setAvailable] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const { restaurant } = useRestaurantContext();
   const { categoryId } = useRestaurantContext();
+
+  const handleSaveDish = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      setLoading(true);
+      const response = await fetch("/api/pos/create-dish/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          name: dishName,
+          description: description,
+          emoji: emoji,
+          price: price,
+          available: available,
+          restaurantId: restaurant,
+          categoryId: categoryId,
+        }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Something went wrong");
+      setTimeout(() => {
+        setIsOpen(false);
+      }, 2000);
+    } catch (err) {
+      console.error("Error adding category:", err);
+    }
+  };
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       {children}
       <DialogContent>
         <DialogHeader>
@@ -35,23 +74,35 @@ const AddDishDialog = ({ children }) => {
         <div className="grid gap-4 py-4">
           <div className="flex flex-col gap-2">
             <label className="block text-sm font-medium">Dish Name</label>
-            <Input placeholder="e.g., Belgian Waffle" />
+            <Input
+              placeholder="e.g., Belgian Waffle"
+              onChange={(e) => setDishName(e.target.value)}
+            />
           </div>
           <div className="flex flex-col gap-2">
             <label className="block text-sm font-medium">Description</label>
-            <Input placeholder="e.g., Dessert" />
+            <Input
+              placeholder="e.g., Dessert"
+              onChange={(e) => setDescription(e.target.value)}
+            />
           </div>
           <div className="flex flex-col gap-2">
             <label className="block text-sm font-medium">Emoji</label>
-            <Input placeholder="e.g., Emoji" />
+            <Input
+              placeholder="e.g., Emoji"
+              onChange={(e) => setEmoji(e.target.value)}
+            />
           </div>
           <div className="flex flex-col gap-2">
             <label className="block text-sm font-medium">Price</label>
-            <Input placeholder="$8.00" />
+            <Input
+              placeholder="$8.00"
+              onChange={(e) => setPrice(e.target.value)}
+            />
           </div>
           <div className="flex flex-col gap-2">
             <label className="block text-sm font-medium">Available</label>
-            <Select>
+            <Select onValueChange={(value) => setAvailable(value === "true")}>
               <SelectTrigger>
                 <SelectValue placeholder="Select availability" />
               </SelectTrigger>
@@ -63,7 +114,14 @@ const AddDishDialog = ({ children }) => {
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit">Save Dish</Button>
+          {loading ? (
+            <Button disabled={loading}>
+              <LoaderCircle className="animate-spin" />
+              Saving...
+            </Button>
+          ) : (
+            <Button onClick={handleSaveDish}>Save Dish</Button>
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>
