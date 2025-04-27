@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./DishesCards.module.css";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -16,15 +16,40 @@ import AddDishDialog from "@/app/components/Pos/ManageDishes/AddDishDialog";
 
 const Dishes = () => {
   const [listView, setListView] = useState(false);
+  const [dishes, setDishes] = useState([]);
   const handleListView = () => setListView(true);
   const handleGridView = () => setListView(false);
 
-  const dishes = new Array(15).fill({
-    category: "Dessert",
-    name: "Belgian Waffle",
-    price: "$8.00",
-    emoji: "🍔",
-  });
+  // const dishes = new Array(15).fill({
+  //   category: "Dessert",
+  //   name: "Belgian Waffle",
+  //   price: "$8.00",
+  //   emoji: "🍔",
+  // });
+
+  const fetchAllDishes = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const res = await fetch("/api/pos/fetch-all-dishes", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      if (!res.ok) {
+        throw new Error("Failed to fetch dishes");
+      }
+      const data = await res.json();
+      setDishes(data.dishes);
+    } catch (err) {
+      console.error("Error fetching dishes:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchAllDishes();
+  }, []);
 
   return (
     <>
@@ -127,7 +152,7 @@ const Dishes = () => {
                 >
                   <div className={styles.dishImage}>{dish.emoji}</div>
                   <div className={styles.dishDetails}>
-                    <div className={styles.dishCategory}>{dish.category}</div>
+                    {/* <div className={styles.dishCategory}>{dish.category}</div> */}
                     <div
                       className={
                         listView ? styles.dishNameList : styles.dishName
