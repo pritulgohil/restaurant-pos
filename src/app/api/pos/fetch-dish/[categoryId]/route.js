@@ -10,7 +10,6 @@ export async function GET(req, { params }) {
   try {
     await dbConnect();
 
-    // Authorization
     const authHeader = req.headers.get("authorization");
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -36,7 +35,6 @@ export async function GET(req, { params }) {
       );
     }
 
-    // Correct field name here
     const dishes = await Dish.find({ categoryId: categoryId }).exec();
 
     if (!dishes || dishes.length === 0) {
