@@ -152,7 +152,9 @@ const Dishes = () => {
                 >
                   <div className={styles.dishImage}>{dish.emoji}</div>
                   <div className={styles.dishDetails}>
-                    {/* <div className={styles.dishCategory}>{dish.category}</div> */}
+                    <div className={styles.dishCategory}>
+                      {dish.categoryName}
+                    </div>
                     <div
                       className={
                         listView ? styles.dishNameList : styles.dishName
@@ -168,7 +170,7 @@ const Dishes = () => {
                       listView ? styles.dishPriceList : styles.dishPrice
                     }
                   >
-                    {dish.price}
+                    ${dish.price}
                   </div>
                 </div>
               </div>

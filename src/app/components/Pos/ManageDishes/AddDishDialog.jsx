@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -28,6 +28,7 @@ const AddDishDialog = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [available, setAvailable] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
+  const [categoryName, setCategoryName] = useState("");
   const { restaurant } = useRestaurantContext();
   const { categoryId } = useRestaurantContext();
 
@@ -44,6 +45,7 @@ const AddDishDialog = ({ children }) => {
         body: JSON.stringify({
           name: dishName,
           description: description,
+          categoryName: categoryName,
           emoji: emoji,
           price: price,
           available: available,
@@ -61,6 +63,31 @@ const AddDishDialog = ({ children }) => {
       console.error("Error adding category:", err);
     }
   };
+
+  const fetchCategoryName = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const res = await fetch(`/api/pos/fetch-category/${categoryId}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      if (!res.ok) {
+        throw new Error("Failed to fetch category");
+      }
+      const data = await res.json();
+      setCategoryName(data.category.name);
+    } catch (err) {
+      console.error("Error fetching category:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategoryName();
+  }, [categoryId]);
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       {children}
@@ -85,6 +112,10 @@ const AddDishDialog = ({ children }) => {
               placeholder="e.g., Dessert"
               onChange={(e) => setDescription(e.target.value)}
             />
+          </div>
+          <div className="flex flex-col gap-2">
+            <label className="block text-sm font-medium">Category</label>
+            <Input value={categoryName} disabled />
           </div>
           <div className="flex flex-col gap-2">
             <label className="block text-sm font-medium">Emoji</label>

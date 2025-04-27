@@ -30,6 +30,7 @@ export async function POST(req) {
     const {
       name,
       description,
+      categoryName,
       emoji,
       price,
       available,
@@ -40,6 +41,7 @@ export async function POST(req) {
     if (
       !name ||
       !description ||
+      !categoryName ||
       !emoji ||
       price === undefined ||
       available === undefined ||
@@ -55,6 +57,7 @@ export async function POST(req) {
     const newDish = new Dish({
       name,
       description,
+      categoryName,
       emoji,
       price,
       available,
