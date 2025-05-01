@@ -6,9 +6,10 @@ import AddCategoryDialog from "./AddCategoryDialog";
 import { useRestaurantContext } from "@/context/RestaurantContext";
 
 const CategorySidebar = () => {
-  const [categories, setCategories] = useState([]);
+  // const [categories, setCategories] = useState([]);
   const { restaurant } = useRestaurantContext();
   const { categoryId, setCategoryId } = useRestaurantContext();
+  const { categories, setCategories } = useRestaurantContext();
 
   // Setting null on clicking All Dishes category
   const handleAllDishesClick = () => {

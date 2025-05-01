@@ -13,12 +13,14 @@ import {
 } from "lucide-react";
 import { DialogTrigger } from "@/components/ui/dialog";
 import AddDishDialog from "@/app/components/Pos/ManageDishes/AddDishDialog";
+import { useRestaurantContext } from "@/context/RestaurantContext";
 
 const Dishes = () => {
   const [listView, setListView] = useState(false);
   const [dishes, setDishes] = useState([]);
   const handleListView = () => setListView(true);
   const handleGridView = () => setListView(false);
+  const { restaurant } = useRestaurantContext();
 
   // const dishes = new Array(15).fill({
   //   category: "Dessert",

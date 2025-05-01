@@ -8,6 +8,7 @@ const RestaurantContext = createContext();
 export const RestaurantProvider = ({ children }) => {
   const [restaurant, setRestaurant] = useState(null);
   const [categoryId, setCategoryId] = useState(null);
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     const storedRestaurant = localStorage.getItem("restaurant");
@@ -30,7 +31,14 @@ export const RestaurantProvider = ({ children }) => {
 
   return (
     <RestaurantContext.Provider
-      value={{ restaurant, setRestaurant, categoryId, setCategoryId }}
+      value={{
+        restaurant,
+        setRestaurant,
+        categoryId,
+        setCategoryId,
+        categories,
+        setCategories,
+      }}
     >
       {children}
     </RestaurantContext.Provider>

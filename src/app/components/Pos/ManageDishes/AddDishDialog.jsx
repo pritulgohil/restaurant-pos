@@ -30,7 +30,12 @@ const AddDishDialog = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [categoryName, setCategoryName] = useState("");
   const { restaurant } = useRestaurantContext();
-  const { categoryId } = useRestaurantContext();
+  const { categoryId, setCategoryId } = useRestaurantContext();
+  // const [categories, setCategories] = useState([]);
+  const { categories, setCategories } = useRestaurantContext();
+  const [separateCategoryId, setSeparateCategoryId] = useState(null);
+
+  console.log("Category ID:", categoryId);
 
   const handleSaveDish = async () => {
     const token = localStorage.getItem("token");
@@ -50,7 +55,7 @@ const AddDishDialog = ({ children }) => {
           price: price,
           available: available,
           restaurantId: restaurant,
-          categoryId: categoryId,
+          categoryId: categoryId ?? separateCategoryId,
         }),
       });
 
@@ -85,8 +90,37 @@ const AddDishDialog = ({ children }) => {
   };
 
   useEffect(() => {
+    if (!categoryId) return; // Do nothing if categoryId is null or undefined
     fetchCategoryName();
   }, [categoryId]);
+
+  // const fetchAllCategories = async () => {
+  //   const token = localStorage.getItem("token");
+  //   try {
+  //     const res = await fetch(`/api/pos/fetch-categories/${restaurant}`, {
+  //       method: "GET",
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+  //     if (!res.ok) {
+  //       throw new Error("Failed to fetch dishes");
+  //     }
+  //     const data = await res.json();
+  //     setCategories(data);
+  //   } catch (err) {
+  //     console.error("Error fetching dishes:", err);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchAllCategories();
+  // }, []);
+
+  categories.forEach((category) => {
+    console.log("Name:", category.name);
+  });
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -113,10 +147,38 @@ const AddDishDialog = ({ children }) => {
               onChange={(e) => setDescription(e.target.value)}
             />
           </div>
-          <div className="flex flex-col gap-2">
-            <label className="block text-sm font-medium">Category</label>
-            <Input value={categoryName} disabled />
-          </div>
+          {categoryId === null ? (
+            <div className="flex flex-col gap-2">
+              <label className="block text-sm font-medium">Category</label>
+              <Select
+                onValueChange={(value) => {
+                  const selectedCategory = categories.find(
+                    (cat) => cat._id === value
+                  );
+                  if (selectedCategory) {
+                    setSeparateCategoryId(selectedCategory._id);
+                    setCategoryName(selectedCategory.name);
+                  }
+                }}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a category" />
+                </SelectTrigger>
+                <SelectContent>
+                  {categories.map((category) => (
+                    <SelectItem key={category._id} value={category._id}>
+                      {category.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-2">
+              <label className="block text-sm font-medium">Category</label>
+              <Input value={categoryName} disabled />
+            </div>
+          )}
           <div className="flex flex-col gap-2">
             <label className="block text-sm font-medium">Emoji</label>
             <Input

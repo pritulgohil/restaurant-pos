@@ -111,6 +111,7 @@
   flex-wrap: wrap;
   overflow-y: auto;
   overflow-x: hidden;
+  align-content: flex-start;
 }
 
 .dishesContainer::-webkit-scrollbar {
