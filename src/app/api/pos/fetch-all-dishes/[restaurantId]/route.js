@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
-export async function GET(req) {
+export async function GET(req, { params }) {
   try {
     await dbConnect();
 
@@ -25,8 +25,16 @@ export async function GET(req) {
       );
     }
 
-    // Fetch all dishes
-    const dishes = await Dish.find({}).exec();
+    const { restaurantId } = params;
+
+    if (!restaurantId) {
+      return NextResponse.json(
+        { error: "Restaurant ID is required" },
+        { status: 400 }
+      );
+    }
+
+    const dishes = await Dish.find({ restaurantId }).exec();
 
     if (!dishes || dishes.length === 0) {
       return NextResponse.json({ message: "No dishes found" }, { status: 404 });
@@ -34,7 +42,7 @@ export async function GET(req) {
 
     return NextResponse.json({ dishes }, { status: 200 });
   } catch (error) {
-    console.error("Error fetching all dishes:", error);
+    console.error("Error fetching dishes:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

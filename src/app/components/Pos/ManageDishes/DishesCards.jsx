@@ -32,7 +32,7 @@ const Dishes = () => {
   const fetchAllDishes = async () => {
     const token = localStorage.getItem("token");
     try {
-      const res = await fetch("/api/pos/fetch-all-dishes", {
+      const res = await fetch(`/api/pos/fetch-all-dishes/${restaurant}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
