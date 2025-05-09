@@ -20,7 +20,7 @@ import {
 import { useRestaurantContext } from "@/context/RestaurantContext";
 import { LoaderCircle } from "lucide-react";
 
-const AddDishDialog = ({ children }) => {
+const AddDishDialog = ({ children, onDishAdded }) => {
   const [dishName, setDishName] = useState("");
   const [description, setDescription] = useState("");
   const [emoji, setEmoji] = useState("");
@@ -60,8 +60,10 @@ const AddDishDialog = ({ children }) => {
 
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Something went wrong");
+      onDishAdded?.();
       setTimeout(() => {
         setIsOpen(false);
+        setLoading(false);
       }, 2000);
     } catch (err) {
       console.error("Error adding category:", err);

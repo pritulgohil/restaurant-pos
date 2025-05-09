@@ -71,7 +71,7 @@ const Dishes = () => {
               />
             </div>
             {/* First dialog trigger */}
-            <AddDishDialog>
+            <AddDishDialog onDishAdded={fetchAllDishes}>
               <DialogTrigger asChild>
                 <Button>
                   <SquarePlus className="mr-2" />
@@ -120,7 +120,7 @@ const Dishes = () => {
 
           <div className={styles.dishesContainer}>
             {/* Second dialog tigger */}
-            <AddDishDialog>
+            <AddDishDialog onDishAdded={fetchAllDishes}>
               <DialogTrigger asChild>
                 <div
                   className={`${
