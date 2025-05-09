@@ -25,7 +25,7 @@ export async function GET(req, { params }) {
       );
     }
 
-    const { restaurantId } = params;
+    const { restaurantId } = await params;
 
     if (!restaurantId) {
       return NextResponse.json(

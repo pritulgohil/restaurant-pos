@@ -34,8 +34,6 @@ const AddDishDialog = ({ children, onDishAdded }) => {
   const { categories, setCategories } = useRestaurantContext();
   const [separateCategoryId, setSeparateCategoryId] = useState(null);
 
-  console.log("Category ID:", categoryId);
-
   const handleSaveDish = async () => {
     const token = localStorage.getItem("token");
     try {
@@ -94,10 +92,6 @@ const AddDishDialog = ({ children, onDishAdded }) => {
     if (!categoryId) return;
     fetchCategoryName();
   }, [categoryId]);
-
-  categories.forEach((category) => {
-    console.log("Name:", category.name);
-  });
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>

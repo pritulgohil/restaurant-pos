@@ -26,7 +26,7 @@ export async function GET(req, { params }) {
       );
     }
 
-    const { categoryId } = params;
+    const { categoryId } = await params;
 
     if (!mongoose.Types.ObjectId.isValid(categoryId)) {
       return NextResponse.json(

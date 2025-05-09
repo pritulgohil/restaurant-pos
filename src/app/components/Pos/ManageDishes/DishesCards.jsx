@@ -21,6 +21,9 @@ const Dishes = () => {
   const handleListView = () => setListView(true);
   const handleGridView = () => setListView(false);
   const { restaurant } = useRestaurantContext();
+  const { categoryId, setCategoryId } = useRestaurantContext();
+
+  console.log("DishCard:", categoryId);
 
   // const dishes = new Array(15).fill({
   //   category: "Dessert",
@@ -49,9 +52,31 @@ const Dishes = () => {
     }
   };
 
+  const fetchDishByCategory = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const res = await fetch(`/api/pos/fetch-dish/${categoryId}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      if (!res.ok) {
+        throw new Error("Failed to fetch dishes");
+      }
+      const data = await res.json();
+      setDishes(data.dishes);
+    } catch (err) {
+      console.error("Error fetching dishes:", err);
+    }
+  };
+
   useEffect(() => {
-    fetchAllDishes();
-  }, []);
+    {
+      categoryId === null ? fetchAllDishes() : fetchDishByCategory();
+    }
+  }, [categoryId]);
 
   return (
     <>
