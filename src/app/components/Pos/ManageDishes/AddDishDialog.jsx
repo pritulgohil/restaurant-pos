@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/select";
 import { useRestaurantContext } from "@/context/RestaurantContext";
 import { LoaderCircle } from "lucide-react";
+import { TriangleAlert } from "lucide-react";
 
 const AddDishDialog = ({ children, onDishAdded }) => {
   const [dishName, setDishName] = useState("");
@@ -33,8 +34,14 @@ const AddDishDialog = ({ children, onDishAdded }) => {
   const { categoryId, setCategoryId } = useRestaurantContext();
   const { categories, setCategories } = useRestaurantContext();
   const [separateCategoryId, setSeparateCategoryId] = useState(null);
+  const [error, setError] = useState("");
 
   const handleSaveDish = async () => {
+    setError("");
+    if (!dishName || !description || !emoji || !price) {
+      setError("All fields are required");
+      return;
+    }
     const token = localStorage.getItem("token");
     try {
       setLoading(true);
@@ -58,6 +65,14 @@ const AddDishDialog = ({ children, onDishAdded }) => {
 
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Something went wrong");
+      setDishName("");
+      setDescription("");
+      setCategoryName("");
+      setEmoji("");
+      setPrice("");
+      setAvailable(false);
+      setCategoryId(null);
+      setSeparateCategoryId(null);
       onDishAdded?.();
       setTimeout(() => {
         setIsOpen(false);
@@ -176,6 +191,14 @@ const AddDishDialog = ({ children, onDishAdded }) => {
               </SelectContent>
             </Select>
           </div>
+        </div>
+        <div className="flex items-center justify-center gap-1 error">
+          {error && (
+            <>
+              <TriangleAlert className="w-5 text-red-500" />
+              <p className="text-red-500 text-sm">{error}</p>
+            </>
+          )}
         </div>
         <DialogFooter>
           {loading ? (
