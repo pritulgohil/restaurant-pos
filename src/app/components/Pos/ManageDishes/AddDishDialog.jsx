@@ -31,7 +31,6 @@ const AddDishDialog = ({ children }) => {
   const [categoryName, setCategoryName] = useState("");
   const { restaurant } = useRestaurantContext();
   const { categoryId, setCategoryId } = useRestaurantContext();
-  // const [categories, setCategories] = useState([]);
   const { categories, setCategories } = useRestaurantContext();
   const [separateCategoryId, setSeparateCategoryId] = useState(null);
 
@@ -90,33 +89,9 @@ const AddDishDialog = ({ children }) => {
   };
 
   useEffect(() => {
-    if (!categoryId) return; // Do nothing if categoryId is null or undefined
+    if (!categoryId) return;
     fetchCategoryName();
   }, [categoryId]);
-
-  // const fetchAllCategories = async () => {
-  //   const token = localStorage.getItem("token");
-  //   try {
-  //     const res = await fetch(`/api/pos/fetch-categories/${restaurant}`, {
-  //       method: "GET",
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-  //     if (!res.ok) {
-  //       throw new Error("Failed to fetch dishes");
-  //     }
-  //     const data = await res.json();
-  //     setCategories(data);
-  //   } catch (err) {
-  //     console.error("Error fetching dishes:", err);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchAllCategories();
-  // }, []);
 
   categories.forEach((category) => {
     console.log("Name:", category.name);
