@@ -16,15 +16,29 @@ import AddDishDialog from "@/app/components/Pos/ManageDishes/AddDishDialog";
 import { useRestaurantContext } from "@/context/RestaurantContext";
 
 const Dishes = () => {
+  //state to manage the view type (list or grid)
   const [listView, setListView] = useState(false);
+
+  //state to display the dishes saved from API
   const [dishes, setDishes] = useState([]);
+
+  //functions to handle the view type
   const handleListView = () => setListView(true);
   const handleGridView = () => setListView(false);
+
+  //state context for restaurantId
   const { restaurant } = useRestaurantContext();
-  const { categoryId, setCategoryId } = useRestaurantContext();
+
+  //state context for categoryId
+  const { categoryId } = useRestaurantContext();
+
+  //state for dishes count
   const [dishCount, setDishCount] = useState(0);
+
+  //state to save category name fetched from API
   const [categoryName, setCategoryName] = useState("");
 
+  //function to fetch all dishes
   const fetchAllDishes = async () => {
     const token = localStorage.getItem("token");
     try {
@@ -39,13 +53,16 @@ const Dishes = () => {
         throw new Error("Failed to fetch dishes");
       }
       const data = await res.json();
+      //Saving the dishes in state
       setDishes(data.dishes);
+      //Saving the dishes count in state
       setDishCount(data.dishes.length);
     } catch (err) {
       console.error("Error fetching dishes:", err);
     }
   };
 
+  //function to fetch dishes by category
   const fetchDishByCategory = async () => {
     const token = localStorage.getItem("token");
     try {
@@ -60,13 +77,16 @@ const Dishes = () => {
         throw new Error("Failed to fetch dishes");
       }
       const data = await res.json();
+      //Saving the dishes in state
       setDishes(data.dishes);
+      //Saving the dishes count in state
       setDishCount(data.dishes.length);
     } catch (err) {
       console.error("Error fetching dishes:", err);
     }
   };
 
+  //function to fetch category name
   const fetchCategoryName = async () => {
     const token = localStorage.getItem("token");
     try {
@@ -81,13 +101,16 @@ const Dishes = () => {
         throw new Error("Failed to fetch category");
       }
       const data = await res.json();
+      //Saving the category name in state
       setCategoryName(data.category.name);
     } catch (err) {
       console.error("Error fetching category:", err);
     }
   };
 
+  //Snipped that fetches dishes on the basis of category selected and also handles category name
   useEffect(() => {
+    //When all dishes are selected
     if (categoryId === null) {
       fetchAllDishes();
       setCategoryName("All Dishes");
