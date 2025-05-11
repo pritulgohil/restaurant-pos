@@ -157,6 +157,7 @@
   padding: 24px;
   cursor: pointer;
   position: relative;
+  background-color: white;
 }
 
 .plusCardContainer {
@@ -255,21 +256,27 @@
 
 .editIconContainerList {
   position: absolute;
-  top: 26px;
+  top: 18px;
   right: 18px;
 }
 
-.editIcon {
+/* .editIcon {
   stroke-width: 1.5px;
+  width: 24px;
+  height: 24px;
 }
 
 .editIconList {
   width: 18px;
   height: 18px;
-}
+} */
 
 .dishPriceList {
   margin-right: 40px;
   text-align: left;
   width: 46px;
+}
+
+.trigger {
+  width: 32px;
 }

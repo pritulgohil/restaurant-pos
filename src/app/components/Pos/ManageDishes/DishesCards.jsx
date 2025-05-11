@@ -10,36 +10,33 @@ import {
   LayoutGrid,
   List,
   SlidersHorizontal,
+  ChevronDown,
+  SquarePen,
+  Trash2,
 } from "lucide-react";
 import { DialogTrigger } from "@/components/ui/dialog";
 import AddDishDialog from "@/app/components/Pos/ManageDishes/AddDishDialog";
 import { useRestaurantContext } from "@/context/RestaurantContext";
-import { CircleChevronDown } from "lucide-react";
+
+// shadcn dropdown menu imports
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
 
 const Dishes = () => {
-  //state to manage the view type (list or grid)
   const [listView, setListView] = useState(false);
-
-  //state to display the dishes saved from API
   const [dishes, setDishes] = useState([]);
+  const [dishCount, setDishCount] = useState(0);
+  const [categoryName, setCategoryName] = useState("");
 
-  //functions to handle the view type
+  const { restaurant, categoryId } = useRestaurantContext();
+
   const handleListView = () => setListView(true);
   const handleGridView = () => setListView(false);
 
-  //state context for restaurantId
-  const { restaurant } = useRestaurantContext();
-
-  //state context for categoryId
-  const { categoryId } = useRestaurantContext();
-
-  //state for dishes count
-  const [dishCount, setDishCount] = useState(0);
-
-  //state to save category name fetched from API
-  const [categoryName, setCategoryName] = useState("");
-
-  //function to fetch all dishes
   const fetchAllDishes = async () => {
     const token = localStorage.getItem("token");
     try {
@@ -50,20 +47,15 @@ const Dishes = () => {
           "Content-Type": "application/json",
         },
       });
-      if (!res.ok) {
-        throw new Error("Failed to fetch dishes");
-      }
+      if (!res.ok) throw new Error("Failed to fetch dishes");
       const data = await res.json();
-      //Saving the dishes in state
       setDishes(data.dishes);
-      //Saving the dishes count in state
       setDishCount(data.dishes.length);
     } catch (err) {
       console.error("Error fetching dishes:", err);
     }
   };
 
-  //function to fetch dishes by category
   const fetchDishByCategory = async () => {
     const token = localStorage.getItem("token");
     try {
@@ -74,20 +66,15 @@ const Dishes = () => {
           "Content-Type": "application/json",
         },
       });
-      if (!res.ok) {
-        throw new Error("Failed to fetch dishes");
-      }
+      if (!res.ok) throw new Error("Failed to fetch dishes");
       const data = await res.json();
-      //Saving the dishes in state
       setDishes(data.dishes);
-      //Saving the dishes count in state
       setDishCount(data.dishes.length);
     } catch (err) {
       console.error("Error fetching dishes:", err);
     }
   };
 
-  //function to fetch category name
   const fetchCategoryName = async () => {
     const token = localStorage.getItem("token");
     try {
@@ -98,20 +85,15 @@ const Dishes = () => {
           "Content-Type": "application/json",
         },
       });
-      if (!res.ok) {
-        throw new Error("Failed to fetch category");
-      }
+      if (!res.ok) throw new Error("Failed to fetch category");
       const data = await res.json();
-      //Saving the category name in state
       setCategoryName(data.category.name);
     } catch (err) {
       console.error("Error fetching category:", err);
     }
   };
 
-  //Snipped that fetches dishes on the basis of category selected and also handles category name
   useEffect(() => {
-    //When all dishes are selected
     if (categoryId === null) {
       fetchAllDishes();
       setCategoryName("All Dishes");
@@ -120,6 +102,17 @@ const Dishes = () => {
       fetchCategoryName();
     }
   }, [categoryId]);
+
+  // Handlers for dropdown actions
+  const handleEdit = (dish) => {
+    console.log("Edit dish:", dish);
+    // TODO: Open edit modal
+  };
+
+  const handleDelete = (dish) => {
+    console.log("Delete dish:", dish);
+    // TODO: Confirm and delete logic
+  };
 
   return (
     <>
@@ -138,7 +131,6 @@ const Dishes = () => {
                 placeholder="Search dishes"
               />
             </div>
-            {/* First dialog trigger */}
             <AddDishDialog onDishAdded={fetchAllDishes}>
               <DialogTrigger asChild>
                 <Button>
@@ -149,6 +141,7 @@ const Dishes = () => {
             </AddDishDialog>
           </div>
         </div>
+
         <div className={styles.componentBody}>
           <div className={styles.componentHeaderContainer}>
             <div className={styles.leftSide}>
@@ -189,7 +182,6 @@ const Dishes = () => {
           </div>
 
           <div className={styles.dishesContainer}>
-            {/* Second dialog tigger */}
             <AddDishDialog onDishAdded={fetchAllDishes}>
               <DialogTrigger asChild>
                 <div
@@ -208,6 +200,7 @@ const Dishes = () => {
                 </div>
               </DialogTrigger>
             </AddDishDialog>
+
             {dishes.map((dish, index) => (
               <div
                 key={index}
@@ -224,12 +217,36 @@ const Dishes = () => {
                       : styles.editIconContainer
                   }`}
                 >
-                  <CircleChevronDown
-                    className={`${
-                      listView ? styles.editIconList : styles.editIcon
-                    }`}
-                  />
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className={styles.dropdownButton}
+                      >
+                        <ChevronDown
+                          className={`${
+                            listView ? styles.editIconList : styles.editIcon
+                          }`}
+                        />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => handleEdit(dish)}>
+                        <SquarePen />
+                        Edit
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="text-red-500"
+                        onClick={() => handleDelete(dish)}
+                      >
+                        <Trash2 />
+                        Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
+
                 <div
                   className={`${
                     listView ? styles.dishLeftSideList : styles.dishLeftSide
@@ -249,6 +266,7 @@ const Dishes = () => {
                     </div>
                   </div>
                 </div>
+
                 <div className={styles.dishRightSide}>
                   <div
                     className={
