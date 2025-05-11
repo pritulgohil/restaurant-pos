@@ -6,10 +6,16 @@ import AddCategoryDialog from "./AddCategoryDialog";
 import { useRestaurantContext } from "@/context/RestaurantContext";
 
 const CategorySidebar = () => {
-  // const [categories, setCategories] = useState([]);
+  //State for restaurantId
   const { restaurant } = useRestaurantContext();
+
+  //State for selected categoryId
   const { categoryId, setCategoryId } = useRestaurantContext();
+
+  //State for categories for the restaurant
   const { categories, setCategories } = useRestaurantContext();
+
+  //State for total dish count
   const [totalDishCount, setTotalDishCount] = useState(0);
 
   // Setting null on clicking All Dishes category
@@ -34,8 +40,9 @@ const CategorySidebar = () => {
       }
       const data = await res.json();
 
-      // Save categories array in state
+      //Save categories array in state
       setCategories(data.categories);
+      //Save total dish count in state
       setTotalDishCount(data.totalDishCount);
     } catch (err) {
       console.error("Error fetching categories:", err);
