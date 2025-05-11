@@ -19,18 +19,30 @@ import { TriangleAlert } from "lucide-react";
 import { useRestaurantContext } from "@/context/RestaurantContext";
 
 const AddCategoryDialog = ({ onCategoryAdded }) => {
+  //State for saving the category name
   const [categoryName, setCategoryName] = useState("");
+
+  //State for saving the category description
   const [description, setDescription] = useState("");
+
+  //State for saving the category emoji
   const [emoji, setEmoji] = useState("");
+
+  //State for handling loading state of button
   const [loading, setLoading] = useState(false);
+
+  //State for handling error state when fields are empty
   const [error, setError] = useState(false);
+
+  //State for handling the open/close state of the dialog
   const [isOpen, setIsOpen] = useState(false);
 
+  //State context for restaurant ID
   const { restaurant } = useRestaurantContext();
 
+  //Function to save category
   const handleSubmit = async () => {
     const token = localStorage.getItem("token");
-
     try {
       setLoading(true);
       setError(false);
@@ -122,7 +134,7 @@ const AddCategoryDialog = ({ onCategoryAdded }) => {
         {error && (
           <div className={styles.error}>
             <TriangleAlert className={styles.errorIcon} />
-            Name and description are required!
+            All fields are required!
           </div>
         )}
         <DialogFooter>
