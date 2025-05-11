@@ -14,6 +14,7 @@ import {
 import { DialogTrigger } from "@/components/ui/dialog";
 import AddDishDialog from "@/app/components/Pos/ManageDishes/AddDishDialog";
 import { useRestaurantContext } from "@/context/RestaurantContext";
+import { CircleChevronDown } from "lucide-react";
 
 const Dishes = () => {
   //state to manage the view type (list or grid)
@@ -216,6 +217,19 @@ const Dishes = () => {
                     : styles.addDishCardContainer
                 } ${styles.solidBorder}`}
               >
+                <div
+                  className={`${
+                    listView
+                      ? styles.editIconContainerList
+                      : styles.editIconContainer
+                  }`}
+                >
+                  <CircleChevronDown
+                    className={`${
+                      listView ? styles.editIconList : styles.editIcon
+                    }`}
+                  />
+                </div>
                 <div
                   className={`${
                     listView ? styles.dishLeftSideList : styles.dishLeftSide
