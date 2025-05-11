@@ -22,15 +22,8 @@ const Dishes = () => {
   const handleGridView = () => setListView(false);
   const { restaurant } = useRestaurantContext();
   const { categoryId, setCategoryId } = useRestaurantContext();
-
-  console.log("DishCard:", categoryId);
-
-  // const dishes = new Array(15).fill({
-  //   category: "Dessert",
-  //   name: "Belgian Waffle",
-  //   price: "$8.00",
-  //   emoji: "🍔",
-  // });
+  const [dishCount, setDishCount] = useState(0);
+  const [categoryName, setCategoryName] = useState("");
 
   const fetchAllDishes = async () => {
     const token = localStorage.getItem("token");
@@ -47,6 +40,7 @@ const Dishes = () => {
       }
       const data = await res.json();
       setDishes(data.dishes);
+      setDishCount(data.dishes.length);
     } catch (err) {
       console.error("Error fetching dishes:", err);
     }
@@ -67,14 +61,39 @@ const Dishes = () => {
       }
       const data = await res.json();
       setDishes(data.dishes);
+      setDishCount(data.dishes.length);
     } catch (err) {
       console.error("Error fetching dishes:", err);
     }
   };
 
+  const fetchCategoryName = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const res = await fetch(`/api/pos/fetch-category/${categoryId}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      if (!res.ok) {
+        throw new Error("Failed to fetch category");
+      }
+      const data = await res.json();
+      setCategoryName(data.category.name);
+    } catch (err) {
+      console.error("Error fetching category:", err);
+    }
+  };
+
   useEffect(() => {
-    {
-      categoryId === null ? fetchAllDishes() : fetchDishByCategory();
+    if (categoryId === null) {
+      fetchAllDishes();
+      setCategoryName("All Dishes");
+    } else {
+      fetchDishByCategory();
+      fetchCategoryName();
     }
   }, [categoryId]);
 
@@ -110,7 +129,9 @@ const Dishes = () => {
           <div className={styles.componentHeaderContainer}>
             <div className={styles.leftSide}>
               <div className={styles.componentHeader}>
-                <h3>All Dishes (19)</h3>
+                <h3>
+                  {categoryName} ({dishCount})
+                </h3>
               </div>
             </div>
             <div className={styles.rightSide}>

@@ -27,16 +27,21 @@ export async function POST(req) {
     }
 
     const body = await req.json();
-    const { name, description, restaurantId } = body;
+    const { name, description, restaurantId, emoji } = body;
 
-    if (!name || !description || !restaurantId) {
+    if (!name || !description || !restaurantId || !emoji) {
       return NextResponse.json(
         { error: "All fields are required" },
         { status: 400 }
       );
     }
 
-    const newCategory = new Category({ name, description, restaurantId });
+    const newCategory = new Category({
+      name,
+      description,
+      restaurantId,
+      emoji,
+    });
     await newCategory.save();
 
     return NextResponse.json(

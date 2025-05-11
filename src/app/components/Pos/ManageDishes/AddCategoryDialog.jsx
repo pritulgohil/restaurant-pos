@@ -21,6 +21,7 @@ import { useRestaurantContext } from "@/context/RestaurantContext";
 const AddCategoryDialog = ({ onCategoryAdded }) => {
   const [categoryName, setCategoryName] = useState("");
   const [description, setDescription] = useState("");
+  const [emoji, setEmoji] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -41,6 +42,7 @@ const AddCategoryDialog = ({ onCategoryAdded }) => {
         },
         body: JSON.stringify({
           name: categoryName,
+          emoji: emoji,
           description,
           restaurantId: restaurant,
         }),
@@ -52,6 +54,7 @@ const AddCategoryDialog = ({ onCategoryAdded }) => {
       setTimeout(() => {
         onCategoryAdded(data);
         setCategoryName("");
+        setEmoji("");
         setDescription("");
         setIsOpen(false);
         setLoading(false);
@@ -89,6 +92,18 @@ const AddCategoryDialog = ({ onCategoryAdded }) => {
               placeholder="Category Name"
               value={categoryName}
               onChange={(e) => setCategoryName(e.target.value)}
+            />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="emoji" className="text-right">
+              Emoji
+            </Label>
+            <Input
+              id="emoji"
+              className="col-span-3"
+              placeholder="Emoji"
+              value={emoji}
+              onChange={(e) => setEmoji(e.target.value)}
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">

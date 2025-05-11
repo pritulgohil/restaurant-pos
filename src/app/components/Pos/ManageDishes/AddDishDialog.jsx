@@ -192,7 +192,7 @@ const AddDishDialog = ({ children, onDishAdded }) => {
             </Select>
           </div>
         </div>
-        <div className="flex items-center justify-center gap-1 error">
+        <div className="flex items-center gap-1 error">
           {error && (
             <>
               <TriangleAlert className="w-5 text-red-500" />

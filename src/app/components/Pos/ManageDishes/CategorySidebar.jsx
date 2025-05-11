@@ -10,6 +10,7 @@ const CategorySidebar = () => {
   const { restaurant } = useRestaurantContext();
   const { categoryId, setCategoryId } = useRestaurantContext();
   const { categories, setCategories } = useRestaurantContext();
+  const [totalDishCount, setTotalDishCount] = useState(0);
 
   // Setting null on clicking All Dishes category
   const handleAllDishesClick = () => {
@@ -34,7 +35,8 @@ const CategorySidebar = () => {
       const data = await res.json();
 
       // Save categories array in state
-      setCategories(data);
+      setCategories(data.categories);
+      setTotalDishCount(data.totalDishCount);
     } catch (err) {
       console.error("Error fetching categories:", err);
     }
@@ -66,7 +68,7 @@ const CategorySidebar = () => {
               </div>
             </div>
             <div className={styles.rightSideContainer}>
-              <div className={styles.itemCount}>48</div>
+              <div className={styles.itemCount}>{totalDishCount}</div>
             </div>
           </div>
           {categories.map((category) => (
@@ -78,14 +80,14 @@ const CategorySidebar = () => {
               }`}
             >
               <div className={styles.leftSideContainer}>
-                <div className={styles.vectorContainer}>🌮</div>
+                <div className={styles.vectorContainer}>{category.emoji}</div>
                 <div className={styles.categoryHeader}>
                   <h4>{category.name}</h4>
                 </div>
               </div>
               <div className={styles.rightSideContainer}>
                 <div className={styles.itemCount}>
-                  {category.itemCount || 0}
+                  {category.dishCount || 0}
                 </div>
               </div>
             </div>
