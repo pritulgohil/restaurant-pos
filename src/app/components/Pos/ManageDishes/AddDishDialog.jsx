@@ -22,18 +22,43 @@ import { LoaderCircle } from "lucide-react";
 import { TriangleAlert } from "lucide-react";
 
 const AddDishDialog = ({ children, onDishAdded }) => {
+  //State to save dish name
   const [dishName, setDishName] = useState("");
+
+  //State to save dish description
   const [description, setDescription] = useState("");
+
+  //State to save dish emoji
   const [emoji, setEmoji] = useState("");
+
+  //State to save dish price
   const [price, setPrice] = useState("");
+
+  //State to save button state
   const [loading, setLoading] = useState(false);
+
+  //State to save dish availability
   const [available, setAvailable] = useState(true);
+
+  //State to save dish category
   const [isOpen, setIsOpen] = useState(false);
+
+  //State for save category name
   const [categoryName, setCategoryName] = useState("");
+
+  //State that saves restaurantId
   const { restaurant } = useRestaurantContext();
+
+  //State that saves categoryId
   const { categoryId, setCategoryId } = useRestaurantContext();
-  const { categories, setCategories } = useRestaurantContext();
+
+  //State that saves categories
+  const { categories } = useRestaurantContext();
+
+  //State to save category from the dropdown
   const [separateCategoryId, setSeparateCategoryId] = useState(null);
+
+  //State to save error message
   const [error, setError] = useState("");
 
   const handleSaveDish = async () => {
@@ -83,6 +108,7 @@ const AddDishDialog = ({ children, onDishAdded }) => {
     }
   };
 
+  //Function to pre-populate the category name
   const fetchCategoryName = async () => {
     const token = localStorage.getItem("token");
     try {
@@ -103,6 +129,7 @@ const AddDishDialog = ({ children, onDishAdded }) => {
     }
   };
 
+  //If categoryId is not null, fetch the category name
   useEffect(() => {
     if (!categoryId) return;
     fetchCategoryName();
