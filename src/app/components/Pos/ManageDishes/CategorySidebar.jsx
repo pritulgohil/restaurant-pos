@@ -15,6 +15,8 @@ const CategorySidebar = () => {
   //State for categories for the restaurant
   const { categories, setCategories } = useRestaurantContext();
 
+  const { dishes, setDishes } = useRestaurantContext();
+
   //State for total dish count
   const [totalDishCount, setTotalDishCount] = useState(0);
 
@@ -51,7 +53,7 @@ const CategorySidebar = () => {
 
   useEffect(() => {
     fetchCategories();
-  }, []);
+  }, [dishes]);
 
   return (
     <div className={styles.mainContainer}>

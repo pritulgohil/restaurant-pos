@@ -17,8 +17,7 @@ import {
 import { DialogTrigger } from "@/components/ui/dialog";
 import AddDishDialog from "@/app/components/Pos/ManageDishes/AddDishDialog";
 import { useRestaurantContext } from "@/context/RestaurantContext";
-
-// shadcn dropdown menu imports
+import DeleteDialog from "@/app/components/Pos/ManageDishes/DeleteDialog";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -28,12 +27,13 @@ import {
 
 const Dishes = () => {
   const [listView, setListView] = useState(false);
-  const [dishes, setDishes] = useState([]);
+  const { dishes, setDishes } = useRestaurantContext();
   const [dishCount, setDishCount] = useState(0);
   const [categoryName, setCategoryName] = useState("");
-
   const { restaurant, categoryId } = useRestaurantContext();
-
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [selectedDish, setSelectedDish] = useState(null);
+  const [selectedDishId, setSelectedDishId] = useState(null);
   const handleListView = () => setListView(true);
   const handleGridView = () => setListView(false);
 
@@ -103,15 +103,15 @@ const Dishes = () => {
     }
   }, [categoryId]);
 
-  // Handlers for dropdown actions
   const handleEdit = (dish) => {
     console.log("Edit dish:", dish);
-    // TODO: Open edit modal
   };
 
   const handleDelete = (dish) => {
+    setSelectedDish(dish.name);
+    setSelectedDishId(dish._id);
     console.log("Delete dish:", dish);
-    // TODO: Confirm and delete logic
+    setDeleteDialogOpen(true);
   };
 
   return (
@@ -281,6 +281,14 @@ const Dishes = () => {
           </div>
         </div>
       </div>
+      <DeleteDialog
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        dishName={selectedDish}
+        dishId={selectedDishId}
+        fetchAllDishes={fetchAllDishes}
+        fetchDishByCategory={fetchDishByCategory}
+      />
     </>
   );
 };

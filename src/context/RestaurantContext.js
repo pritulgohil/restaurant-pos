@@ -9,6 +9,7 @@ export const RestaurantProvider = ({ children }) => {
   const [restaurant, setRestaurant] = useState(null);
   const [categoryId, setCategoryId] = useState(null);
   const [categories, setCategories] = useState([]);
+  const [dishes, setDishes] = useState([]);
 
   useEffect(() => {
     const storedRestaurant = localStorage.getItem("restaurant");
@@ -38,6 +39,8 @@ export const RestaurantProvider = ({ children }) => {
         setCategoryId,
         categories,
         setCategories,
+        dishes,
+        setDishes,
       }}
     >
       {children}
