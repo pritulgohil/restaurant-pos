@@ -1,4 +1,3 @@
-// DeleteDialog.jsx
 import {
   AlertDialog,
   AlertDialogAction,

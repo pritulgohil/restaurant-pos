@@ -26,17 +26,35 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const Dishes = () => {
+  //state for list view or grid view of dishes cards
   const [listView, setListView] = useState(false);
+
+  //state for dishes object
   const { dishes, setDishes } = useRestaurantContext();
+
+  //state for total dish count
   const [dishCount, setDishCount] = useState(0);
+
+  //state to save categoryname based on categorySidebar category selection
   const [categoryName, setCategoryName] = useState("");
+
+  //context state - restaurant has restaurantId to fetch all dishes, categoryId is used to fetch dishes based on category, also the category name
   const { restaurant, categoryId } = useRestaurantContext();
+
+  //state to handle delete dialog visibility
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+
+  //state to save dish name to display in delete dialog
   const [selectedDish, setSelectedDish] = useState(null);
+
+  //state to save dishId to delete the dish for passing in api
   const [selectedDishId, setSelectedDishId] = useState(null);
+
+  //dishes card view handlers
   const handleListView = () => setListView(true);
   const handleGridView = () => setListView(false);
 
+  // function to fetch all dishes from API, runs by default or when all dishes on the CategorySidebar.jsx are selected
   const fetchAllDishes = async () => {
     const token = localStorage.getItem("token");
     try {
@@ -56,6 +74,7 @@ const Dishes = () => {
     }
   };
 
+  // function to fetch dishes by category from API, runs when a category is selected from the CategorySidebar.jsx
   const fetchDishByCategory = async () => {
     const token = localStorage.getItem("token");
     try {
@@ -75,6 +94,7 @@ const Dishes = () => {
     }
   };
 
+  // function to fetch category name to display in the title of the dishes card
   const fetchCategoryName = async () => {
     const token = localStorage.getItem("token");
     try {
@@ -93,6 +113,7 @@ const Dishes = () => {
     }
   };
 
+  //useEffect for displaying dishes based on category selection
   useEffect(() => {
     if (categoryId === null) {
       fetchAllDishes();
@@ -107,10 +128,10 @@ const Dishes = () => {
     console.log("Edit dish:", dish);
   };
 
+  // handler for delete press on dropdown menu, sets the selected dish name and id, and opens the delete dialog
   const handleDelete = (dish) => {
     setSelectedDish(dish.name);
     setSelectedDishId(dish._id);
-    console.log("Delete dish:", dish);
     setDeleteDialogOpen(true);
   };
 

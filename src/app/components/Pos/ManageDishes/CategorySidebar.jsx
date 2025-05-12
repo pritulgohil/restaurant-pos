@@ -15,7 +15,7 @@ const CategorySidebar = () => {
   //State for categories for the restaurant
   const { categories, setCategories } = useRestaurantContext();
 
-  const { dishes, setDishes } = useRestaurantContext();
+  const { dishes } = useRestaurantContext();
 
   //State for total dish count
   const [totalDishCount, setTotalDishCount] = useState(0);
