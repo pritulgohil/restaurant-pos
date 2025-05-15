@@ -85,7 +85,11 @@ const Dishes = () => {
           "Content-Type": "application/json",
         },
       });
-      if (!res.ok) throw new Error("Failed to fetch dishes");
+      if (!res.ok) {
+        setDishes([]); // Set to empty array on failed response
+        setDishCount("0");
+        throw new Error("Failed to fetch dishes");
+      }
       const data = await res.json();
       setDishes(data.dishes);
       setDishCount(data.dishes.length);
@@ -152,7 +156,10 @@ const Dishes = () => {
                 placeholder="Search dishes"
               />
             </div>
-            <AddDishDialog onDishAdded={fetchAllDishes}>
+            <AddDishDialog
+              onDishAdded={fetchAllDishes}
+              fetchByCategory={fetchDishByCategory}
+            >
               <DialogTrigger asChild>
                 <Button>
                   <SquarePlus className="mr-2" />
@@ -203,7 +210,10 @@ const Dishes = () => {
           </div>
 
           <div className={styles.dishesContainer}>
-            <AddDishDialog onDishAdded={fetchAllDishes}>
+            <AddDishDialog
+              onDishAdded={fetchAllDishes}
+              fetchByCategory={fetchDishByCategory}
+            >
               <DialogTrigger asChild>
                 <div
                   className={`${

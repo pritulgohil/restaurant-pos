@@ -35,14 +35,7 @@ export async function GET(req, { params }) {
       );
     }
 
-    const dishes = await Dish.find({ categoryId: categoryId }).exec();
-
-    if (!dishes || dishes.length === 0) {
-      return NextResponse.json(
-        { message: "No dishes found for this category" },
-        { status: 404 }
-      );
-    }
+    const dishes = await Dish.find({ categoryId }).exec();
 
     return NextResponse.json({ dishes }, { status: 200 });
   } catch (error) {

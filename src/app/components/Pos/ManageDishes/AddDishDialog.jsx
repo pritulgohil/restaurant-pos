@@ -21,7 +21,7 @@ import { useRestaurantContext } from "@/context/RestaurantContext";
 import { LoaderCircle } from "lucide-react";
 import { TriangleAlert } from "lucide-react";
 
-const AddDishDialog = ({ children, onDishAdded }) => {
+const AddDishDialog = ({ children, onDishAdded, fetchByCategory }) => {
   //State to save dish name
   const [dishName, setDishName] = useState("");
 
@@ -96,12 +96,18 @@ const AddDishDialog = ({ children, onDishAdded }) => {
       setEmoji("");
       setPrice("");
       setAvailable(false);
-      setCategoryId(null);
-      setSeparateCategoryId(null);
+      // setCategoryId(null);
+      // setSeparateCategoryId(null);
       onDishAdded?.();
+      if (categoryId === null) {
+        onDishAdded?.();
+      } else {
+        fetchByCategory?.();
+      }
+
       setTimeout(() => {
-        setIsOpen(false);
         setLoading(false);
+        setIsOpen(false);
       }, 2000);
     } catch (err) {
       console.error("Error adding category:", err);
@@ -133,7 +139,7 @@ const AddDishDialog = ({ children, onDishAdded }) => {
   useEffect(() => {
     if (!categoryId) return;
     fetchCategoryName();
-  }, [categoryId]);
+  }, [categoryId, isOpen]);
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
