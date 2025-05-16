@@ -18,6 +18,7 @@ import { DialogTrigger } from "@/components/ui/dialog";
 import AddDishDialog from "@/app/components/Pos/ManageDishes/AddDishDialog";
 import { useRestaurantContext } from "@/context/RestaurantContext";
 import DeleteDialog from "@/app/components/Pos/ManageDishes/DeleteDialog";
+import EditDishDialog from "@/app/components/Pos/ManageDishes/EditDishDialog";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -50,9 +51,14 @@ const Dishes = () => {
   //state to save dishId to delete the dish for passing in api
   const [selectedDishId, setSelectedDishId] = useState(null);
 
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [editDishData, setEditDishData] = useState(null);
+
   //dishes card view handlers
   const handleListView = () => setListView(true);
   const handleGridView = () => setListView(false);
+
+  console.log("Dishes:", dishes);
 
   // function to fetch all dishes from API, runs by default or when all dishes on the CategorySidebar.jsx are selected
   const fetchAllDishes = async () => {
@@ -129,7 +135,8 @@ const Dishes = () => {
   }, [categoryId]);
 
   const handleEdit = (dish) => {
-    console.log("Edit dish:", dish);
+    setEditDishData(dish);
+    setEditDialogOpen(true);
   };
 
   // handler for delete press on dropdown menu, sets the selected dish name and id, and opens the delete dialog
@@ -267,6 +274,7 @@ const Dishes = () => {
                         <SquarePen />
                         Edit
                       </DropdownMenuItem>
+
                       <DropdownMenuItem
                         className="text-red-500"
                         onClick={() => handleDelete(dish)}
@@ -277,7 +285,6 @@ const Dishes = () => {
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
-
                 <div
                   className={`${
                     listView ? styles.dishLeftSideList : styles.dishLeftSide
@@ -297,7 +304,6 @@ const Dishes = () => {
                     </div>
                   </div>
                 </div>
-
                 <div className={styles.dishRightSide}>
                   <div
                     className={
@@ -307,6 +313,9 @@ const Dishes = () => {
                     ${dish.price}
                   </div>
                 </div>
+                {!dish.available && (
+                  <div className={styles.notAvailableLabel}></div>
+                )}
               </div>
             ))}
           </div>
@@ -320,6 +329,14 @@ const Dishes = () => {
         fetchAllDishes={fetchAllDishes}
         fetchDishByCategory={fetchDishByCategory}
       />
+      {editDishData && (
+        <EditDishDialog
+          open={editDialogOpen}
+          setOpen={setEditDialogOpen}
+          dish={editDishData}
+          onDishUpdated={fetchAllDishes}
+        />
+      )}
     </>
   );
 };

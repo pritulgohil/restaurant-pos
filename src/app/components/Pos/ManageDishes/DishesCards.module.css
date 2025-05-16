@@ -280,3 +280,20 @@
 .trigger {
   width: 32px;
 }
+
+.notAvailableLabel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(0, 0, 0, 0.2) 0,
+    rgba(0, 0, 0, 0.2) 10px,
+    transparent 10px,
+    transparent 20px
+  );
+  z-index: 10;
+  pointer-events: none; /* Optional */
+}
