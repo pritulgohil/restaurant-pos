@@ -8,10 +8,9 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useEffect } from "react";
 import { useRestaurantContext } from "@/context/RestaurantContext";
 import {
   Select,
@@ -20,9 +19,9 @@ import {
   SelectItem,
   SelectValue,
 } from "@/components/ui/select";
+import { LoaderCircle } from "lucide-react";
 
 const EditDishDialog = ({ open, setOpen, dish, onDishUpdated }) => {
-  const { categoryId, setCategoryId } = useRestaurantContext();
   const { categories } = useRestaurantContext();
   const [separateCategoryId, setSeparateCategoryId] = useState(null);
   const [error, setError] = useState("");
@@ -46,7 +45,7 @@ const EditDishDialog = ({ open, setOpen, dish, onDishUpdated }) => {
         price: dish.price || "",
         emoji: dish.emoji || "",
         description: dish.description || "",
-        available: dish.available || true,
+        available: dish.available ?? true,
         categoryId: dish.categoryId || "",
         categoryName: dish.categoryName || "",
         restaurantId: dish.restaurantId || "",
@@ -60,11 +59,13 @@ const EditDishDialog = ({ open, setOpen, dish, onDishUpdated }) => {
   };
 
   const handleSave = async () => {
+    setLoading(true);
+    setError("");
     const token = localStorage.getItem("token");
 
     try {
-      const res = await fetch(`/api/pos/update-dish/${dish._id}`, {
-        method: "PUT",
+      const res = await fetch(`/api/pos/edit-dish/6825646d6ab459db3e035e96`, {
+        method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -72,12 +73,18 @@ const EditDishDialog = ({ open, setOpen, dish, onDishUpdated }) => {
         body: JSON.stringify(formData),
       });
 
-      if (!res.ok) throw new Error("Failed to update dish");
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || "Failed to update dish");
+      }
 
       await onDishUpdated();
       setOpen(false);
     } catch (error) {
+      setError(error.message || "An error occurred while updating the dish");
       console.error("Error updating dish:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -87,17 +94,27 @@ const EditDishDialog = ({ open, setOpen, dish, onDishUpdated }) => {
         <DialogHeader>
           <DialogTitle>Edit Dish</DialogTitle>
           <DialogDescription>
-            Update fields where neccessary to update dish.
+            Update fields where necessary to update dish.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="flex flex-col gap-2">
             <label className="block text-sm font-medium">Dish Name</label>
-            <Input value={formData.name} placeholder="e.g., Belgian Waffle" />
+            <Input
+              name="name"
+              value={formData.name}
+              placeholder="e.g., Belgian Waffle"
+              onChange={handleInputChange}
+            />
           </div>
           <div className="flex flex-col gap-2">
             <label className="block text-sm font-medium">Description</label>
-            <Input value={formData.description} placeholder="e.g., Dessert" />
+            <Input
+              name="description"
+              value={formData.description}
+              placeholder="e.g., Dessert"
+              onChange={handleInputChange}
+            />
           </div>
 
           <div className="flex flex-col gap-2">
@@ -133,17 +150,32 @@ const EditDishDialog = ({ open, setOpen, dish, onDishUpdated }) => {
 
           <div className="flex flex-col gap-2">
             <label className="block text-sm font-medium">Emoji</label>
-            <Input value={formData.emoji} placeholder="e.g., Emoji" />
+            <Input
+              name="emoji"
+              value={formData.emoji}
+              placeholder="e.g., Emoji"
+              onChange={handleInputChange}
+            />
           </div>
           <div className="flex flex-col gap-2">
             <label className="block text-sm font-medium">Price</label>
-            <Input value={formData.price} placeholder="$8.00" />
+            <Input
+              name="price"
+              value={formData.price}
+              placeholder="$8.00"
+              onChange={handleInputChange}
+            />
           </div>
           <div className="flex flex-col gap-2">
             <label className="block text-sm font-medium">Available</label>
             <Select
               value={formData.available.toString()}
-              onValueChange={(value) => setAvailable(value === "true")}
+              onValueChange={(value) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  available: value === "true",
+                }))
+              }
             >
               <SelectTrigger>
                 <SelectValue placeholder="Select availability" />
@@ -155,14 +187,14 @@ const EditDishDialog = ({ open, setOpen, dish, onDishUpdated }) => {
             </Select>
           </div>
         </div>
-        <div className="flex items-center gap-1 error">
+        {/* <div className="flex items-center gap-1 error">
           {error && (
             <>
               <TriangleAlert className="w-5 text-red-500" />
               <p className="text-red-500 text-sm">{error}</p>
             </>
           )}
-        </div>
+        </div> */}
         <DialogFooter>
           {loading ? (
             <Button disabled={loading}>
@@ -170,7 +202,7 @@ const EditDishDialog = ({ open, setOpen, dish, onDishUpdated }) => {
               Saving...
             </Button>
           ) : (
-            <Button>Update Dish</Button>
+            <Button onClick={handleSave}>Update Dish</Button>
           )}
         </DialogFooter>
       </DialogContent>

@@ -58,8 +58,6 @@ const Dishes = () => {
   const handleListView = () => setListView(true);
   const handleGridView = () => setListView(false);
 
-  console.log("Dishes:", dishes);
-
   // function to fetch all dishes from API, runs by default or when all dishes on the CategorySidebar.jsx are selected
   const fetchAllDishes = async () => {
     const token = localStorage.getItem("token");
