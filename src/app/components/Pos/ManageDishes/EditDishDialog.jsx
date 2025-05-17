@@ -64,7 +64,7 @@ const EditDishDialog = ({ open, setOpen, dish, onDishUpdated }) => {
     const token = localStorage.getItem("token");
 
     try {
-      const res = await fetch(`/api/pos/edit-dish/6825646d6ab459db3e035e96`, {
+      const res = await fetch(`/api/pos/edit-dish/${dish._id}`, {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -94,7 +94,7 @@ const EditDishDialog = ({ open, setOpen, dish, onDishUpdated }) => {
         <DialogHeader>
           <DialogTitle>Edit Dish</DialogTitle>
           <DialogDescription>
-            Update fields where necessary to update dish.
+            You are currently editing <strong>{dish.name}</strong> dish.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">

@@ -13,18 +13,25 @@ import { LoaderCircle } from "lucide-react";
 import { useState } from "react";
 import { useAuthContext } from "@/context/AuthContext";
 import { useRouter, usePathname } from "next/navigation";
+import { useRestaurantContext } from "@/context/RestaurantContext";
 
 const Sidebar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const [logoutState, setLogoutState] = useState(false);
-  const { loggedInUser, setLoggedInUser } = useAuthContext();
+  const { setLoggedInUser } = useAuthContext();
+  const { setCategoryId, setCategories, setDishes, setRestaurant } =
+    useRestaurantContext();
 
   const handleLogout = () => {
     setLogoutState(true);
     setTimeout(() => {
       localStorage.removeItem("loggedInUser");
       setLoggedInUser(null);
+      setDishes([]);
+      setCategories([]);
+      setCategoryId(null);
+      setRestaurant(null);
       router.push("/login");
     }, 2000);
   };
