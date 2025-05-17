@@ -21,8 +21,14 @@ import {
 } from "@/components/ui/select";
 import { LoaderCircle } from "lucide-react";
 
-const EditDishDialog = ({ open, setOpen, dish, onDishUpdated }) => {
-  const { categories } = useRestaurantContext();
+const EditDishDialog = ({
+  open,
+  setOpen,
+  dish,
+  onDishUpdated,
+  fetchByCategory,
+}) => {
+  const { categories, categoryId } = useRestaurantContext();
   const [separateCategoryId, setSeparateCategoryId] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -78,7 +84,12 @@ const EditDishDialog = ({ open, setOpen, dish, onDishUpdated }) => {
         throw new Error(errorData.message || "Failed to update dish");
       }
 
-      await onDishUpdated();
+      if (categoryId === null) {
+        await onDishUpdated();
+      } else {
+        await fetchByCategory();
+      }
+      // await onDishUpdated();
       setOpen(false);
     } catch (error) {
       setError(error.message || "An error occurred while updating the dish");

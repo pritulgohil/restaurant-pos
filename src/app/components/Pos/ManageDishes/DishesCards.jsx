@@ -333,6 +333,7 @@ const Dishes = () => {
           setOpen={setEditDialogOpen}
           dish={editDishData}
           onDishUpdated={fetchAllDishes}
+          fetchByCategory={fetchDishByCategory}
         />
       )}
     </>
