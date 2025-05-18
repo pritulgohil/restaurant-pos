@@ -1,3 +1,21 @@
+// Author: Pritul Gohil
+
+// File: DishesCards.jsx
+
+// Description: This component is responsible for displaying the dishes in a card format. It also handles the addition, deletion, and editing of dishes. It also supports grid and list views for displaying the dishes. The component fetches data from the API to display the dishes and their details, including name, price, and availability status.
+
+// (1) Remaining Tasks: Filter functionality is not implemented yet.
+
+// (2) Remaining Task: The component also includes a search bar for searching dishes, but the search functionality is not implemented yet.
+
+// (3) Remaining Task: It should also handle the category deletion and edit functionality, but these features are not implemented yet.
+
+// (4) Remaining Task: Component is lengthy, should be broken down wherever possible for maintainability and readability.
+
+// Remarks: After completing above tasks, the DishesCards.jsx will be fully functional until further update.
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -30,17 +48,11 @@ const Dishes = () => {
   //state for list view or grid view of dishes cards
   const [listView, setListView] = useState(false);
 
-  //state for dishes object
-  const { dishes, setDishes } = useRestaurantContext();
-
   //state for total dish count
   const [dishCount, setDishCount] = useState(0);
 
   //state to save categoryname based on categorySidebar category selection
   const [categoryName, setCategoryName] = useState("");
-
-  //context state - restaurant has restaurantId to fetch all dishes, categoryId is used to fetch dishes based on category, also the category name
-  const { restaurant, categoryId } = useRestaurantContext();
 
   //state to handle delete dialog visibility
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -51,8 +63,14 @@ const Dishes = () => {
   //state to save dishId to delete the dish for passing in api
   const [selectedDishId, setSelectedDishId] = useState(null);
 
+  //state for edit dialog visibility handle
   const [editDialogOpen, setEditDialogOpen] = useState(false);
+
+  // state holds the dish data to be edited and passed to the EditDishDialog
   const [editDishData, setEditDishData] = useState(null);
+
+  //restaurant has restaurantId, categoryId has objectId, dishes has array of dishes, setDishes is setter function to set dishes
+  const { restaurant, categoryId, dishes, setDishes } = useRestaurantContext();
 
   //dishes card view handlers
   const handleListView = () => setListView(true);
@@ -132,12 +150,13 @@ const Dishes = () => {
     }
   }, [categoryId]);
 
+  // handler for edit press on dropdown menu, sets the selected dish data to be edited and opens the edit dialog
   const handleEdit = (dish) => {
     setEditDishData(dish);
     setEditDialogOpen(true);
   };
 
-  // handler for delete press on dropdown menu, sets the selected dish name and id, and opens the delete dialog
+  // handler for delete press on dropdown menu, sets the selected dish name for displaying in dialog and id to pass in api. Also, opens the delete dialog
   const handleDelete = (dish) => {
     setSelectedDish(dish.name);
     setSelectedDishId(dish._id);
@@ -161,6 +180,7 @@ const Dishes = () => {
                 placeholder="Search dishes"
               />
             </div>
+            {/* Triggers dialog and runs either of two functions to fetch updated dishes */}
             <AddDishDialog
               onDishAdded={fetchAllDishes}
               fetchByCategory={fetchDishByCategory}
@@ -174,10 +194,10 @@ const Dishes = () => {
             </AddDishDialog>
           </div>
         </div>
-
         <div className={styles.componentBody}>
           <div className={styles.componentHeaderContainer}>
             <div className={styles.leftSide}>
+              {/* Displays categoryname and dishcount */}
               <div className={styles.componentHeader}>
                 <h3>
                   {categoryName} ({dishCount})
@@ -185,6 +205,7 @@ const Dishes = () => {
               </div>
             </div>
             <div className={styles.rightSide}>
+              {/* Switch to handle list view or grid view of dishes cards */}
               <div className={styles.sliderContainer}>
                 <Button
                   variant="ghost"
@@ -205,16 +226,19 @@ const Dishes = () => {
                   <List className={styles.sliderIcon} />
                 </Button>
               </div>
+              {/* Not implement yet */}
               <div className={styles.filterContainer}>
                 <Button variant="ghost" className={styles.filterButton}>
                   <SlidersHorizontal className={styles.filterIcon} />
                   Filter
                 </Button>
               </div>
+              {/* Not implemented yet */}
             </div>
           </div>
 
           <div className={styles.dishesContainer}>
+            {/* Add dish card to add new dish */}
             <AddDishDialog
               onDishAdded={fetchAllDishes}
               fetchByCategory={fetchDishByCategory}
@@ -237,6 +261,7 @@ const Dishes = () => {
               </DialogTrigger>
             </AddDishDialog>
 
+            {/* Map through dishes and display them in card format */}
             {dishes.map((dish, index) => (
               <div
                 key={index}
@@ -246,6 +271,7 @@ const Dishes = () => {
                     : styles.addDishCardContainer
                 } ${styles.solidBorder}`}
               >
+                {/* Edit and Delete dropdown for dish */}
                 <div
                   className={`${
                     listView
@@ -283,6 +309,7 @@ const Dishes = () => {
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
+                {/* Gets a little bit messy here due to inaccurate class names, dishLeft and dishRight should be named top and bottom instead, but in list context it is right */}
                 <div
                   className={`${
                     listView ? styles.dishLeftSideList : styles.dishLeftSide
@@ -319,6 +346,7 @@ const Dishes = () => {
           </div>
         </div>
       </div>
+      {/* DeleteDialog for deleting dish */}
       <DeleteDialog
         open={deleteDialogOpen}
         onOpenChange={setDeleteDialogOpen}
@@ -327,6 +355,7 @@ const Dishes = () => {
         fetchAllDishes={fetchAllDishes}
         fetchDishByCategory={fetchDishByCategory}
       />
+      {/* if editDishData is there, then only show the edit dialog, just a basic check */}
       {editDishData && (
         <EditDishDialog
           open={editDialogOpen}
