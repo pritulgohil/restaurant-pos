@@ -260,17 +260,6 @@
   right: 18px;
 }
 
-/* .editIcon {
-  stroke-width: 1.5px;
-  width: 24px;
-  height: 24px;
-}
-
-.editIconList {
-  width: 18px;
-  height: 18px;
-} */
-
 .dishPriceList {
   margin-right: 40px;
   text-align: left;
@@ -295,5 +284,21 @@
     transparent 20px
   );
   z-index: 10;
-  pointer-events: none; /* Optional */
+  pointer-events: none;
+}
+
+.leftSide {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.categoryEditContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.editIcon {
+  width: 18px;
 }

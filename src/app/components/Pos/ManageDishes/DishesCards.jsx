@@ -31,12 +31,14 @@ import {
   ChevronDown,
   SquarePen,
   Trash2,
+  Pencil,
 } from "lucide-react";
 import { DialogTrigger } from "@/components/ui/dialog";
 import AddDishDialog from "@/app/components/Pos/ManageDishes/AddDishDialog";
 import { useRestaurantContext } from "@/context/RestaurantContext";
 import DeleteDialog from "@/app/components/Pos/ManageDishes/DeleteDialog";
 import EditDishDialog from "@/app/components/Pos/ManageDishes/EditDishDialog";
+import EditCategoryDialog from "@/app/components/Pos/ManageDishes/EditCategoryDialog";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -202,6 +204,19 @@ const Dishes = () => {
                 <h3>
                   {categoryName} ({dishCount})
                 </h3>
+              </div>
+              <div className={styles.categoryEditContainer}>
+                <EditCategoryDialog>
+                  <DialogTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className={styles.editButtonContainer}
+                    >
+                      <Pencil className={styles.editIcon} />
+                    </Button>
+                  </DialogTrigger>
+                </EditCategoryDialog>
               </div>
             </div>
             <div className={styles.rightSide}>
