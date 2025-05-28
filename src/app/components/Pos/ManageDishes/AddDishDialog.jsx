@@ -96,9 +96,6 @@ const AddDishDialog = ({ children, onDishAdded, fetchByCategory }) => {
       setEmoji("");
       setPrice("");
       setAvailable(false);
-      // setCategoryId(null);
-      // setSeparateCategoryId(null);
-      onDishAdded?.();
       if (categoryId === null) {
         onDishAdded?.();
       } else {
