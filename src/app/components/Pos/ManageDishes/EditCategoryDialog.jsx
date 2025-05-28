@@ -112,7 +112,7 @@ const EditCategoryDialog = ({ children, onCategoryAdded }) => {
         <DialogHeader>
           <DialogTitle>Edit Category</DialogTitle>
           <DialogDescription>
-            You are currently editing {"{category.name}"}.
+            You are currently editing <strong>{inputCategoryName}.</strong>
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
