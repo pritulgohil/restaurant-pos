@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import styles from "./AddCategoryDialog.module.css";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { SquarePlus } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -19,14 +18,14 @@ import { LoaderCircle } from "lucide-react";
 import { TriangleAlert } from "lucide-react";
 import { useRestaurantContext } from "@/context/RestaurantContext";
 
-const EditCategoryDialog = ({ children, onCategoryAdded }) => {
-  //State for saving the category name
-  const [inputCategoryName, inputSetCategoryName] = useState("");
+const EditCategoryDialog = ({ children }) => {
+  //State for saving the category name in Input
+  const [inputCategoryName, setInputCategoryName] = useState("");
 
-  //State for saving the category description
+  //State for saving the category description in Input
   const [description, setDescription] = useState("");
 
-  //State for saving the category emoji
+  //State for saving the category emoji in Input
   const [emoji, setEmoji] = useState("");
 
   //State for handling loading state of button
@@ -38,35 +37,28 @@ const EditCategoryDialog = ({ children, onCategoryAdded }) => {
   //State for handling the open/close state of the dialog
   const [isOpen, setIsOpen] = useState(false);
 
-  //State context for restaurant ID
-  const { restaurant } = useRestaurantContext();
-
   const {
+    restaurant,
     categoryId,
-    setCategoryId,
+    categories,
     fetchCategories,
     categoryName,
     setCategoryName,
   } = useRestaurantContext();
 
-  //State for categories for the restaurant
-  const { categories, setCategories } = useRestaurantContext();
-
-  console.log("Current Category:", categoryId);
-  console.log("Categories:", categories);
-
+  // Snippet to find out which category to edit
   useEffect(() => {
     if (categoryId && categories.length > 0) {
       const categoryToEdit = categories.find((cat) => cat._id === categoryId);
       if (categoryToEdit) {
-        inputSetCategoryName(categoryToEdit.name || "");
+        setInputCategoryName(categoryToEdit.name || "");
         setEmoji(categoryToEdit.emoji || "");
         setDescription(categoryToEdit.description || "");
       }
     }
   }, [categoryId, categories]);
 
-  //Function to save category
+  //Function to update the category
   const handleSubmit = async () => {
     const token = localStorage.getItem("token");
     try {
@@ -90,11 +82,15 @@ const EditCategoryDialog = ({ children, onCategoryAdded }) => {
       if (!response.ok) throw new Error(data.error || "Something went wrong");
 
       setTimeout(() => {
-        fetchCategories(); // Fetch updated
+        // Function to update the category sidebar after editing
+        fetchCategories();
+        // It updates the category name displayed on the top of the dishes
         setCategoryName(data.name);
-        inputSetCategoryName("");
+        // Clears the input fields after submission
+        setInputCategoryName("");
         setEmoji("");
         setDescription("");
+        // For dialog visibility and managing loading state
         setIsOpen(false);
         setLoading(false);
       }, 2000);
@@ -107,7 +103,7 @@ const EditCategoryDialog = ({ children, onCategoryAdded }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger> {/* ✅ ADD THIS */}
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Edit Category</DialogTitle>
@@ -125,7 +121,7 @@ const EditCategoryDialog = ({ children, onCategoryAdded }) => {
               className="col-span-3"
               placeholder="Category Name"
               value={inputCategoryName}
-              onChange={(e) => inputSetCategoryName(e.target.value)}
+              onChange={(e) => setInputCategoryName(e.target.value)}
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
