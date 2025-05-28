@@ -54,7 +54,7 @@ const Dishes = () => {
   const [dishCount, setDishCount] = useState(0);
 
   //state to save categoryname based on categorySidebar category selection
-  const [categoryName, setCategoryName] = useState("");
+  // const [categoryName, setCategoryName] = useState("");
 
   //state to handle delete dialog visibility
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -72,7 +72,14 @@ const Dishes = () => {
   const [editDishData, setEditDishData] = useState(null);
 
   //restaurant has restaurantId, categoryId has objectId, dishes has array of dishes, setDishes is setter function to set dishes
-  const { restaurant, categoryId, dishes, setDishes } = useRestaurantContext();
+  const {
+    restaurant,
+    categoryId,
+    dishes,
+    setDishes,
+    categoryName,
+    setCategoryName,
+  } = useRestaurantContext();
 
   //dishes card view handlers
   const handleListView = () => setListView(true);
@@ -206,7 +213,7 @@ const Dishes = () => {
                 </h3>
               </div>
               <div className={styles.categoryEditContainer}>
-                <EditCategoryDialog>
+                <EditCategoryDialog onDishAdded={fetchAllDishes}>
                   <DialogTrigger asChild>
                     <Button
                       variant="outline"

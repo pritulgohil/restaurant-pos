@@ -7,48 +7,21 @@ import { useRestaurantContext } from "@/context/RestaurantContext";
 
 const CategorySidebar = () => {
   //State for restaurantId
-  const { restaurant } = useRestaurantContext();
-
-  //State for selected categoryId
-  const { categoryId, setCategoryId } = useRestaurantContext();
-
-  //State for categories for the restaurant
-  const { categories, setCategories } = useRestaurantContext();
-
-  const { dishes } = useRestaurantContext();
+  const {
+    restaurant,
+    categoryId,
+    setCategoryId,
+    categories,
+    totalDishCount,
+    dishes,
+    fetchCategories,
+  } = useRestaurantContext();
 
   //State for total dish count
-  const [totalDishCount, setTotalDishCount] = useState(0);
 
   // Setting null on clicking All Dishes category
   const handleAllDishesClick = () => {
     setCategoryId(null);
-  };
-
-  // Function to fetch categories from API
-  const fetchCategories = async () => {
-    const token = localStorage.getItem("token");
-    try {
-      // Passing restaurant in api to fetch that restaurant's category
-      const res = await fetch(`/api/pos/fetch-categories/${restaurant}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-      if (!res.ok) {
-        throw new Error("Failed to fetch categories");
-      }
-      const data = await res.json();
-
-      //Save categories array in state
-      setCategories(data.categories);
-      //Save total dish count in state
-      setTotalDishCount(data.totalDishCount);
-    } catch (err) {
-      console.error("Error fetching categories:", err);
-    }
   };
 
   useEffect(() => {

@@ -2,7 +2,6 @@
 
 import { createContext, useState, useContext, useEffect } from "react";
 
-// Create the RestaurantContext
 const RestaurantContext = createContext();
 
 export const RestaurantProvider = ({ children }) => {
@@ -10,25 +9,45 @@ export const RestaurantProvider = ({ children }) => {
   const [categoryId, setCategoryId] = useState(null);
   const [categories, setCategories] = useState([]);
   const [dishes, setDishes] = useState([]);
+  const [totalDishCount, setTotalDishCount] = useState(0);
+  const [categoryName, setCategoryName] = useState("");
 
   useEffect(() => {
     const storedRestaurant = localStorage.getItem("restaurant");
     if (storedRestaurant) {
-      setRestaurant(JSON.parse(storedRestaurant)); // Parse the stored JSON string back into an object
+      setRestaurant(JSON.parse(storedRestaurant));
     } else {
-      // If no restaurant is stored, ensure the restaurant state is null
       setRestaurant(null);
     }
   }, []);
 
-  // Save restaurant data to localStorage whenever it changes
   useEffect(() => {
     if (restaurant) {
-      localStorage.setItem("restaurant", JSON.stringify(restaurant)); // Store the restaurant data as a JSON string
+      localStorage.setItem("restaurant", JSON.stringify(restaurant));
     } else {
-      localStorage.removeItem("restaurant"); // Remove the data from localStorage if the restaurant is null
+      localStorage.removeItem("restaurant");
     }
   }, [restaurant]);
+
+  // Fetch categories and total dish count
+  const fetchCategories = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const res = await fetch(`/api/pos/fetch-categories/${restaurant}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      if (!res.ok) throw new Error("Failed to fetch categories");
+      const data = await res.json();
+      setCategories(data.categories);
+      setTotalDishCount(data.totalDishCount);
+    } catch (err) {
+      console.error("Error fetching categories:", err);
+    }
+  };
 
   return (
     <RestaurantContext.Provider
@@ -41,6 +60,11 @@ export const RestaurantProvider = ({ children }) => {
         setCategories,
         dishes,
         setDishes,
+        totalDishCount,
+        setTotalDishCount,
+        fetchCategories,
+        categoryName,
+        setCategoryName,
       }}
     >
       {children}
@@ -48,5 +72,4 @@ export const RestaurantProvider = ({ children }) => {
   );
 };
 
-// Custom hook to use the restaurant context
 export const useRestaurantContext = () => useContext(RestaurantContext);

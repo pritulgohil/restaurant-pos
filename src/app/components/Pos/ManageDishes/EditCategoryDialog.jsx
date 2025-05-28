@@ -1,4 +1,5 @@
 "use client";
+import { useEffect } from "react";
 import styles from "./AddCategoryDialog.module.css";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -15,12 +16,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { LoaderCircle } from "lucide-react";
-import { TriangleAlert, Pencil } from "lucide-react";
+import { TriangleAlert } from "lucide-react";
 import { useRestaurantContext } from "@/context/RestaurantContext";
 
 const EditCategoryDialog = ({ children, onCategoryAdded }) => {
   //State for saving the category name
-  const [categoryName, setCategoryName] = useState("");
+  const [inputCategoryName, inputSetCategoryName] = useState("");
 
   //State for saving the category description
   const [description, setDescription] = useState("");
@@ -40,20 +41,45 @@ const EditCategoryDialog = ({ children, onCategoryAdded }) => {
   //State context for restaurant ID
   const { restaurant } = useRestaurantContext();
 
+  const {
+    categoryId,
+    setCategoryId,
+    fetchCategories,
+    categoryName,
+    setCategoryName,
+  } = useRestaurantContext();
+
+  //State for categories for the restaurant
+  const { categories, setCategories } = useRestaurantContext();
+
+  console.log("Current Category:", categoryId);
+  console.log("Categories:", categories);
+
+  useEffect(() => {
+    if (categoryId && categories.length > 0) {
+      const categoryToEdit = categories.find((cat) => cat._id === categoryId);
+      if (categoryToEdit) {
+        inputSetCategoryName(categoryToEdit.name || "");
+        setEmoji(categoryToEdit.emoji || "");
+        setDescription(categoryToEdit.description || "");
+      }
+    }
+  }, [categoryId, categories]);
+
   //Function to save category
   const handleSubmit = async () => {
     const token = localStorage.getItem("token");
     try {
       setLoading(true);
       setError(false);
-      const response = await fetch("/api/pos/create-category/", {
-        method: "POST",
+      const response = await fetch(`/api/pos/edit-category/${categoryId}`, {
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          name: categoryName,
+          name: inputCategoryName,
           emoji: emoji,
           description,
           restaurantId: restaurant,
@@ -64,8 +90,9 @@ const EditCategoryDialog = ({ children, onCategoryAdded }) => {
       if (!response.ok) throw new Error(data.error || "Something went wrong");
 
       setTimeout(() => {
-        onCategoryAdded(data);
-        setCategoryName("");
+        fetchCategories(); // Fetch updated
+        setCategoryName(data.name);
+        inputSetCategoryName("");
         setEmoji("");
         setDescription("");
         setIsOpen(false);
@@ -97,8 +124,8 @@ const EditCategoryDialog = ({ children, onCategoryAdded }) => {
               id="categoryName"
               className="col-span-3"
               placeholder="Category Name"
-              value={categoryName}
-              onChange={(e) => setCategoryName(e.target.value)}
+              value={inputCategoryName}
+              onChange={(e) => inputSetCategoryName(e.target.value)}
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
