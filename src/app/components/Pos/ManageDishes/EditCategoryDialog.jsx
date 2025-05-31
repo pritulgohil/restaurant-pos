@@ -156,6 +156,7 @@ const EditCategoryDialog = ({ children }) => {
           </div>
         )}
         <DialogFooter>
+          <Button variant="destructive">Delete</Button>
           {loading ? (
             <Button disabled={loading}>
               <LoaderCircle className="animate-spin" />
