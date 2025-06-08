@@ -17,6 +17,7 @@ import { Label } from "@/components/ui/label";
 import { LoaderCircle } from "lucide-react";
 import { TriangleAlert } from "lucide-react";
 import { useRestaurantContext } from "@/context/RestaurantContext";
+import DeleteCategoryDialog from "./DeleteCategoryDialog";
 
 const EditCategoryDialog = ({
   children,
@@ -166,7 +167,7 @@ const EditCategoryDialog = ({
           </div>
         )}
         <DialogFooter>
-          <Button variant="destructive">Delete</Button>
+          <DeleteCategoryDialog />
           {loading ? (
             <Button disabled={loading}>
               <LoaderCircle className="animate-spin" />
