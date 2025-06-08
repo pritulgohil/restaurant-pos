@@ -18,7 +18,11 @@ import { LoaderCircle } from "lucide-react";
 import { TriangleAlert } from "lucide-react";
 import { useRestaurantContext } from "@/context/RestaurantContext";
 
-const EditCategoryDialog = ({ children }) => {
+const EditCategoryDialog = ({
+  children,
+  fetchAllDishes,
+  fetchDishByCategory,
+}) => {
   //State for saving the category name in Input
   const [inputCategoryName, setInputCategoryName] = useState("");
 
@@ -93,7 +97,12 @@ const EditCategoryDialog = ({ children }) => {
         // For dialog visibility and managing loading state
         setIsOpen(false);
         setLoading(false);
-      }, 2000);
+        if (categoryId === null) {
+          fetchAllDishes();
+        } else {
+          fetchDishByCategory();
+        }
+      }, [categoryId]);
     } catch (err) {
       console.error("Error adding category:", err);
       setError(true);
@@ -108,7 +117,8 @@ const EditCategoryDialog = ({ children }) => {
         <DialogHeader>
           <DialogTitle>Edit Category</DialogTitle>
           <DialogDescription>
-            You are currently editing <strong>{categoryName}.</strong>
+            You are currently editing <strong>{categoryName}</strong> category.
+            Associated dishes will also be updated.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">

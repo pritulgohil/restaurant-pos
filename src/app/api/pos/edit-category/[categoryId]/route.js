@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 import Category from "@/models/category";
+import Dish from "@/models/dish";
 import jwt from "jsonwebtoken";
 
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -9,6 +10,7 @@ export async function PATCH(req, { params }) {
   try {
     await dbConnect();
 
+    // Auth
     const authHeader = req.headers.get("authorization");
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -26,7 +28,7 @@ export async function PATCH(req, { params }) {
       );
     }
 
-    const { categoryId } = await params;
+    const { categoryId } = params;
     const body = await req.json();
 
     const { name, description, emoji, restaurantId } = body;
@@ -38,6 +40,7 @@ export async function PATCH(req, { params }) {
       ...(restaurantId && { restaurantId }),
     };
 
+    // Update Category
     const updatedCategory = await Category.findByIdAndUpdate(
       categoryId,
       updateFields,
@@ -48,6 +51,14 @@ export async function PATCH(req, { params }) {
       return NextResponse.json(
         { error: "Category not found" },
         { status: 404 }
+      );
+    }
+
+    // Update Dishes with new category name
+    if (name) {
+      await Dish.updateMany(
+        { categoryId: categoryId },
+        { $set: { categoryName: name } }
       );
     }
 

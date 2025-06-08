@@ -213,7 +213,10 @@ const Dishes = () => {
                 </h3>
               </div>
               <div className={styles.categoryEditContainer}>
-                <EditCategoryDialog onDishAdded={fetchAllDishes}>
+                <EditCategoryDialog
+                  fetchAllDishes={fetchAllDishes}
+                  fetchDishByCategory={fetchDishByCategory}
+                >
                   <DialogTrigger asChild>
                     <Button
                       variant="outline"
