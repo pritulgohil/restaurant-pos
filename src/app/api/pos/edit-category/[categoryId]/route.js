@@ -28,7 +28,7 @@ export async function PATCH(req, { params }) {
       );
     }
 
-    const { categoryId } = params;
+    const { categoryId } = await params;
     const body = await req.json();
 
     const { name, description, emoji, restaurantId } = body;
