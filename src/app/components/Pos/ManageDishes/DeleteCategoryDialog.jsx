@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { useRestaurantContext } from "@/context/RestaurantContext";
-import { set } from "mongoose";
 
 const DeleteCategoryDialog = ({ fetchAllDishes, setIsOpen }) => {
   const { categoryId, setCategoryId, fetchCategories } = useRestaurantContext();
