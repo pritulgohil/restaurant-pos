@@ -167,7 +167,10 @@ const EditCategoryDialog = ({
           </div>
         )}
         <DialogFooter>
-          <DeleteCategoryDialog />
+          <DeleteCategoryDialog
+            fetchAllDishes={fetchAllDishes}
+            setIsOpen={setIsOpen}
+          />
           {loading ? (
             <Button disabled={loading}>
               <LoaderCircle className="animate-spin" />
