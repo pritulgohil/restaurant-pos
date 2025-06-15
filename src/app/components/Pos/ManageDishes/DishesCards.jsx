@@ -212,22 +212,24 @@ const Dishes = () => {
                   {categoryName} ({dishCount})
                 </h3>
               </div>
-              <div className={styles.categoryEditContainer}>
-                <EditCategoryDialog
-                  fetchAllDishes={fetchAllDishes}
-                  fetchDishByCategory={fetchDishByCategory}
-                >
-                  <DialogTrigger asChild>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className={styles.editButtonContainer}
-                    >
-                      <Pencil className={styles.editIcon} />
-                    </Button>
-                  </DialogTrigger>
-                </EditCategoryDialog>
-              </div>
+              {categoryId !== null && (
+                <div className={styles.categoryEditContainer}>
+                  <EditCategoryDialog
+                    fetchAllDishes={fetchAllDishes}
+                    fetchDishByCategory={fetchDishByCategory}
+                  >
+                    <DialogTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className={styles.editButtonContainer}
+                      >
+                        <Pencil className={styles.editIcon} />
+                      </Button>
+                    </DialogTrigger>
+                  </EditCategoryDialog>
+                </div>
+              )}
             </div>
             <div className={styles.rightSide}>
               {/* Switch to handle list view or grid view of dishes cards */}
