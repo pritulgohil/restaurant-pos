@@ -38,7 +38,7 @@ const AddCategoryDialog = ({ onCategoryAdded }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   //State context for restaurant ID
-  const { restaurant } = useRestaurantContext();
+  const { restaurant, setCategoryId } = useRestaurantContext();
 
   //Function to save category
   const handleSubmit = async () => {
@@ -64,6 +64,7 @@ const AddCategoryDialog = ({ onCategoryAdded }) => {
       if (!response.ok) throw new Error(data.error || "Something went wrong");
 
       setTimeout(() => {
+        setCategoryId(data.category._id);
         onCategoryAdded(data);
         setCategoryName("");
         setEmoji("");
