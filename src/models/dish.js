@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const DishSchema = new mongoose.Schema({
   name: { type: String, required: true },
   description: { type: String, required: true },
-  categoryName: { type: String, required: true },
+  categoryName: { type: String, required: false },
   emoji: { type: String },
   price: { type: Number, required: true },
   available: { type: Boolean, default: true },
@@ -15,7 +15,7 @@ const DishSchema = new mongoose.Schema({
   categoryId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Category",
-    required: true,
+    required: false, // made optional
   },
 });
 

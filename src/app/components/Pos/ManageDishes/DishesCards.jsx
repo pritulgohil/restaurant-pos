@@ -79,6 +79,7 @@ const Dishes = () => {
     setDishes,
     categoryName,
     setCategoryName,
+    setTotalDishCount,
   } = useRestaurantContext();
 
   //dishes card view handlers
@@ -100,6 +101,7 @@ const Dishes = () => {
       const data = await res.json();
       setDishes(data.dishes);
       setDishCount(data.dishes.length);
+      setTotalDishCount(data.dishes.length);
     } catch (err) {
       console.error("Error fetching dishes:", err);
     }

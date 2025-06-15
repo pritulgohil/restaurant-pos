@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
-import Dish from "@/models/dish"; // Ensure this model includes categoryId
+import Dish from "@/models/dish";
 import jwt from "jsonwebtoken";
 
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -41,12 +41,10 @@ export async function POST(req) {
     if (
       !name ||
       !description ||
-      !categoryName ||
       !emoji ||
       price === undefined ||
       available === undefined ||
-      !restaurantId ||
-      !categoryId
+      !restaurantId
     ) {
       return NextResponse.json(
         { error: "Missing required fields" },
@@ -57,12 +55,12 @@ export async function POST(req) {
     const newDish = new Dish({
       name,
       description,
-      categoryName,
       emoji,
       price,
       available,
       restaurantId,
-      categoryId,
+      ...(categoryId && { categoryId }),
+      ...(categoryName && { categoryName }),
     });
 
     await newDish.save();

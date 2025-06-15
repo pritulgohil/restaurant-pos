@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import styles from "./CategorySidebar.module.css";
 import AddCategoryDialog from "./AddCategoryDialog";
 import { useRestaurantContext } from "@/context/RestaurantContext";
@@ -8,7 +8,6 @@ import { useRestaurantContext } from "@/context/RestaurantContext";
 const CategorySidebar = () => {
   //State for restaurantId
   const {
-    restaurant,
     categoryId,
     setCategoryId,
     categories,
