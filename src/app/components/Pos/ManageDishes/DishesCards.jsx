@@ -97,11 +97,20 @@ const Dishes = () => {
           "Content-Type": "application/json",
         },
       });
-      if (!res.ok) throw new Error("Failed to fetch dishes");
+
       const data = await res.json();
-      setDishes(data.dishes);
-      setDishCount(data.dishes.length);
-      setTotalDishCount(data.dishes.length);
+
+      if (res.ok) {
+        const dishes = data.dishes || [];
+        setDishes(dishes);
+        setDishCount(dishes.length);
+        setTotalDishCount(dishes.length);
+      } else {
+        console.error(
+          "Failed to fetch dishes:",
+          data.message || res.statusText
+        );
+      }
     } catch (err) {
       console.error("Error fetching dishes:", err);
     }

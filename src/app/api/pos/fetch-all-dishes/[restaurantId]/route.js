@@ -37,7 +37,7 @@ export async function GET(req, { params }) {
     const dishes = await Dish.find({ restaurantId }).exec();
 
     if (!dishes || dishes.length === 0) {
-      return NextResponse.json({ message: "No dishes found" }, { status: 404 });
+      return NextResponse.json({ dishes: [] }, { status: 200 });
     }
 
     return NextResponse.json({ dishes }, { status: 200 });
