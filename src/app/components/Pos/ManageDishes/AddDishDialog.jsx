@@ -50,7 +50,7 @@ const AddDishDialog = ({ children, onDishAdded, fetchByCategory }) => {
   const { restaurant } = useRestaurantContext();
 
   //State that saves categoryId
-  const { categoryId, setCategoryId } = useRestaurantContext();
+  const { categoryId } = useRestaurantContext();
 
   //State that saves categories
   const { categories } = useRestaurantContext();
@@ -133,8 +133,16 @@ const AddDishDialog = ({ children, onDishAdded, fetchByCategory }) => {
   };
 
   //If categoryId is not null, fetch the category name
+  // useEffect(() => {
+  //   if (!categoryId) return;
+  //   fetchCategoryName();
+  // }, [categoryId, isOpen]);
+
   useEffect(() => {
-    if (!categoryId) return;
+    if (!categoryId) {
+      setCategoryName("");
+      return;
+    }
     fetchCategoryName();
   }, [categoryId, isOpen]);
 
