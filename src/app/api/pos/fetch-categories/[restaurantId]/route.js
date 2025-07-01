@@ -81,13 +81,6 @@ export async function GET(req, { params }) {
     // Fetch categories
     const categories = await Category.find({ restaurantId });
 
-    if (!categories.length) {
-      return NextResponse.json(
-        { error: "No categories found for this restaurant" },
-        { status: 404 }
-      );
-    }
-
     // Add dishCount to each category
     const categoriesWithDishCount = await Promise.all(
       categories.map(async (category) => {
