@@ -78,7 +78,7 @@ const AddDishDialog = ({ children, onDishAdded, fetchByCategory }) => {
         body: JSON.stringify({
           name: dishName,
           description: description,
-          categoryName: categoryName,
+          categoryName: categoryName || "Uncategorized",
           emoji: emoji,
           price: price,
           available: available,
