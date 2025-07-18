@@ -18,8 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useRestaurantContext } from "@/context/RestaurantContext";
-import { LoaderCircle } from "lucide-react";
-import { TriangleAlert } from "lucide-react";
+import { LoaderCircle, TriangleAlert } from "lucide-react";
 
 const AddDishDialog = ({ children, onDishAdded, fetchByCategory }) => {
   //State to save dish name
@@ -132,12 +131,6 @@ const AddDishDialog = ({ children, onDishAdded, fetchByCategory }) => {
     }
   };
 
-  //If categoryId is not null, fetch the category name
-  // useEffect(() => {
-  //   if (!categoryId) return;
-  //   fetchCategoryName();
-  // }, [categoryId, isOpen]);
-
   useEffect(() => {
     if (!categoryId) {
       setCategoryName("");
@@ -189,11 +182,17 @@ const AddDishDialog = ({ children, onDishAdded, fetchByCategory }) => {
                   <SelectValue placeholder="Select a category" />
                 </SelectTrigger>
                 <SelectContent>
-                  {categories.map((category) => (
-                    <SelectItem key={category._id} value={category._id}>
-                      {category.name}
-                    </SelectItem>
-                  ))}
+                  {categories.length > 0 ? (
+                    categories.map((category) => (
+                      <SelectItem key={category._id} value={category._id}>
+                        {category.name}
+                      </SelectItem>
+                    ))
+                  ) : (
+                    <div className="px-2 py-1 text-xs text-gray-500">
+                      No categories found
+                    </div>
+                  )}
                 </SelectContent>
               </Select>
             </div>
