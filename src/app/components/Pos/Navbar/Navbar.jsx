@@ -2,12 +2,14 @@
 
 import { useEffect, useState } from "react";
 import styles from "./Navbar.module.css";
-import { Bell } from "lucide-react";
+import { Bell, ChevronDown } from "lucide-react";
 import { useAuthContext } from "@/context/AuthContext";
+import { useRestaurantContext } from "@/context/RestaurantContext";
 
 const Navbar = () => {
   const [user, setUser] = useState({ firstname: "", lastname: "" });
-  const { loggedInUser, setLoggedInUser } = useAuthContext();
+  const { loggedInUser } = useAuthContext();
+  const { restaurantName } = useRestaurantContext();
 
   useEffect(() => {
     if (!loggedInUser) return;
@@ -48,6 +50,15 @@ const Navbar = () => {
         <div className={styles.adminContainer}>
           <div className={styles.bellIconContainer}>
             <Bell className={styles.bellIcon} />
+          </div>
+          <div className={styles.restaurantContainer}>
+            <div className={styles.userName}>
+              <div className={styles.name}>Managing</div>
+              <div className={styles.role}>
+                {restaurantName}
+                <ChevronDown className="w-3 h-3 cursor-pointer" />
+              </div>
+            </div>
           </div>
           <div className={styles.userContainer}>
             <div className={styles.avatarContainer}>

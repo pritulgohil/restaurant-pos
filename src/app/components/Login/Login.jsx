@@ -35,7 +35,8 @@ const Login = () => {
   const [signupState, setSignupState] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
   const { loggedInUser, setLoggedInUser } = useAuthContext();
-  const { setRestaurant } = useRestaurantContext();
+  const { restaurantName, setRestaurantName, setRestaurant } =
+    useRestaurantContext();
 
   const form = useForm({
     resolver: zodResolver(FormSchema),
@@ -108,6 +109,7 @@ const Login = () => {
       if (Array.isArray(data) && data.length > 0) {
         // Save restaurantId in state on login
         setRestaurant(data[0]._id);
+        setRestaurantName(data[0].restaurantName);
       } else {
         console.warn("No restaurant found or data is not an array");
       }

@@ -5,6 +5,7 @@ import { createContext, useState, useContext, useEffect } from "react";
 const RestaurantContext = createContext();
 
 export const RestaurantProvider = ({ children }) => {
+  const [restaurantName, setRestaurantName] = useState("");
   const [restaurant, setRestaurant] = useState(null);
   const [categoryId, setCategoryId] = useState(null);
   const [categories, setCategories] = useState([]);
@@ -52,6 +53,8 @@ export const RestaurantProvider = ({ children }) => {
   return (
     <RestaurantContext.Provider
       value={{
+        restaurantName,
+        setRestaurantName,
         restaurant,
         setRestaurant,
         categoryId,
