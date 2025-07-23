@@ -5,23 +5,33 @@ import { createContext, useState, useContext, useEffect } from "react";
 const RestaurantContext = createContext();
 
 export const RestaurantProvider = ({ children }) => {
-  const [restaurantName, setRestaurantName] = useState("");
-  const [restaurant, setRestaurant] = useState(null);
+  const [restaurantName, setRestaurantName] = useState(() => {
+    // Load initial value from localStorage
+    const stored = localStorage.getItem("restaurantName");
+    return stored ? JSON.parse(stored) : "";
+  });
+
+  const [restaurant, setRestaurant] = useState(() => {
+    const stored = localStorage.getItem("restaurant");
+    return stored ? JSON.parse(stored) : null;
+  });
+
   const [categoryId, setCategoryId] = useState(null);
   const [categories, setCategories] = useState([]);
   const [dishes, setDishes] = useState([]);
   const [totalDishCount, setTotalDishCount] = useState(0);
   const [categoryName, setCategoryName] = useState("");
 
+  // Sync restaurantName to localStorage
   useEffect(() => {
-    const storedRestaurant = localStorage.getItem("restaurant");
-    if (storedRestaurant) {
-      setRestaurant(JSON.parse(storedRestaurant));
+    if (restaurantName) {
+      localStorage.setItem("restaurantName", JSON.stringify(restaurantName));
     } else {
-      setRestaurant(null);
+      localStorage.removeItem("restaurantName");
     }
-  }, []);
+  }, [restaurantName]);
 
+  // Sync restaurant to localStorage
   useEffect(() => {
     if (restaurant) {
       localStorage.setItem("restaurant", JSON.stringify(restaurant));
@@ -30,7 +40,6 @@ export const RestaurantProvider = ({ children }) => {
     }
   }, [restaurant]);
 
-  // Fetch categories and total dish count
   const fetchCategories = async () => {
     const token = localStorage.getItem("token");
     try {

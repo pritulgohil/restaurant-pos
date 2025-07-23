@@ -70,8 +70,6 @@ const Login = () => {
         localStorage.setItem("loggedInUser", result.user.userId);
         setLoggedInUser(result.user.userId);
 
-        fetchRestaurant();
-
         // Navigate to /pos on successful login
         setTimeout(() => {
           router.push("/pos");
