@@ -49,7 +49,13 @@ const CategorySidebar = () => {
               </div>
             </div>
             <div className={styles.rightSideContainer}>
-              <div className={styles.itemCount}>{totalDishCount}</div>
+              <div
+                className={`${styles.itemCount} ${
+                  categoryId === null ? styles.selectedItemCount : ""
+                }`}
+              >
+                {totalDishCount}
+              </div>
             </div>
           </div>
           {categories.map((category) => (
@@ -67,7 +73,11 @@ const CategorySidebar = () => {
                 </div>
               </div>
               <div className={styles.rightSideContainer}>
-                <div className={styles.itemCount}>
+                <div
+                  className={`${styles.itemCount} ${
+                    categoryId === category._id ? styles.selectedItemCount : ""
+                  }`}
+                >
                   {category.dishCount || 0}
                 </div>
               </div>

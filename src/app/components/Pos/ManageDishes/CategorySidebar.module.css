@@ -82,6 +82,11 @@
   border-radius: 200px;
 }
 
+.selectedItemCount {
+  background-color: black;
+  color: rgb(240, 240, 240);
+}
+
 .textArea {
   width: 278px;
 }
