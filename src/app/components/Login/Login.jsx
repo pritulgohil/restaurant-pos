@@ -35,8 +35,7 @@ const Login = () => {
   const [signupState, setSignupState] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
   const { loggedInUser, setLoggedInUser } = useAuthContext();
-  const { restaurantName, setRestaurantName, setRestaurant } =
-    useRestaurantContext();
+  const { setRestaurantName, setRestaurant } = useRestaurantContext();
 
   const form = useForm({
     resolver: zodResolver(FormSchema),
@@ -70,6 +69,8 @@ const Login = () => {
         // Saving logged in UserID in localStorage and state
         localStorage.setItem("loggedInUser", result.user.userId);
         setLoggedInUser(result.user.userId);
+
+        fetchRestaurant();
 
         // Navigate to /pos on successful login
         setTimeout(() => {
