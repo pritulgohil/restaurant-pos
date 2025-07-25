@@ -61,3 +61,21 @@
   align-items: center;
   gap: 4px;
 }
+
+.menuContainer {
+  padding: 4px;
+  width: 200px;
+  gap: 6px;
+  display: flex;
+  flex-direction: column;
+}
+
+.menuItem {
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 10px;
+}
