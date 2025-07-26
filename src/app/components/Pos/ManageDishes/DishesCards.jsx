@@ -53,9 +53,6 @@ const Dishes = () => {
   //state for total dish count
   const [dishCount, setDishCount] = useState(0);
 
-  //state to save categoryname based on categorySidebar category selection
-  // const [categoryName, setCategoryName] = useState("");
-
   //state to handle delete dialog visibility
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
@@ -70,6 +67,9 @@ const Dishes = () => {
 
   // state holds the dish data to be edited and passed to the EditDishDialog
   const [editDishData, setEditDishData] = useState(null);
+
+  //state to handle search input
+  const [searchQuery, setSearchQuery] = useState(""); // search state for dishes
 
   //restaurant has restaurantId, categoryId has objectId, dishes has array of dishes, setDishes is setter function to set dishes
   const {
@@ -183,6 +183,15 @@ const Dishes = () => {
     setDeleteDialogOpen(true);
   };
 
+  // filter dishes based on search input
+  const filteredDishes = dishes.filter((dish) => {
+    const query = searchQuery.toLowerCase();
+    return (
+      dish.name.toLowerCase().includes(query) ||
+      dish.categoryName?.toLowerCase().includes(query)
+    );
+  });
+
   return (
     <>
       <div className={styles.mainContainer}>
@@ -198,6 +207,8 @@ const Dishes = () => {
                 type="text"
                 className={styles.searchInput}
                 placeholder="Search dishes"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
             {/* Triggers dialog and runs either of two functions to fetch updated dishes */}
@@ -300,7 +311,7 @@ const Dishes = () => {
             </AddDishDialog>
 
             {/* Map through dishes and display them in card format */}
-            {dishes.map((dish, index) => (
+            {filteredDishes.map((dish, index) => (
               <div
                 key={index}
                 className={`${
