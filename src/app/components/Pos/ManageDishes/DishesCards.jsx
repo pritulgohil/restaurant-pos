@@ -265,12 +265,12 @@ const Dishes = () => {
                 </Button>
               </div>
               {/* Not implement yet */}
-              <div className={styles.filterContainer}>
+              {/* <div className={styles.filterContainer}>
                 <Button variant="ghost" className={styles.filterButton}>
                   <SlidersHorizontal className={styles.filterIcon} />
                   Filter
                 </Button>
-              </div>
+              </div> */}
               {/* Not implemented yet */}
             </div>
           </div>
