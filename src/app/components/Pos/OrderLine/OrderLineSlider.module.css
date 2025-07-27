@@ -1,0 +1,63 @@
+.mainContainer {
+  padding: 24px;
+  width: 100%;
+}
+
+.header {
+  font-family: "Epilogue";
+  font-weight: 400;
+  font-size: 18px;
+}
+
+.capsuleContainer {
+  margin-top: 12px;
+  display: flex;
+  gap: 12px;
+}
+
+.capsule {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: 2px solid #16a19c;
+  padding: 6px 20px;
+  border-radius: 9999px;
+  cursor: pointer;
+}
+
+.capsuleText {
+  font-size: 12px;
+}
+
+.capsuleNumber {
+  font-size: 12px;
+  background-color: #16a19c;
+  color: white;
+  padding: 12px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.inactiveCapsule {
+  border-color: gainsboro;
+}
+
+.dineIn {
+  background-color: #125c58;
+}
+
+.waitlist {
+  background-color: #cc6540;
+}
+
+.takeaway {
+  background-color: #693086;
+}
+
+.served {
+  background-color: #043605;
+}
