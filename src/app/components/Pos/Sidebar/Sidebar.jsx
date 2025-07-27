@@ -62,7 +62,7 @@ const Sidebar = () => {
                   ? styles.active
                   : styles.sidebarItem
               }`}
-              onClick={() => handleNavigation("/pos/manage-dishes")}
+              onClick={() => handleNavigation("/pos/order-line")}
             >
               <ArrowRightLeft className={styles.sidebarIcon} />
               Order Line
