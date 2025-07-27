@@ -4,13 +4,9 @@
 
 // Description: This component is responsible for displaying the dishes in a card format. It also handles the addition, deletion, and editing of dishes. It also supports grid and list views for displaying the dishes. The component fetches data from the API to display the dishes and their details, including name, price, and availability status.
 
-// (1) Remaining Tasks: Filter functionality is not implemented yet.
+// (1) Remaining Task: Filter functionality is not implemented yet.
 
-// (2) Remaining Task: The component also includes a search bar for searching dishes, but the search functionality is not implemented yet.
-
-// (3) Remaining Task: It should also handle the category deletion and edit functionality, but these features are not implemented yet.
-
-// (4) Remaining Task: Component is lengthy, should be broken down wherever possible for maintainability and readability.
+// (2) Remaining Task: Component is lengthy, should be broken down wherever possible for maintainability and readability.
 
 // Remarks: After completing above tasks, the DishesCards.jsx will be fully functional until further update.
 
@@ -27,7 +23,6 @@ import {
   SquarePlus,
   LayoutGrid,
   List,
-  SlidersHorizontal,
   ChevronDown,
   SquarePen,
   Trash2,
