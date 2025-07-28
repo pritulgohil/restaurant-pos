@@ -1,11 +1,16 @@
 "use client";
 
+import styles from "./page.module.css";
 import OrderLineSlider from "@/app/components/Pos/OrderLine/OrderLineSlider";
 
 const page = () => {
   return (
     <>
-      <OrderLineSlider />
+      <div className={styles.mainContainer}>
+        <div className={styles.leftSide}>
+          <OrderLineSlider />
+        </div>
+      </div>
     </>
   );
 };

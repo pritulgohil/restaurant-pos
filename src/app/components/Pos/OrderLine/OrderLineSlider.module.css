@@ -51,13 +51,104 @@
 }
 
 .waitlist {
-  background-color: #cc6540;
+  background-color: #cc6540 !important;
 }
 
 .takeaway {
-  background-color: #693086;
+  background-color: #693086 !important;
 }
 
 .served {
   background-color: #043605;
+}
+
+.cardContainer {
+  margin-top: 24px;
+  display: flex;
+  gap: 12px;
+  overflow-x: auto; /* Makes it scrollable horizontally */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scroll-behavior: smooth;
+}
+
+.cardContainer::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.cardSliderContainer {
+  position: relative;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #c4e8e2;
+  width: 24.2%; /* Equal width and height */
+  height: 120px;
+  padding: 14px;
+  border-radius: 12px;
+  flex-shrink: 0; /* Prevents cards from shrinking */
+}
+
+.waitListCard {
+  background-color: #ffe2de;
+}
+
+.takeawayCard {
+  background-color: #e8d4ed;
+}
+
+.cardTop {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+}
+
+.cardMiddle {
+  font-weight: 600;
+}
+
+.cardBottom {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  align-items: center;
+}
+
+.statusPill {
+  color: white;
+  padding: 4px 8px;
+  font-size: 10px;
+  border-radius: 9999px;
+  background-color: #0e5f5c;
+}
+
+.rightButton {
+  position: absolute;
+  right: -15px;
+  top: 0; /* Optional: Stick to top within container */
+  z-index: 1; /* Ensure it's above the cards */
+  cursor: pointer;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.leftButton {
+  position: absolute;
+  left: -15px;
+  top: 0; /* Optional: Stick to top within container */
+  z-index: 1; /* Ensure it's above the cards */
+  cursor: pointer;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 1600px) {
+  .card {
+    width: 32.5%;
+  }
 }
