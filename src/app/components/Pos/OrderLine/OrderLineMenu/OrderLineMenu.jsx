@@ -45,73 +45,74 @@ const OrderLineMenu = () => {
 
   return (
     <div className={styles.mainContainer}>
-      <div className={styles.header}>
-        <h2>Foodies Menu</h2>
-        <div className={styles.navigators}>
-          <ChevronLeft
-            strokeWidth={1.5}
-            onClick={() => scroll("left")}
-            className={`cursor-pointer transition-opacity ${
-              canScrollLeft ? "text-gray-600" : "text-gray-300"
-            }`}
-          />
-          <ChevronRight
-            strokeWidth={1.5}
-            onClick={() => scroll("right")}
-            className={`cursor-pointer transition-opacity ${
-              canScrollRight ? "text-gray-600" : "text-gray-300"
-            }`}
-          />
+      <div className={styles.stickyTopContainer}>
+        <div className={styles.header}>
+          <h2>Foodies Menu</h2>
+          <div className={styles.navigators}>
+            <ChevronLeft
+              strokeWidth={1.5}
+              onClick={() => scroll("left")}
+              className={`cursor-pointer transition-opacity ${
+                canScrollLeft ? "text-gray-600" : "text-gray-300"
+              }`}
+            />
+            <ChevronRight
+              strokeWidth={1.5}
+              onClick={() => scroll("right")}
+              className={`cursor-pointer transition-opacity ${
+                canScrollRight ? "text-gray-600" : "text-gray-300"
+              }`}
+            />
+          </div>
+        </div>
+
+        <div className={styles.categoriesCardContainer} ref={scrollRef}>
+          <div className={styles.categoryCard}>
+            <div className={styles.categoryImage}>❤️</div>
+            <div className={styles.categoryDetails}>
+              <div className={styles.categoryName}>All Menu</div>
+              <div className={styles.categoryCount}>154 items</div>
+            </div>
+          </div>
+          <div className={`${styles.categoryCard} ${styles.inactive}`}>
+            <div className={styles.categoryImage}>🍔</div>
+            <div className={styles.categoryDetails}>
+              <div className={styles.categoryName}>Special</div>
+              <div className={styles.categoryCount}>79 items</div>
+            </div>
+          </div>
+          <div className={`${styles.categoryCard} ${styles.inactive}`}>
+            <div className={styles.categoryImage}>🍟</div>
+            <div className={styles.categoryDetails}>
+              <div className={styles.categoryName}>Soups</div>
+              <div className={styles.categoryCount}>23 items</div>
+            </div>
+          </div>
+          <div className={`${styles.categoryCard} ${styles.inactive}`}>
+            <div className={styles.categoryImage}>🍨</div>
+            <div className={styles.categoryDetails}>
+              <div className={styles.categoryName}>Desserts</div>
+              <div className={styles.categoryCount}>15 items</div>
+            </div>
+          </div>
+          <div className={`${styles.categoryCard} ${styles.inactive}`}>
+            <div className={styles.categoryImage}>🍕</div>
+            <div className={styles.categoryDetails}>
+              <div className={styles.categoryName}>Chicken</div>
+              <div className={styles.categoryCount}>8 items</div>
+            </div>
+          </div>
+          <div className={`${styles.categoryCard} ${styles.inactive}`}>
+            <div className={styles.categoryImage}>🥩</div>
+            <div className={styles.categoryDetails}>
+              <div className={styles.categoryName}>Meat</div>
+              <div className={styles.categoryCount}>18 items</div>
+            </div>
+          </div>
         </div>
       </div>
-
-      <div className={styles.categoriesCardContainer} ref={scrollRef}>
-        <div className={styles.categoryCard}>
-          <div className={styles.categoryImage}>❤️</div>
-          <div className={styles.categoryDetails}>
-            <div className={styles.categoryName}>All Menu</div>
-            <div className={styles.categoryCount}>154 items</div>
-          </div>
-        </div>
-        <div className={`${styles.categoryCard} ${styles.inactive}`}>
-          <div className={styles.categoryImage}>🍔</div>
-          <div className={styles.categoryDetails}>
-            <div className={styles.categoryName}>Special</div>
-            <div className={styles.categoryCount}>79 items</div>
-          </div>
-        </div>
-        <div className={`${styles.categoryCard} ${styles.inactive}`}>
-          <div className={styles.categoryImage}>🍟</div>
-          <div className={styles.categoryDetails}>
-            <div className={styles.categoryName}>Soups</div>
-            <div className={styles.categoryCount}>23 items</div>
-          </div>
-        </div>
-        <div className={`${styles.categoryCard} ${styles.inactive}`}>
-          <div className={styles.categoryImage}>🍨</div>
-          <div className={styles.categoryDetails}>
-            <div className={styles.categoryName}>Desserts</div>
-            <div className={styles.categoryCount}>15 items</div>
-          </div>
-        </div>
-        <div className={`${styles.categoryCard} ${styles.inactive}`}>
-          <div className={styles.categoryImage}>🍕</div>
-          <div className={styles.categoryDetails}>
-            <div className={styles.categoryName}>Chicken</div>
-            <div className={styles.categoryCount}>8 items</div>
-          </div>
-        </div>
-        <div className={`${styles.categoryCard} ${styles.inactive}`}>
-          <div className={styles.categoryImage}>🥩</div>
-          <div className={styles.categoryDetails}>
-            <div className={styles.categoryName}>Meat</div>
-            <div className={styles.categoryCount}>18 items</div>
-          </div>
-        </div>
-      </div>
-
       <div className={styles.menuCardContainer}>
-        {Array.from({ length: 20 }).map((_, index) => (
+        {Array.from({ length: 30 }).map((_, index) => (
           <div key={index} className={styles.menuCard}>
             <div className={styles.cardEmoji}>🍔</div>
             <div className={styles.menuCategory}>Lunch</div>

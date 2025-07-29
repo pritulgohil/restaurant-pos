@@ -1,5 +1,6 @@
 .mainContainer {
   display: flex;
+  gap: 28px;
 }
 
 .sidebarContainer {
@@ -8,4 +9,5 @@
 
 .componentContainer {
   width: 100%;
+  margin-top: 68px;
 }

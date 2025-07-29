@@ -5,6 +5,8 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  position: fixed;
+  top: 66px;
 }
 
 .topSidebar {
