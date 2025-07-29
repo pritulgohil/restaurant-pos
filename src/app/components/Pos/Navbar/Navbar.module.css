@@ -6,7 +6,7 @@
   position: fixed;
   width: 100%;
   background-color: white;
-  z-index: 1000;
+  z-index: 10;
 }
 
 .logoContainer {
@@ -72,6 +72,7 @@
   gap: 6px;
   display: flex;
   flex-direction: column;
+  z-index: 1000;
 }
 
 .menuItem {
