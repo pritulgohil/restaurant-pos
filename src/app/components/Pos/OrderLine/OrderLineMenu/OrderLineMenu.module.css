@@ -1,5 +1,8 @@
 .mainContainer {
   padding: 24px;
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Full viewport height */
 }
 
 .header {
@@ -57,4 +60,66 @@
 .categoryCount {
   font-size: 10px;
   color: gray;
+}
+
+.menuCardContainer {
+  margin-top: 24px;
+  display: flex;
+  gap: 12px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-behavior: smooth;
+  flex-wrap: wrap;
+  flex: 1; /* Takes all remaining height */
+  min-height: 0; /* Prevent overflow issues */
+}
+
+.menuCard {
+  width: 18.8%;
+  height: 150px;
+  border: 1px solid gainsboro;
+  padding: 12px 12px 150px 12px;
+  border-radius: 8px;
+}
+
+.cardEmoji {
+  font-size: 44px;
+}
+
+.menuCategory {
+  font-size: 12px;
+  color: gray;
+}
+
+.itemName {
+  font-size: 14px;
+}
+
+.priceQuantityContainer {
+  margin-top: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.quantity {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.quantityText {
+  font-size: 12px;
+}
+
+.minusContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

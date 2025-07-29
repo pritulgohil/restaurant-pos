@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import styles from "./OrderLineMenu.module.css";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Minus, Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const OrderLineMenu = () => {
   const scrollRef = useRef(null);
@@ -107,6 +108,32 @@ const OrderLineMenu = () => {
             <div className={styles.categoryCount}>18 items</div>
           </div>
         </div>
+      </div>
+
+      <div className={styles.menuCardContainer}>
+        {Array.from({ length: 20 }).map((_, index) => (
+          <div key={index} className={styles.menuCard}>
+            <div className={styles.cardEmoji}>🍔</div>
+            <div className={styles.menuCategory}>Lunch</div>
+            <div className={styles.itemName}>Grilled Burger</div>
+            <div className={styles.priceQuantityContainer}>
+              <div className={styles.price}>$15.00</div>
+              <div className={styles.quantity}>
+                <div className={styles.minusContainer}>
+                  <Button className="w-4 h-4 rounded-full bg-gray-200 shadow-none text-black p-0 hover:bg-gray-300">
+                    <Minus className="w-[10px] h-[10px]" />
+                  </Button>
+                </div>
+                <div className={styles.quantityText}>0</div>
+                <div className={styles.minusContainer}>
+                  <Button className="w-4 h-4 rounded-full bg-emerald-600 shadow-none text-white p-0 hover:bg-emerald-700">
+                    <Plus className="w-[10px] h-[10px]" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
