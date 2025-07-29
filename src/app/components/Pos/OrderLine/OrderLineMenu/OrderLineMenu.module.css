@@ -1,0 +1,60 @@
+.mainContainer {
+  padding: 24px;
+}
+
+.header {
+  font-family: "Epilogue";
+  font-weight: 400;
+  font-size: 18px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.navigators {
+  display: flex;
+  gap: 4px;
+}
+
+.categoriesCardContainer {
+  margin-top: 12px;
+  display: flex;
+  gap: 12px;
+  overflow-x: auto; /* Makes it scrollable horizontally */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scroll-behavior: smooth;
+}
+
+.categoriesCardContainer::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.categoryCard {
+  display: inline-flex;
+  gap: 12px;
+  align-items: center;
+  border: 1.5px solid #16a19c;
+  width: 18.8%;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  flex-shrink: 0; /* Prevents shrinking inside a flex container */
+  flex-grow: 0;
+}
+
+.inactive {
+  border-color: gainsboro;
+}
+
+.categoryImage {
+  font-size: 20px;
+}
+
+.categoryName {
+  font-size: 12px;
+}
+
+.categoryCount {
+  font-size: 10px;
+  color: gray;
+}

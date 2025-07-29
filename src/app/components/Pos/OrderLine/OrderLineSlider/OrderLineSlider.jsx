@@ -61,7 +61,9 @@ const OrderLineSlider = () => {
 
   return (
     <div className={styles.mainContainer}>
-      <div className={styles.header}>Order Line</div>
+      <div className={styles.header}>
+        <h2>Order Line</h2>
+      </div>
 
       <div className={styles.capsuleContainer}>
         <div className={styles.capsule}>
