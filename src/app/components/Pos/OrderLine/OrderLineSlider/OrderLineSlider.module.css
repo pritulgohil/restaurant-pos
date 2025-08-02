@@ -66,14 +66,14 @@
   margin-top: 24px;
   display: flex;
   gap: 12px;
-  overflow-x: auto; /* Makes it scrollable horizontally */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   scroll-behavior: smooth;
 }
 
 .cardContainer::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
+  display: none;
 }
 
 .cardSliderContainer {
@@ -85,11 +85,11 @@
   flex-direction: column;
   justify-content: space-between;
   background-color: #c4e8e2;
-  width: 24.2%; /* Equal width and height */
+  width: 24.2%;
   height: 120px;
   padding: 14px;
   border-radius: 12px;
-  flex-shrink: 0; /* Prevents cards from shrinking */
+  flex-shrink: 0;
 }
 
 .waitListCard {
@@ -128,8 +128,8 @@
 .rightButton {
   position: absolute;
   right: -15px;
-  top: 0; /* Optional: Stick to top within container */
-  z-index: 1; /* Ensure it's above the cards */
+  top: 0;
+  z-index: 1;
   cursor: pointer;
   height: 100%;
   display: flex;
@@ -139,8 +139,8 @@
 .leftButton {
   position: absolute;
   left: -15px;
-  top: 0; /* Optional: Stick to top within container */
-  z-index: 1; /* Ensure it's above the cards */
+  top: 0;
+  z-index: 1;
   cursor: pointer;
   height: 100%;
   display: flex;
