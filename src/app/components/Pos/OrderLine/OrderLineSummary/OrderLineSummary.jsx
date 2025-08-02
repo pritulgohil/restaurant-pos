@@ -106,10 +106,6 @@ const OrderLineSummary = () => {
           <div className={styles.sectionHeader}>Payment Method</div>
           <div className={styles.paymentCardContainer}>
             <div className={styles.paymentCard}>
-              {/* <div className={styles.paymentIcon}>
-                <Receipt size={16} />
-              </div>
-              <div className={styles.paymentName}>Cash</div> */}
               <Button className="w-full" variant="outline">
                 <Receipt />
                 Cash
