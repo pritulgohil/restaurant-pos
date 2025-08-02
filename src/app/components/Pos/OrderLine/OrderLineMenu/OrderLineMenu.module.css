@@ -2,7 +2,7 @@
   padding: 24px;
   display: flex;
   flex-direction: column;
-  height: 100vh; /* Full viewport height */
+  height: 100vh;
 }
 
 .header {
@@ -22,14 +22,14 @@
   margin-top: 12px;
   display: flex;
   gap: 12px;
-  overflow-x: auto; /* Makes it scrollable horizontally */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   scroll-behavior: smooth;
 }
 
 .categoriesCardContainer::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
+  display: none;
 }
 
 .categoryCard {
@@ -37,11 +37,11 @@
   gap: 12px;
   align-items: center;
   border: 1.5px solid #16a19c;
-  width: 18.8%;
+  width: 19.1%;
   padding: 6px 10px;
   border-radius: 6px;
   cursor: pointer;
-  flex-shrink: 0; /* Prevents shrinking inside a flex container */
+  flex-shrink: 0;
   flex-grow: 0;
 }
 
@@ -70,12 +70,12 @@
   -ms-overflow-style: none;
   scroll-behavior: smooth;
   flex-wrap: wrap;
-  flex: 1; /* Takes all remaining height */
-  min-height: 0; /* Prevent overflow issues */
+  flex: 1;
+  min-height: 0;
 }
 
 .menuCard {
-  width: 18.8%;
+  width: 19.1%;
   height: 150px;
   border: 1px solid gainsboro;
   padding: 12px 12px 150px 12px;
@@ -126,7 +126,21 @@
 .stickyTopContainer {
   position: sticky;
   top: 100px;
-  z-index: 10; /* adjust as needed to appear above other content */
+  z-index: 10;
   padding-bottom: 16px;
   background-color: white;
+}
+
+@media (max-width: 1600px) {
+  .stickyTopContainer {
+    width: 100%;
+  }
+
+  .categoryCard {
+    width: 18.8%;
+  }
+
+  .menuCard {
+    width: 18.8%;
+  }
 }
