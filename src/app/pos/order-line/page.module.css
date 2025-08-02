@@ -7,7 +7,10 @@
 }
 
 .rightSide {
-  width: 30%;
+  width: 26%;
   background-color: whitesmoke;
   padding: 24px;
+  overflow: hidden;
+  position: fixed;
+  right: 0;
 }

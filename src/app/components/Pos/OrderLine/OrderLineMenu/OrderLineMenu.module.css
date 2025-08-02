@@ -26,6 +26,7 @@
   scrollbar-width: none;
   -ms-overflow-style: none;
   scroll-behavior: smooth;
+  width: 100%;
 }
 
 .categoriesCardContainer::-webkit-scrollbar {

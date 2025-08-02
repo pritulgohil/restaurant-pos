@@ -1,7 +1,42 @@
 .mainContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: calc(100vh - 105px);
+}
+
+.summaryTopContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.summaryBottomContainer {
+  padding-bottom: 24px;
+  display: flex;
+  gap: 12px;
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+}
+
+.printButton {
+  width: 25%;
+}
+
+.placeOrderButton {
+  width: 75%;
+}
+
+.topCard {
   padding: 16px;
   background-color: white;
-  height: 650px;
+  border-radius: 12px;
+}
+
+.bottomCard {
+  padding: 16px;
+  background-color: white;
   border-radius: 12px;
 }
 
@@ -57,10 +92,37 @@
 
 .orderPrice {
   font-size: 12px;
+  font-weight: 500;
 }
 
 .orderEntry {
   margin-top: 12px;
   display: flex;
   justify-content: space-between;
+}
+
+.orderQuantity {
+  color: gray;
+}
+
+.orderName {
+  color: gray;
+}
+
+.totalPayment {
+  font-weight: 500;
+}
+
+.paymentCardContainer {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+}
+
+.paymentCard {
+  width: 50%;
+}
+
+.paymentName {
+  font-size: 12px;
 }
