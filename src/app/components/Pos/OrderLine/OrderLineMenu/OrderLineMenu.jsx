@@ -178,7 +178,7 @@ const OrderLineMenu = () => {
               <div className={styles.menuCategory}>{dish.categoryName}</div>
               <div className={styles.itemName}>{dish.name}</div>
               <div className={styles.priceQuantityContainer}>
-                <div className={styles.price}>${dish.price}</div>
+                <div className={styles.price}>${dish.price.toFixed(2)}</div>
                 <div className={styles.quantity}>
                   <div className={styles.minusContainer}>
                     <Button

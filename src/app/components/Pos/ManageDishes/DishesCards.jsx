@@ -275,7 +275,7 @@ const Dishes = () => {
                       listView ? styles.dishPriceList : styles.dishPrice
                     }
                   >
-                    ${dish.price}
+                    ${dish.price.toFixed(2)}
                   </div>
                 </div>
                 {!dish.available && (

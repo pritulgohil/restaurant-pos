@@ -9,8 +9,11 @@ import {
   Mouse,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useRestaurantContext } from "@/context/RestaurantContext";
 
 const OrderLineSummary = () => {
+  const { dishQuantities } = useRestaurantContext();
+
   return (
     <div className={styles.mainContainer}>
       <div className={styles.summaryTopContainer}>
@@ -39,7 +42,21 @@ const OrderLineSummary = () => {
                 <div className={styles.totalItems}>06</div>
               </div>
               <div className={styles.orderBottomContainer}>
-                <div className={styles.orderEntry}>
+                {Object.values(dishQuantities).map((dish, index) => (
+                  <div key={index} className={styles.orderEntry}>
+                    <div className={styles.orderItems}>
+                      <div className={styles.orderQuantity}>
+                        {dish.quantity}x
+                      </div>
+                      <div className={styles.orderName}>{dish.name}</div>
+                    </div>
+                    <div className={styles.orderPrice}>
+                      ${(dish.price * dish.quantity).toFixed(2)}
+                    </div>
+                  </div>
+                ))}
+
+                {/* <div className={styles.orderEntry}>
                   <div className={styles.orderItems}>
                     <div className={styles.orderQuantity}>2x</div>
                     <div className={styles.orderName}>
@@ -70,7 +87,7 @@ const OrderLineSummary = () => {
                     <div className={styles.orderName}>Vegetable Shrimp</div>
                   </div>
                   <div className={styles.orderPrice}>$10.00</div>
-                </div>
+                </div> */}
               </div>
             </div>
             <hr className="border-t border-dashed border-gray-300" />
