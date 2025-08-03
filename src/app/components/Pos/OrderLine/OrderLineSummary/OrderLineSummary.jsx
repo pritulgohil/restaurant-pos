@@ -1,13 +1,6 @@
 import React from "react";
 import styles from "./OrderLineSummary.module.css";
-import {
-  Trash2,
-  Receipt,
-  IdCard,
-  Printer,
-  Mouse,
-  SquarePen,
-} from "lucide-react";
+import { Trash2, Receipt, IdCard, Printer, Mouse } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRestaurantContext } from "@/context/RestaurantContext";
 import { Skeleton } from "@/components/ui/skeleton";
