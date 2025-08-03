@@ -14,6 +14,24 @@ import { useRestaurantContext } from "@/context/RestaurantContext";
 const OrderLineSummary = () => {
   const { dishQuantities } = useRestaurantContext();
 
+  // Calculate subtotal
+  const subtotal = Object.values(dishQuantities).reduce(
+    (sum, dish) => sum + dish.price * dish.quantity,
+    0
+  );
+
+  // Calculate tax at 13%
+  const tax = subtotal * 0.13;
+
+  // Calculate total payable
+  const totalPayable = subtotal + tax;
+
+  // Calculate total number of ordered items
+  const totalItems = Object.values(dishQuantities).reduce(
+    (total, dish) => total + dish.quantity,
+    0
+  );
+
   return (
     <div className={styles.mainContainer}>
       <div className={styles.summaryTopContainer}>
@@ -39,7 +57,7 @@ const OrderLineSummary = () => {
             <div className={styles.orderedItemsContainer}>
               <div className={styles.topContainer}>
                 <div className={styles.sectionHeader}>Ordered Items</div>
-                <div className={styles.totalItems}>06</div>
+                <div className={styles.totalItems}>{totalItems}</div>
               </div>
               <div className={styles.orderBottomContainer}>
                 {Object.values(dishQuantities).map((dish, index) => (
@@ -55,39 +73,6 @@ const OrderLineSummary = () => {
                     </div>
                   </div>
                 ))}
-
-                {/* <div className={styles.orderEntry}>
-                  <div className={styles.orderItems}>
-                    <div className={styles.orderQuantity}>2x</div>
-                    <div className={styles.orderName}>
-                      Pasta with Roast Beef
-                    </div>
-                  </div>
-                  <div className={styles.orderPrice}>$20.00</div>
-                </div>
-                <div className={styles.orderEntry}>
-                  <div className={styles.orderItems}>
-                    <div className={styles.orderQuantity}>2x</div>
-                    <div className={styles.orderName}>Shrimp Rice Bowl</div>
-                  </div>
-                  <div className={styles.orderPrice}>$12.00</div>
-                </div>
-                <div className={styles.orderEntry}>
-                  <div className={styles.orderItems}>
-                    <div className={styles.orderQuantity}>1x</div>
-                    <div className={styles.orderName}>
-                      Apple Stuffed Pancake
-                    </div>
-                  </div>
-                  <div className={styles.orderPrice}>$35.00</div>
-                </div>
-                <div className={styles.orderEntry}>
-                  <div className={styles.orderItems}>
-                    <div className={styles.orderQuantity}>1x</div>
-                    <div className={styles.orderName}>Vegetable Shrimp</div>
-                  </div>
-                  <div className={styles.orderPrice}>$10.00</div>
-                </div> */}
               </div>
             </div>
             <hr className="border-t border-dashed border-gray-300" />
@@ -100,13 +85,15 @@ const OrderLineSummary = () => {
                   <div className={styles.orderItems}>
                     <div className={styles.orderName}>Subtotal</div>
                   </div>
-                  <div className={styles.orderPrice}>$67.00</div>
+                  <div className={styles.orderPrice}>
+                    ${subtotal.toFixed(2)}
+                  </div>
                 </div>
                 <div className={styles.orderEntry}>
                   <div className={styles.orderItems}>
                     <div className={styles.orderName}>Tax</div>
                   </div>
-                  <div className={styles.orderPrice}>$4.00</div>
+                  <div className={styles.orderPrice}>${tax.toFixed(2)}</div>
                 </div>
               </div>
             </div>
@@ -114,7 +101,9 @@ const OrderLineSummary = () => {
             <div className={styles.totalPayable}>
               <div className={styles.topContainer}>
                 <div className={styles.sectionHeader}>Total Payable</div>
-                <div className={styles.totalPayment}>$72.00</div>
+                <div className={styles.totalPayment}>{`$${totalPayable.toFixed(
+                  2
+                )}`}</div>
               </div>
             </div>
           </div>
