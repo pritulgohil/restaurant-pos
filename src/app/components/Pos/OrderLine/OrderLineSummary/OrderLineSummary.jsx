@@ -1,24 +1,17 @@
 import React from "react";
 import styles from "./OrderLineSummary.module.css";
-import {
-  SquarePen,
-  Trash2,
-  Receipt,
-  IdCard,
-  Printer,
-  Mouse,
-  Plus,
-} from "lucide-react";
+import { Trash2, Receipt, IdCard, Printer, Mouse } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRestaurantContext } from "@/context/RestaurantContext";
 import { Skeleton } from "@/components/ui/skeleton";
+import CreateOrderDialog from "./CreateOrderDialog";
 
 const OrderLineSummary = () => {
-  const { dishQuantities, setDishQuantities } = useRestaurantContext();
+  const { orderLine, setOrderLine } = useRestaurantContext();
 
   // Calculate subtotal
-  const subtotal = Object.values(dishQuantities).reduce(
-    (sum, dish) => sum + dish.price * dish.quantity,
+  const subtotal = Object.values(orderLine?.dishes || {}).reduce(
+    (acc, dish) => acc + dish.price * dish.quantity,
     0
   );
 
@@ -29,14 +22,14 @@ const OrderLineSummary = () => {
   const totalPayable = subtotal + tax;
 
   // Calculate total number of ordered items
-  const totalItems = Object.values(dishQuantities).reduce(
+  const totalItems = Object.values(orderLine?.dishes || {}).reduce(
     (total, dish) => total + dish.quantity,
     0
   );
 
   const handleDeleteOrderLine = () => {
     // Your delete logic here
-    setDishQuantities({});
+    setOrderLine({});
   };
 
   return (
@@ -51,9 +44,7 @@ const OrderLineSummary = () => {
                   <Skeleton className="h-4 w-[120px]" />
                 </div>
                 <div className={styles.iconContainer}>
-                  <Button variant="secondary" size="icon" className="size-6">
-                    <Plus />
-                  </Button>
+                  <CreateOrderDialog />
                   <Button
                     variant="secondary"
                     size="icon"
@@ -82,8 +73,8 @@ const OrderLineSummary = () => {
                 <div className={styles.totalItems}>{totalItems}</div>
               </div>
               <div className={styles.orderBottomContainer}>
-                {dishQuantities && Object.values(dishQuantities).length > 0
-                  ? Object.values(dishQuantities).map((dish, index) => (
+                {orderLine?.dishes && Object.values(orderLine.dishes).length > 0
+                  ? Object.values(orderLine.dishes).map((dish, index) => (
                       <div key={index} className={styles.orderEntry}>
                         <div className={styles.orderItems}>
                           <div className={styles.orderQuantity}>
@@ -100,9 +91,9 @@ const OrderLineSummary = () => {
                       <div key={index} className={styles.orderEntry}>
                         <div className={styles.orderItems}>
                           <Skeleton className="h-4 w-[20px]" />
-                          <Skeleton className="h-4 w-[150px]" />
+                          <Skeleton className="h-4 w-[150px] ml-2" />
                         </div>
-                        <Skeleton className="h-4 w-[20px]" />
+                        <Skeleton className="h-4 w-[40px]" />
                       </div>
                     ))}
               </div>

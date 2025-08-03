@@ -14,7 +14,7 @@ export const RestaurantProvider = ({ children }) => {
   const [totalDishCount, setTotalDishCount] = useState(0);
   const [dishCountbyCategory, setDishCountbyCategory] = useState(0);
   const [categoryName, setCategoryName] = useState("");
-  const [dishQuantities, setDishQuantities] = useState({});
+  const [orderLine, setOrderLine] = useState({});
 
   // Load localStorage values on client only
   useEffect(() => {
@@ -172,8 +172,8 @@ export const RestaurantProvider = ({ children }) => {
         orderLineCategoryId,
         setOrderLineCategoryId,
         orderLineFetchDishByCategory,
-        dishQuantities,
-        setDishQuantities,
+        orderLine,
+        setOrderLine,
       }}
     >
       {children}

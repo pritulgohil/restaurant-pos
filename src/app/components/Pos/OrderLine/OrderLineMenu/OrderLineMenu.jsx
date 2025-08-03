@@ -14,8 +14,8 @@ const OrderLineMenu = () => {
     orderLineCategoryId,
     setOrderLineCategoryId,
     orderLineFetchDishByCategory,
-    dishQuantities,
-    setDishQuantities,
+    orderLine,
+    setOrderLine,
   } = useRestaurantContext();
 
   const scrollRef = useRef(null);
@@ -23,41 +23,53 @@ const OrderLineMenu = () => {
   const [canScrollRight, setCanScrollRight] = useState(false);
 
   const incrementQuantity = (dishId, name, price) => {
-    setDishQuantities((prev) => {
-      const existing = prev[dishId] || { quantity: 0, name, price };
+    setOrderLine((prev) => {
+      const prevDishes = prev.dishes || {};
+      const existing = prevDishes[dishId] || { quantity: 0, name, price };
+
       return {
         ...prev,
-        [dishId]: {
-          ...existing,
-          quantity: existing.quantity + 1,
+        dishes: {
+          ...prevDishes,
+          [dishId]: {
+            ...existing,
+            quantity: existing.quantity + 1,
+          },
         },
       };
     });
   };
 
   const decrementQuantity = (dishId) => {
-    setDishQuantities((prev) => {
-      const existing = prev[dishId];
+    setOrderLine((prev) => {
+      const prevDishes = prev.dishes || {};
+      const existing = prevDishes[dishId];
       if (!existing) return prev;
 
       const newQuantity = Math.max(existing.quantity - 1, 0);
 
       if (newQuantity === 0) {
-        const { [dishId]: _, ...rest } = prev;
-        return rest;
+        const { [dishId]: _, ...restDishes } = prevDishes;
+        return {
+          ...prev,
+          dishes: restDishes,
+        };
       }
 
       return {
         ...prev,
-        [dishId]: {
-          ...existing,
-          quantity: newQuantity,
+        dishes: {
+          ...prevDishes,
+          [dishId]: {
+            ...existing,
+            quantity: newQuantity,
+          },
         },
       };
     });
   };
 
-  console.log("Dish Quantities:", dishQuantities);
+  console.log("Dish Quantities:", orderLine);
 
   useEffect(() => {
     fetchCategories();
@@ -164,7 +176,7 @@ const OrderLineMenu = () => {
 
       <div className={styles.menuCardContainer}>
         {dishes.map((dish) => {
-          const quantity = dishQuantities[dish._id]?.quantity || 0;
+          const quantity = orderLine.dishes?.[dish._id]?.quantity || 0;
           const isSelected = quantity > 0;
 
           return (
