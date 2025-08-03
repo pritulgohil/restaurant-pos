@@ -17,25 +17,47 @@ const OrderLineMenu = () => {
     dishQuantities,
     setDishQuantities,
   } = useRestaurantContext();
+
   const scrollRef = useRef(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
 
-  console.log("dishQuantities:", dishQuantities);
-
-  const incrementQuantity = (dishId) => {
-    setDishQuantities((prev) => ({
-      ...prev,
-      [dishId]: (prev[dishId] || 0) + 1,
-    }));
+  const incrementQuantity = (dishId, name, price) => {
+    setDishQuantities((prev) => {
+      const existing = prev[dishId] || { quantity: 0, name, price };
+      return {
+        ...prev,
+        [dishId]: {
+          ...existing,
+          quantity: existing.quantity + 1,
+        },
+      };
+    });
   };
 
   const decrementQuantity = (dishId) => {
-    setDishQuantities((prev) => ({
-      ...prev,
-      [dishId]: Math.max((prev[dishId] || 0) - 1, 0),
-    }));
+    setDishQuantities((prev) => {
+      const existing = prev[dishId];
+      if (!existing) return prev;
+
+      const newQuantity = Math.max(existing.quantity - 1, 0);
+
+      if (newQuantity === 0) {
+        const { [dishId]: _, ...rest } = prev;
+        return rest;
+      }
+
+      return {
+        ...prev,
+        [dishId]: {
+          ...existing,
+          quantity: newQuantity,
+        },
+      };
+    });
   };
+
+  console.log("Dish Quantities:", dishQuantities);
 
   useEffect(() => {
     fetchCategories();
@@ -48,8 +70,6 @@ const OrderLineMenu = () => {
       orderLineFetchDishByCategory();
     }
   }, [orderLineCategoryId]);
-
-  console.log("My Dishes:", dishes);
 
   const updateScrollState = () => {
     const container = scrollRef.current;
@@ -141,9 +161,10 @@ const OrderLineMenu = () => {
           ))}
         </div>
       </div>
+
       <div className={styles.menuCardContainer}>
         {dishes.map((dish) => {
-          const quantity = dishQuantities[dish._id] || 0;
+          const quantity = dishQuantities[dish._id]?.quantity || 0;
           const isSelected = quantity > 0;
 
           return (
@@ -170,7 +191,9 @@ const OrderLineMenu = () => {
                   <div className={styles.quantityText}>{quantity}</div>
                   <div className={styles.minusContainer}>
                     <Button
-                      onClick={() => incrementQuantity(dish._id)}
+                      onClick={() =>
+                        incrementQuantity(dish._id, dish.name, dish.price)
+                      }
                       className="w-4 h-4 rounded-full bg-emerald-600 shadow-none text-white p-0 hover:bg-emerald-700"
                     >
                       <Plus className="w-[10px] h-[10px]" />

@@ -136,6 +136,7 @@
 
 .activeDishCard {
   border: 1.5px solid #16a19c;
+  box-shadow: 0 0 4px rgba(16, 185, 129, 0.5);
 }
 
 @media (max-width: 1600px) {
