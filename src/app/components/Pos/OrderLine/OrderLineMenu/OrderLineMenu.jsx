@@ -2,11 +2,20 @@ import React, { useRef, useState, useEffect } from "react";
 import styles from "./OrderLineMenu.module.css";
 import { ChevronLeft, ChevronRight, Minus, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useRestaurantContext } from "@/context/RestaurantContext";
 
 const OrderLineMenu = () => {
+  const { categories, totalDishCount, fetchCategories } =
+    useRestaurantContext();
   const scrollRef = useRef(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  console.log("Categories:", categories);
 
   const updateScrollState = () => {
     const container = scrollRef.current;
@@ -71,44 +80,18 @@ const OrderLineMenu = () => {
             <div className={styles.categoryImage}>❤️</div>
             <div className={styles.categoryDetails}>
               <div className={styles.categoryName}>All Menu</div>
-              <div className={styles.categoryCount}>154 items</div>
+              <div className={styles.categoryCount}>{totalDishCount} items</div>
             </div>
           </div>
-          <div className={`${styles.categoryCard} ${styles.inactive}`}>
-            <div className={styles.categoryImage}>🍔</div>
-            <div className={styles.categoryDetails}>
-              <div className={styles.categoryName}>Special</div>
-              <div className={styles.categoryCount}>79 items</div>
+          {categories.map((category) => (
+            <div className={`${styles.categoryCard} ${styles.inactive}`}>
+              <div className={styles.categoryImage}>{category.emoji}</div>
+              <div className={styles.categoryDetails}>
+                <div className={styles.categoryName}>{category.name}</div>
+                <div className={styles.categoryCount}>{category.dishCount}</div>
+              </div>
             </div>
-          </div>
-          <div className={`${styles.categoryCard} ${styles.inactive}`}>
-            <div className={styles.categoryImage}>🍟</div>
-            <div className={styles.categoryDetails}>
-              <div className={styles.categoryName}>Soups</div>
-              <div className={styles.categoryCount}>23 items</div>
-            </div>
-          </div>
-          <div className={`${styles.categoryCard} ${styles.inactive}`}>
-            <div className={styles.categoryImage}>🍨</div>
-            <div className={styles.categoryDetails}>
-              <div className={styles.categoryName}>Desserts</div>
-              <div className={styles.categoryCount}>15 items</div>
-            </div>
-          </div>
-          <div className={`${styles.categoryCard} ${styles.inactive}`}>
-            <div className={styles.categoryImage}>🍕</div>
-            <div className={styles.categoryDetails}>
-              <div className={styles.categoryName}>Chicken</div>
-              <div className={styles.categoryCount}>8 items</div>
-            </div>
-          </div>
-          <div className={`${styles.categoryCard} ${styles.inactive}`}>
-            <div className={styles.categoryImage}>🥩</div>
-            <div className={styles.categoryDetails}>
-              <div className={styles.categoryName}>Meat</div>
-              <div className={styles.categoryCount}>18 items</div>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
       <div className={styles.menuCardContainer}>

@@ -6,7 +6,6 @@ const RestaurantContext = createContext();
 
 export const RestaurantProvider = ({ children }) => {
   const [restaurantName, setRestaurantName] = useState(() => {
-    // Load initial value from localStorage
     const stored = localStorage.getItem("restaurantName");
     return stored ? JSON.parse(stored) : "";
   });
@@ -20,9 +19,9 @@ export const RestaurantProvider = ({ children }) => {
   const [categories, setCategories] = useState([]);
   const [dishes, setDishes] = useState([]);
   const [totalDishCount, setTotalDishCount] = useState(0);
+  const [dishCountbyCategory, setDishCountbyCategory] = useState(0);
   const [categoryName, setCategoryName] = useState("");
 
-  // Sync restaurantName to localStorage
   useEffect(() => {
     if (restaurantName) {
       localStorage.setItem("restaurantName", JSON.stringify(restaurantName));
@@ -31,7 +30,6 @@ export const RestaurantProvider = ({ children }) => {
     }
   }, [restaurantName]);
 
-  // Sync restaurant to localStorage
   useEffect(() => {
     if (restaurant) {
       localStorage.setItem("restaurant", JSON.stringify(restaurant));
@@ -59,6 +57,59 @@ export const RestaurantProvider = ({ children }) => {
     }
   };
 
+  const fetchAllDishes = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const res = await fetch(`/api/pos/fetch-all-dishes/${restaurant}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        const dishes = data.dishes || [];
+        setDishes(dishes);
+        setTotalDishCount(dishes.length);
+      } else {
+        console.error(
+          "Failed to fetch dishes:",
+          data.message || res.statusText
+        );
+      }
+    } catch (err) {
+      console.error("Error fetching dishes:", err);
+    }
+  };
+
+  const fetchDishByCategory = async (categoryIdParam = categoryId) => {
+    const token = localStorage.getItem("token");
+    try {
+      const res = await fetch(`/api/pos/fetch-dish/${categoryIdParam}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!res.ok) {
+        setDishes([]);
+        setDishCountbyCategory(0);
+        throw new Error("Failed to fetch dishes");
+      }
+
+      const data = await res.json();
+      setDishes(data.dishes);
+      setDishCountbyCategory(data.dishes.length);
+    } catch (err) {
+      console.error("Error fetching dishes:", err);
+    }
+  };
+
   return (
     <RestaurantContext.Provider
       value={{
@@ -75,8 +126,11 @@ export const RestaurantProvider = ({ children }) => {
         totalDishCount,
         setTotalDishCount,
         fetchCategories,
+        fetchAllDishes,
+        fetchDishByCategory,
         categoryName,
         setCategoryName,
+        dishCountbyCategory,
       }}
     >
       {children}

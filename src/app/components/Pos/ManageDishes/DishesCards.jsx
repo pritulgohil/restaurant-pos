@@ -1,17 +1,3 @@
-// Author: Pritul Gohil
-
-// File: DishesCards.jsx
-
-// Description: This component is responsible for displaying the dishes in a card format. It also handles the addition, deletion, and editing of dishes. It also supports grid and list views for displaying the dishes. The component fetches data from the API to display the dishes and their details, including name, price, and availability status.
-
-// (1) Remaining Task: Filter functionality is not implemented yet.
-
-// (2) Remaining Task: Component is lengthy, should be broken down wherever possible for maintainability and readability.
-
-// Remarks: After completing above tasks, the DishesCards.jsx will be fully functional until further update.
-
-//-------------------------------------------------------------------------------------------------------------------------------------------------
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -42,31 +28,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const Dishes = () => {
-  //state for list view or grid view of dishes cards
   const [listView, setListView] = useState(false);
-
-  //state for total dish count
   const [dishCount, setDishCount] = useState(0);
-
-  //state to handle delete dialog visibility
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-
-  //state to save dish name to display in delete dialog
   const [selectedDish, setSelectedDish] = useState(null);
-
-  //state to save dishId to delete the dish for passing in api
   const [selectedDishId, setSelectedDishId] = useState(null);
-
-  //state for edit dialog visibility handle
   const [editDialogOpen, setEditDialogOpen] = useState(false);
-
-  // state holds the dish data to be edited and passed to the EditDishDialog
   const [editDishData, setEditDishData] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
-  //state to handle search input
-  const [searchQuery, setSearchQuery] = useState(""); // search state for dishes
-
-  //restaurant has restaurantId, categoryId has objectId, dishes has array of dishes, setDishes is setter function to set dishes
   const {
     restaurant,
     categoryId,
@@ -74,68 +44,16 @@ const Dishes = () => {
     setDishes,
     categoryName,
     setCategoryName,
+    totalDishCount,
     setTotalDishCount,
+    fetchAllDishes,
+    fetchDishByCategory,
+    dishCountbyCategory,
   } = useRestaurantContext();
 
-  //dishes card view handlers
   const handleListView = () => setListView(true);
   const handleGridView = () => setListView(false);
 
-  // function to fetch all dishes from API, runs by default or when all dishes on the CategorySidebar.jsx are selected
-  const fetchAllDishes = async () => {
-    const token = localStorage.getItem("token");
-    try {
-      const res = await fetch(`/api/pos/fetch-all-dishes/${restaurant}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        const dishes = data.dishes || [];
-        setDishes(dishes);
-        setDishCount(dishes.length);
-        setTotalDishCount(dishes.length);
-      } else {
-        console.error(
-          "Failed to fetch dishes:",
-          data.message || res.statusText
-        );
-      }
-    } catch (err) {
-      console.error("Error fetching dishes:", err);
-    }
-  };
-
-  // function to fetch dishes by category from API, runs when a category is selected from the CategorySidebar.jsx
-  const fetchDishByCategory = async () => {
-    const token = localStorage.getItem("token");
-    try {
-      const res = await fetch(`/api/pos/fetch-dish/${categoryId}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-      if (!res.ok) {
-        setDishes([]); // Set to empty array on failed response
-        setDishCount("0");
-        throw new Error("Failed to fetch dishes");
-      }
-      const data = await res.json();
-      setDishes(data.dishes);
-      setDishCount(data.dishes.length);
-    } catch (err) {
-      console.error("Error fetching dishes:", err);
-    }
-  };
-
-  // function to fetch category name to display in the title of the dishes card
   const fetchCategoryName = async () => {
     const token = localStorage.getItem("token");
     try {
@@ -154,7 +72,6 @@ const Dishes = () => {
     }
   };
 
-  //useEffect for displaying dishes based on category selection
   useEffect(() => {
     if (categoryId === null) {
       fetchAllDishes();
@@ -165,20 +82,17 @@ const Dishes = () => {
     }
   }, [categoryId]);
 
-  // handler for edit press on dropdown menu, sets the selected dish data to be edited and opens the edit dialog
   const handleEdit = (dish) => {
     setEditDishData(dish);
     setEditDialogOpen(true);
   };
 
-  // handler for delete press on dropdown menu, sets the selected dish name for displaying in dialog and id to pass in api. Also, opens the delete dialog
   const handleDelete = (dish) => {
     setSelectedDish(dish.name);
     setSelectedDishId(dish._id);
     setDeleteDialogOpen(true);
   };
 
-  // filter dishes based on search input
   const filteredDishes = dishes.filter((dish) => {
     const query = searchQuery.toLowerCase();
     return (
@@ -206,7 +120,6 @@ const Dishes = () => {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
-            {/* Triggers dialog and runs either of two functions to fetch updated dishes */}
             <AddDishDialog
               onDishAdded={fetchAllDishes}
               fetchByCategory={fetchDishByCategory}
@@ -223,10 +136,10 @@ const Dishes = () => {
         <div className={styles.componentBody}>
           <div className={styles.componentHeaderContainer}>
             <div className={styles.leftSide}>
-              {/* Displays categoryname and dishcount */}
               <div className={styles.componentHeader}>
                 <h3>
-                  {categoryName} ({dishCount})
+                  {categoryName} (
+                  {categoryId === null ? totalDishCount : dishCountbyCategory})
                 </h3>
               </div>
               {categoryId !== null && (
@@ -249,7 +162,6 @@ const Dishes = () => {
               )}
             </div>
             <div className={styles.rightSide}>
-              {/* Switch to handle list view or grid view of dishes cards */}
               <div className={styles.sliderContainer}>
                 <Button
                   variant="ghost"
@@ -270,19 +182,10 @@ const Dishes = () => {
                   <List className={styles.sliderIcon} />
                 </Button>
               </div>
-              {/* Not implement yet */}
-              {/* <div className={styles.filterContainer}>
-                <Button variant="ghost" className={styles.filterButton}>
-                  <SlidersHorizontal className={styles.filterIcon} />
-                  Filter
-                </Button>
-              </div> */}
-              {/* Not implemented yet */}
             </div>
           </div>
 
           <div className={styles.dishesContainer}>
-            {/* Add dish card to add new dish */}
             <AddDishDialog
               onDishAdded={fetchAllDishes}
               fetchByCategory={fetchDishByCategory}
@@ -305,7 +208,6 @@ const Dishes = () => {
               </DialogTrigger>
             </AddDishDialog>
 
-            {/* Map through dishes and display them in card format */}
             {filteredDishes.map((dish, index) => (
               <div
                 key={index}
@@ -315,7 +217,6 @@ const Dishes = () => {
                     : styles.addDishCardContainer
                 } ${styles.solidBorder}`}
               >
-                {/* Edit and Delete dropdown for dish */}
                 <div
                   className={`${
                     listView
@@ -342,7 +243,6 @@ const Dishes = () => {
                         <SquarePen />
                         Edit
                       </DropdownMenuItem>
-
                       <DropdownMenuItem
                         className="text-red-500"
                         onClick={() => handleDelete(dish)}
@@ -353,7 +253,6 @@ const Dishes = () => {
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
-                {/* Gets a little bit messy here due to inaccurate class names, dishLeft and dishRight should be named top and bottom instead, but in list context it is right */}
                 <div
                   className={`${
                     listView ? styles.dishLeftSideList : styles.dishLeftSide
@@ -390,7 +289,6 @@ const Dishes = () => {
           </div>
         </div>
       </div>
-      {/* DeleteDialog for deleting dish */}
       <DeleteDialog
         open={deleteDialogOpen}
         onOpenChange={setDeleteDialogOpen}
@@ -399,7 +297,6 @@ const Dishes = () => {
         fetchAllDishes={fetchAllDishes}
         fetchDishByCategory={fetchDishByCategory}
       />
-      {/* if editDishData is there, then only show the edit dialog, just a basic check */}
       {editDishData && (
         <EditDishDialog
           open={editDialogOpen}
