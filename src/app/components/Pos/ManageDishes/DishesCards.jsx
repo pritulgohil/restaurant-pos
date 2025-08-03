@@ -45,6 +45,7 @@ const Dishes = () => {
     fetchAllDishes,
     fetchDishByCategory,
     dishCountbyCategory,
+    setCategoryId,
   } = useRestaurantContext();
 
   const handleListView = () => setListView(true);

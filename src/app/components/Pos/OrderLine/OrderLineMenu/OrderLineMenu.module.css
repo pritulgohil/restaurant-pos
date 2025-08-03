@@ -37,7 +37,7 @@
   display: inline-flex;
   gap: 12px;
   align-items: center;
-  border: 1.5px solid #16a19c;
+  border: 1.5px solid gainsboro;
   width: 19.1%;
   padding: 6px 10px;
   border-radius: 6px;
@@ -46,8 +46,8 @@
   flex-grow: 0;
 }
 
-.inactive {
-  border-color: gainsboro;
+.activeCategoryCard {
+  border: 2px solid #16a19c;
 }
 
 .categoryImage {

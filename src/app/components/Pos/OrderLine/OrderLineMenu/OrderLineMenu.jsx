@@ -11,6 +11,9 @@ const OrderLineMenu = () => {
     fetchCategories,
     dishes,
     fetchAllDishes,
+    orderLineCategoryId,
+    setOrderLineCategoryId,
+    orderLineFetchDishByCategory,
   } = useRestaurantContext();
   const scrollRef = useRef(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -18,8 +21,15 @@ const OrderLineMenu = () => {
 
   useEffect(() => {
     fetchCategories();
-    fetchAllDishes();
   }, []);
+
+  useEffect(() => {
+    if (orderLineCategoryId === null) {
+      fetchAllDishes();
+    } else {
+      orderLineFetchDishByCategory();
+    }
+  }, [orderLineCategoryId]);
 
   console.log("My Dishes:", dishes);
 
@@ -82,7 +92,12 @@ const OrderLineMenu = () => {
         </div>
 
         <div className={styles.categoriesCardContainer} ref={scrollRef}>
-          <div className={styles.categoryCard}>
+          <div
+            onClick={() => setOrderLineCategoryId(null)}
+            className={`${styles.categoryCard} ${
+              orderLineCategoryId === null ? styles.activeCategoryCard : ""
+            }`}
+          >
             <div className={styles.categoryImage}>❤️</div>
             <div className={styles.categoryDetails}>
               <div className={styles.categoryName}>All Menu</div>
@@ -92,7 +107,12 @@ const OrderLineMenu = () => {
           {categories.map((category) => (
             <div
               key={category._id}
-              className={`${styles.categoryCard} ${styles.inactive}`}
+              className={`${styles.categoryCard} ${
+                orderLineCategoryId === category._id
+                  ? styles.activeCategoryCard
+                  : ""
+              }`}
+              onClick={() => setOrderLineCategoryId(category._id)}
             >
               <div className={styles.categoryImage}>{category.emoji}</div>
               <div className={styles.categoryDetails}>

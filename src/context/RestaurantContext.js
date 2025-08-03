@@ -8,6 +8,7 @@ export const RestaurantProvider = ({ children }) => {
   const [restaurantName, setRestaurantName] = useState("");
   const [restaurant, setRestaurant] = useState(null);
   const [categoryId, setCategoryId] = useState(null);
+  const [orderLineCategoryId, setOrderLineCategoryId] = useState(null);
   const [categories, setCategories] = useState([]);
   const [dishes, setDishes] = useState([]);
   const [totalDishCount, setTotalDishCount] = useState(0);
@@ -119,6 +120,33 @@ export const RestaurantProvider = ({ children }) => {
     }
   };
 
+  const orderLineFetchDishByCategory = async (
+    categoryOrderIdParam = orderLineCategoryId
+  ) => {
+    const token = localStorage.getItem("token");
+    try {
+      const res = await fetch(`/api/pos/fetch-dish/${categoryOrderIdParam}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!res.ok) {
+        setDishes([]);
+        setDishCountbyCategory(0);
+        throw new Error("Failed to fetch dishes");
+      }
+
+      const data = await res.json();
+      setDishes(data.dishes);
+      setDishCountbyCategory(data.dishes.length);
+    } catch (err) {
+      console.error("Error fetching dishes:", err);
+    }
+  };
+
   return (
     <RestaurantContext.Provider
       value={{
@@ -140,6 +168,9 @@ export const RestaurantProvider = ({ children }) => {
         categoryName,
         setCategoryName,
         dishCountbyCategory,
+        orderLineCategoryId,
+        setOrderLineCategoryId,
+        orderLineFetchDishByCategory,
       }}
     >
       {children}
