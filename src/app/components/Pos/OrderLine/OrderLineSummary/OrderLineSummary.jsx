@@ -7,7 +7,7 @@ import {
   IdCard,
   Printer,
   Mouse,
-  Square,
+  Plus,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRestaurantContext } from "@/context/RestaurantContext";
@@ -46,10 +46,13 @@ const OrderLineSummary = () => {
           <div className={styles.summaryContainer}>
             <div className={styles.tableContainer}>
               <div className={styles.topContainer}>
-                <div className={styles.tableNumber}>Table No #4</div>
+                <div className={styles.tableNumber}>
+                  {/* Table number goes here */}
+                  <Skeleton className="h-4 w-[120px]" />
+                </div>
                 <div className={styles.iconContainer}>
                   <Button variant="secondary" size="icon" className="size-6">
-                    <SquarePen />
+                    <Plus />
                   </Button>
                   <Button
                     variant="secondary"
@@ -62,8 +65,14 @@ const OrderLineSummary = () => {
                 </div>
               </div>
               <div className={styles.bottomContainer}>
-                <div className={styles.orderId}>Order #F0030</div>
-                <div className={styles.peopleContainer}>2 People</div>
+                <div className={styles.orderId}>
+                  {/* Name goes here */}
+                  <Skeleton className="h-4 w-[80px]" />
+                </div>
+                <div className={styles.peopleContainer}>
+                  {/* People goes here */}
+                  <Skeleton className="h-4 w-[60px]" />
+                </div>
               </div>
             </div>
             <hr className="border-t border-dashed border-gray-300" />
@@ -90,7 +99,7 @@ const OrderLineSummary = () => {
                   : Array.from({ length: 3 }).map((_, index) => (
                       <div key={index} className={styles.orderEntry}>
                         <div className={styles.orderItems}>
-                          <Skeleton className="h-4 w-[20px] no-pulse" />
+                          <Skeleton className="h-4 w-[20px]" />
                           <Skeleton className="h-4 w-[150px]" />
                         </div>
                         <Skeleton className="h-4 w-[20px]" />

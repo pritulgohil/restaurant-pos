@@ -81,6 +81,8 @@
 .orderId {
   font-size: 12px;
   color: gray;
+  display: flex;
+  align-items: center;
 }
 
 .peopleContainer {
