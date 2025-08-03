@@ -7,12 +7,14 @@ import {
   IdCard,
   Printer,
   Mouse,
+  Square,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRestaurantContext } from "@/context/RestaurantContext";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const OrderLineSummary = () => {
-  const { dishQuantities } = useRestaurantContext();
+  const { dishQuantities, setDishQuantities } = useRestaurantContext();
 
   // Calculate subtotal
   const subtotal = Object.values(dishQuantities).reduce(
@@ -32,6 +34,11 @@ const OrderLineSummary = () => {
     0
   );
 
+  const handleDeleteOrderLine = () => {
+    // Your delete logic here
+    setDishQuantities({});
+  };
+
   return (
     <div className={styles.mainContainer}>
       <div className={styles.summaryTopContainer}>
@@ -41,11 +48,17 @@ const OrderLineSummary = () => {
               <div className={styles.topContainer}>
                 <div className={styles.tableNumber}>Table No #4</div>
                 <div className={styles.iconContainer}>
-                  <SquarePen
-                    size={20}
-                    className="text-gray-400 cursor-pointer"
-                  />
-                  <Trash2 size={20} className="text-red-400 cursor-pointer" />
+                  <Button variant="secondary" size="icon" className="size-6">
+                    <SquarePen />
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    size="icon"
+                    className="size-6 text-red-500"
+                    onClick={handleDeleteOrderLine}
+                  >
+                    <Trash2 />
+                  </Button>
                 </div>
               </div>
               <div className={styles.bottomContainer}>
@@ -60,19 +73,29 @@ const OrderLineSummary = () => {
                 <div className={styles.totalItems}>{totalItems}</div>
               </div>
               <div className={styles.orderBottomContainer}>
-                {Object.values(dishQuantities).map((dish, index) => (
-                  <div key={index} className={styles.orderEntry}>
-                    <div className={styles.orderItems}>
-                      <div className={styles.orderQuantity}>
-                        {dish.quantity}x
+                {dishQuantities && Object.values(dishQuantities).length > 0
+                  ? Object.values(dishQuantities).map((dish, index) => (
+                      <div key={index} className={styles.orderEntry}>
+                        <div className={styles.orderItems}>
+                          <div className={styles.orderQuantity}>
+                            {dish.quantity}x
+                          </div>
+                          <div className={styles.orderName}>{dish.name}</div>
+                        </div>
+                        <div className={styles.orderPrice}>
+                          ${(dish.price * dish.quantity).toFixed(2)}
+                        </div>
                       </div>
-                      <div className={styles.orderName}>{dish.name}</div>
-                    </div>
-                    <div className={styles.orderPrice}>
-                      ${(dish.price * dish.quantity).toFixed(2)}
-                    </div>
-                  </div>
-                ))}
+                    ))
+                  : Array.from({ length: 3 }).map((_, index) => (
+                      <div key={index} className={styles.orderEntry}>
+                        <div className={styles.orderItems}>
+                          <Skeleton className="h-4 w-[20px] no-pulse" />
+                          <Skeleton className="h-4 w-[150px]" />
+                        </div>
+                        <Skeleton className="h-4 w-[20px]" />
+                      </div>
+                    ))}
               </div>
             </div>
             <hr className="border-t border-dashed border-gray-300" />
