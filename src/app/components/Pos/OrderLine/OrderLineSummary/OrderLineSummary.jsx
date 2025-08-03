@@ -1,6 +1,13 @@
 import React from "react";
 import styles from "./OrderLineSummary.module.css";
-import { Trash2, Receipt, IdCard, Printer, Mouse } from "lucide-react";
+import {
+  Trash2,
+  Receipt,
+  IdCard,
+  Printer,
+  Mouse,
+  SquarePen,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRestaurantContext } from "@/context/RestaurantContext";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -41,7 +48,11 @@ const OrderLineSummary = () => {
               <div className={styles.topContainer}>
                 <div className={styles.tableNumber}>
                   {/* Table number goes here */}
-                  <Skeleton className="h-4 w-[120px]" />
+                  {orderLine.table ? (
+                    `Table No #0${orderLine.table}`
+                  ) : (
+                    <Skeleton className="h-4 w-[120px]" />
+                  )}
                 </div>
                 <div className={styles.iconContainer}>
                   <CreateOrderDialog />
@@ -58,11 +69,19 @@ const OrderLineSummary = () => {
               <div className={styles.bottomContainer}>
                 <div className={styles.orderId}>
                   {/* Name goes here */}
-                  <Skeleton className="h-4 w-[80px]" />
+                  {orderLine.customerName ? (
+                    orderLine.customerName
+                  ) : (
+                    <Skeleton className="h-4 w-[80px]" />
+                  )}
                 </div>
                 <div className={styles.peopleContainer}>
                   {/* People goes here */}
-                  <Skeleton className="h-4 w-[60px]" />
+                  {orderLine.peopleCount ? (
+                    `${orderLine.peopleCount} People`
+                  ) : (
+                    <Skeleton className="h-4 w-[60px]" />
+                  )}
                 </div>
               </div>
             </div>

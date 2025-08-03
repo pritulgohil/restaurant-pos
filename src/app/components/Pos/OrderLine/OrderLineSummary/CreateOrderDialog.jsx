@@ -17,7 +17,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { Plus } from "lucide-react";
+import { Plus, SquarePen } from "lucide-react";
 import styles from "./CreateOrderDialog.module.css";
 import { useRestaurantContext } from "@/context/RestaurantContext";
 
@@ -46,7 +46,13 @@ const CreateOrderDialog = () => {
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="secondary" size="icon" className="size-6">
-          <Plus className="w-4 h-4" />
+          {orderLine.customerName ||
+          orderLine.peopleCount ||
+          orderLine.price ? (
+            <SquarePen className="w-4 h-4" />
+          ) : (
+            <Plus className="w-4 h-4" />
+          )}
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-md">
