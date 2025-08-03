@@ -5,17 +5,23 @@ import { Button } from "@/components/ui/button";
 import { useRestaurantContext } from "@/context/RestaurantContext";
 
 const OrderLineMenu = () => {
-  const { categories, totalDishCount, fetchCategories } =
-    useRestaurantContext();
+  const {
+    categories,
+    totalDishCount,
+    fetchCategories,
+    dishes,
+    fetchAllDishes,
+  } = useRestaurantContext();
   const scrollRef = useRef(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
 
   useEffect(() => {
     fetchCategories();
+    fetchAllDishes();
   }, []);
 
-  console.log("Categories:", categories);
+  console.log("My Dishes:", dishes);
 
   const updateScrollState = () => {
     const container = scrollRef.current;
@@ -84,7 +90,10 @@ const OrderLineMenu = () => {
             </div>
           </div>
           {categories.map((category) => (
-            <div className={`${styles.categoryCard} ${styles.inactive}`}>
+            <div
+              key={category._id}
+              className={`${styles.categoryCard} ${styles.inactive}`}
+            >
               <div className={styles.categoryImage}>{category.emoji}</div>
               <div className={styles.categoryDetails}>
                 <div className={styles.categoryName}>{category.name}</div>
@@ -95,13 +104,13 @@ const OrderLineMenu = () => {
         </div>
       </div>
       <div className={styles.menuCardContainer}>
-        {Array.from({ length: 30 }).map((_, index) => (
+        {dishes.map((dish, index) => (
           <div key={index} className={styles.menuCard}>
-            <div className={styles.cardEmoji}>🍔</div>
-            <div className={styles.menuCategory}>Lunch</div>
-            <div className={styles.itemName}>Grilled Burger</div>
+            <div className={styles.cardEmoji}>{dish.emoji}</div>
+            <div className={styles.menuCategory}>{dish.categoryName}</div>
+            <div className={styles.itemName}>{dish.name}</div>
             <div className={styles.priceQuantityContainer}>
-              <div className={styles.price}>$15.00</div>
+              <div className={styles.price}>${dish.price}</div>
               <div className={styles.quantity}>
                 <div className={styles.minusContainer}>
                   <Button className="w-4 h-4 rounded-full bg-gray-200 shadow-none text-black p-0 hover:bg-gray-300">

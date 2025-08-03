@@ -77,10 +77,12 @@
 
 .menuCard {
   width: 19.1%;
-  height: 150px;
+  height: 180px;
   border: 1px solid gainsboro;
-  padding: 12px 12px 150px 12px;
+  padding: 12px;
   border-radius: 8px;
+  display: flex;
+  flex-direction: column;
 }
 
 .cardEmoji {
@@ -97,7 +99,7 @@
 }
 
 .priceQuantityContainer {
-  margin-top: 6px;
+  margin-top: auto;
   display: flex;
   justify-content: space-between;
   align-items: center;

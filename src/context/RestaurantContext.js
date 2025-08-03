@@ -5,16 +5,8 @@ import { createContext, useState, useContext, useEffect } from "react";
 const RestaurantContext = createContext();
 
 export const RestaurantProvider = ({ children }) => {
-  const [restaurantName, setRestaurantName] = useState(() => {
-    const stored = localStorage.getItem("restaurantName");
-    return stored ? JSON.parse(stored) : "";
-  });
-
-  const [restaurant, setRestaurant] = useState(() => {
-    const stored = localStorage.getItem("restaurant");
-    return stored ? JSON.parse(stored) : null;
-  });
-
+  const [restaurantName, setRestaurantName] = useState("");
+  const [restaurant, setRestaurant] = useState(null);
   const [categoryId, setCategoryId] = useState(null);
   const [categories, setCategories] = useState([]);
   const [dishes, setDishes] = useState([]);
@@ -22,19 +14,36 @@ export const RestaurantProvider = ({ children }) => {
   const [dishCountbyCategory, setDishCountbyCategory] = useState(0);
   const [categoryName, setCategoryName] = useState("");
 
+  // Load localStorage values on client only
   useEffect(() => {
-    if (restaurantName) {
-      localStorage.setItem("restaurantName", JSON.stringify(restaurantName));
-    } else {
-      localStorage.removeItem("restaurantName");
+    if (typeof window !== "undefined") {
+      const storedName = localStorage.getItem("restaurantName");
+      const storedRestaurant = localStorage.getItem("restaurant");
+
+      if (storedName) setRestaurantName(JSON.parse(storedName));
+      if (storedRestaurant) setRestaurant(JSON.parse(storedRestaurant));
+    }
+  }, []);
+
+  // Sync restaurantName to localStorage
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (restaurantName) {
+        localStorage.setItem("restaurantName", JSON.stringify(restaurantName));
+      } else {
+        localStorage.removeItem("restaurantName");
+      }
     }
   }, [restaurantName]);
 
+  // Sync restaurant to localStorage
   useEffect(() => {
-    if (restaurant) {
-      localStorage.setItem("restaurant", JSON.stringify(restaurant));
-    } else {
-      localStorage.removeItem("restaurant");
+    if (typeof window !== "undefined") {
+      if (restaurant) {
+        localStorage.setItem("restaurant", JSON.stringify(restaurant));
+      } else {
+        localStorage.removeItem("restaurant");
+      }
     }
   }, [restaurant]);
 
