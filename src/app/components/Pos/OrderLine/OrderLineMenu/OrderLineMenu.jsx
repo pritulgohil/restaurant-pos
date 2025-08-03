@@ -14,10 +14,28 @@ const OrderLineMenu = () => {
     orderLineCategoryId,
     setOrderLineCategoryId,
     orderLineFetchDishByCategory,
+    dishQuantities,
+    setDishQuantities,
   } = useRestaurantContext();
   const scrollRef = useRef(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
+
+  console.log("dishQuantities:", dishQuantities);
+
+  const incrementQuantity = (dishId) => {
+    setDishQuantities((prev) => ({
+      ...prev,
+      [dishId]: (prev[dishId] || 0) + 1,
+    }));
+  };
+
+  const decrementQuantity = (dishId) => {
+    setDishQuantities((prev) => ({
+      ...prev,
+      [dishId]: Math.max((prev[dishId] || 0) - 1, 0),
+    }));
+  };
 
   useEffect(() => {
     fetchCategories();
@@ -124,29 +142,45 @@ const OrderLineMenu = () => {
         </div>
       </div>
       <div className={styles.menuCardContainer}>
-        {dishes.map((dish, index) => (
-          <div key={index} className={styles.menuCard}>
-            <div className={styles.cardEmoji}>{dish.emoji}</div>
-            <div className={styles.menuCategory}>{dish.categoryName}</div>
-            <div className={styles.itemName}>{dish.name}</div>
-            <div className={styles.priceQuantityContainer}>
-              <div className={styles.price}>${dish.price}</div>
-              <div className={styles.quantity}>
-                <div className={styles.minusContainer}>
-                  <Button className="w-4 h-4 rounded-full bg-gray-200 shadow-none text-black p-0 hover:bg-gray-300">
-                    <Minus className="w-[10px] h-[10px]" />
-                  </Button>
-                </div>
-                <div className={styles.quantityText}>0</div>
-                <div className={styles.minusContainer}>
-                  <Button className="w-4 h-4 rounded-full bg-emerald-600 shadow-none text-white p-0 hover:bg-emerald-700">
-                    <Plus className="w-[10px] h-[10px]" />
-                  </Button>
+        {dishes.map((dish) => {
+          const quantity = dishQuantities[dish._id] || 0;
+          const isSelected = quantity > 0;
+
+          return (
+            <div
+              key={dish._id}
+              className={`${styles.menuCard} ${
+                isSelected ? styles.activeDishCard : ""
+              }`}
+            >
+              <div className={styles.cardEmoji}>{dish.emoji}</div>
+              <div className={styles.menuCategory}>{dish.categoryName}</div>
+              <div className={styles.itemName}>{dish.name}</div>
+              <div className={styles.priceQuantityContainer}>
+                <div className={styles.price}>${dish.price}</div>
+                <div className={styles.quantity}>
+                  <div className={styles.minusContainer}>
+                    <Button
+                      onClick={() => decrementQuantity(dish._id)}
+                      className="w-4 h-4 rounded-full bg-gray-200 shadow-none text-black p-0 hover:bg-gray-300"
+                    >
+                      <Minus className="w-[10px] h-[10px]" />
+                    </Button>
+                  </div>
+                  <div className={styles.quantityText}>{quantity}</div>
+                  <div className={styles.minusContainer}>
+                    <Button
+                      onClick={() => incrementQuantity(dish._id)}
+                      className="w-4 h-4 rounded-full bg-emerald-600 shadow-none text-white p-0 hover:bg-emerald-700"
+                    >
+                      <Plus className="w-[10px] h-[10px]" />
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

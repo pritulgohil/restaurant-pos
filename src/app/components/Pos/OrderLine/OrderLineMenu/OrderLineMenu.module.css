@@ -134,6 +134,10 @@
   background-color: white;
 }
 
+.activeDishCard {
+  border: 1.5px solid #16a19c;
+}
+
 @media (max-width: 1600px) {
   .stickyTopContainer {
     width: 100%;
