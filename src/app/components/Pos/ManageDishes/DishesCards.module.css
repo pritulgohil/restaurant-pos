@@ -151,7 +151,7 @@
   border-radius: 8px;
   display: flex;
   align-items: flex-start;
-  justify-content: center;
+  justify-content: space-between;
   flex-direction: column;
   gap: 10px;
   padding: 24px;
@@ -223,6 +223,7 @@
   width: 100%;
   text-align: left;
   font-family: "Epilogue";
+  font-size: 14px;
 }
 
 .dishNameList {
@@ -241,6 +242,9 @@
 .dishPrice {
   width: 100%;
   text-align: left;
+  position: absolute;
+  bottom: 14px;
+  font-weight: 500;
 }
 
 .dishPriceList {
