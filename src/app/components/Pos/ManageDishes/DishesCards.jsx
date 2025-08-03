@@ -29,7 +29,6 @@ import {
 
 const Dishes = () => {
   const [listView, setListView] = useState(false);
-  const [dishCount, setDishCount] = useState(0);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedDish, setSelectedDish] = useState(null);
   const [selectedDishId, setSelectedDishId] = useState(null);
@@ -38,14 +37,11 @@ const Dishes = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const {
-    restaurant,
     categoryId,
     dishes,
-    setDishes,
     categoryName,
     setCategoryName,
     totalDishCount,
-    setTotalDishCount,
     fetchAllDishes,
     fetchDishByCategory,
     dishCountbyCategory,
