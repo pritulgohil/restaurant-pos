@@ -32,6 +32,31 @@ const OrderLineSummary = () => {
     setOrderLine({});
   };
 
+  const handlePlaceOrder = async () => {
+    try {
+      const token = localStorage.getItem("token"); // Adjust to where you store the token
+
+      const res = await fetch("/api/pos/create-order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(orderLine),
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to place order");
+      }
+
+      const data = await res.json();
+      console.log("Order saved:", data);
+      setOrderLine({});
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   return (
     <div className={styles.mainContainer}>
       <div className={styles.summaryTopContainer}>
@@ -169,7 +194,7 @@ const OrderLineSummary = () => {
           </Button>
         </div>
         <div className={styles.placeOrderButton}>
-          <Button className="w-full">
+          <Button className="w-full" onClick={handlePlaceOrder}>
             <Mouse />
             Place Order
           </Button>
