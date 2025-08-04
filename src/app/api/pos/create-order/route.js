@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 import Order from "@/models/order";
 import jwt from "jsonwebtoken";
+import order from "@/models/order";
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -9,7 +10,6 @@ export async function POST(req) {
   try {
     await dbConnect();
 
-    // Authenticate request
     const authHeader = req.headers.get("authorization");
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -29,7 +29,18 @@ export async function POST(req) {
 
     // Parse and validate body
     const body = await req.json();
-    const { table, customerName, peopleCount, dishes } = body;
+    const {
+      table,
+      customerName,
+      peopleCount,
+      dishes,
+      subtotal,
+      tax,
+      totalPayable,
+      restaurantId,
+      totalItems,
+      status,
+    } = body;
 
     if (
       table === undefined ||
@@ -44,12 +55,17 @@ export async function POST(req) {
       );
     }
 
-    // Save to MongoDB
     const newOrder = new Order({
       table,
       customerName,
       peopleCount,
       dishes,
+      subtotal,
+      tax,
+      totalPayable,
+      restaurantId,
+      totalItems,
+      status,
     });
 
     await newOrder.save();

@@ -8,13 +8,23 @@ const DishSchema = new mongoose.Schema({
 
 const OrderSchema = new mongoose.Schema(
   {
+    restaurantId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Restaurant",
+      required: true,
+    },
     table: Number,
     customerName: String,
     peopleCount: Number,
+    totalItems: Number,
     dishes: {
       type: Map,
       of: DishSchema,
     },
+    subtotal: Number,
+    tax: Number,
+    totalPayable: Number,
+    status: String,
   },
   { timestamps: true }
 );

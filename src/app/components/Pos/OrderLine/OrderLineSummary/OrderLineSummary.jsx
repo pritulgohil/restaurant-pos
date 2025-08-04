@@ -7,7 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import CreateOrderDialog from "./CreateOrderDialog";
 
 const OrderLineSummary = () => {
-  const { orderLine, setOrderLine } = useRestaurantContext();
+  const { orderLine, setOrderLine, restaurant } = useRestaurantContext();
 
   // Calculate subtotal
   const subtotal = Object.values(orderLine?.dishes || {}).reduce(
@@ -34,7 +34,17 @@ const OrderLineSummary = () => {
 
   const handlePlaceOrder = async () => {
     try {
-      const token = localStorage.getItem("token"); // Adjust to where you store the token
+      const token = localStorage.getItem("token");
+
+      const enrichedOrder = {
+        ...orderLine,
+        restaurantId: restaurant,
+        subtotal: Number(subtotal.toFixed(2)),
+        tax: Number(tax.toFixed(2)),
+        totalPayable: Number(totalPayable.toFixed(2)),
+        totalItems: totalItems,
+        status: "Queued", // Default status
+      };
 
       const res = await fetch("/api/pos/create-order", {
         method: "POST",
@@ -42,7 +52,7 @@ const OrderLineSummary = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(orderLine),
+        body: JSON.stringify(enrichedOrder),
       });
 
       if (!res.ok) {
@@ -50,7 +60,8 @@ const OrderLineSummary = () => {
       }
 
       const data = await res.json();
-      console.log("Order saved:", data);
+      console.log("Order saved:", enrichedOrder);
+      console.log("Response from server:", data);
       setOrderLine({});
     } catch (error) {
       console.error("Error:", error);
