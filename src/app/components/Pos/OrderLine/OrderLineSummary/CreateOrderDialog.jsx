@@ -21,7 +21,6 @@ import {
 import { Plus, SquarePen, LoaderCircle } from "lucide-react";
 import styles from "./CreateOrderDialog.module.css";
 import { useRestaurantContext } from "@/context/RestaurantContext";
-import { set } from "mongoose";
 
 const CreateOrderDialog = () => {
   const { orderLine, setOrderLine } = useRestaurantContext();
