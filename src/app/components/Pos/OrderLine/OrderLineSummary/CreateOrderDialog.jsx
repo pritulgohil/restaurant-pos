@@ -29,7 +29,7 @@ const CreateOrderDialog = () => {
   const [customerName, setCustomerName] = useState("");
   const [peopleCount, setPeopleCount] = useState("");
   const [loading, setLoading] = useState(false);
-  const [isDialogOpen, setIsDialogOpen] = useState(false); // ⬅️ Control state
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleSubmit = () => {
     setLoading(true);
@@ -42,11 +42,10 @@ const CreateOrderDialog = () => {
       });
       setIsDialogOpen(false);
       setLoading(false);
-      // Clear the input fields after setting the order line
       setTable("");
       setCustomerName("");
       setPeopleCount("");
-    }, 1000); // 2000 ms = 2 seconds
+    }, 1000);
   };
 
   return (
