@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 import Order from "@/models/order";
 import jwt from "jsonwebtoken";
-import order from "@/models/order";
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -40,6 +39,7 @@ export async function POST(req) {
       restaurantId,
       totalItems,
       status,
+      paymentMethod,
     } = body;
 
     if (
@@ -66,6 +66,7 @@ export async function POST(req) {
       restaurantId,
       totalItems,
       status,
+      paymentMethod,
     });
 
     await newOrder.save();

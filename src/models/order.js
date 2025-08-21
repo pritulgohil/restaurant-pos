@@ -25,6 +25,11 @@ const OrderSchema = new mongoose.Schema(
     tax: Number,
     totalPayable: Number,
     status: String,
+    paymentMethod: {
+      type: String,
+      enum: ["cash", "card"],
+      default: "cash",
+    },
   },
   { timestamps: true }
 );

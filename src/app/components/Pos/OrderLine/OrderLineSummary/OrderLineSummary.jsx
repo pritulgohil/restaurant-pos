@@ -1,13 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./OrderLineSummary.module.css";
-import { Trash2, Receipt, IdCard, Printer, Mouse } from "lucide-react";
+import {
+  Trash2,
+  Receipt,
+  IdCard,
+  Printer,
+  Mouse,
+  LoaderCircle,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRestaurantContext } from "@/context/RestaurantContext";
 import { Skeleton } from "@/components/ui/skeleton";
 import CreateOrderDialog from "./CreateOrderDialog";
+import { set } from "mongoose";
 
 const OrderLineSummary = () => {
   const { orderLine, setOrderLine, restaurant } = useRestaurantContext();
+  const [paymentMethod, setPaymentMethod] = useState("cash");
+  const [loading, setLoading] = useState(false);
 
   // Calculate subtotal
   const subtotal = Object.values(orderLine?.dishes || {}).reduce(
@@ -43,7 +53,8 @@ const OrderLineSummary = () => {
         tax: Number(tax.toFixed(2)),
         totalPayable: Number(totalPayable.toFixed(2)),
         totalItems: totalItems,
-        status: "Queued", // Default status
+        status: "Queued",
+        paymentMethod: paymentMethod,
       };
 
       const res = await fetch("/api/pos/create-order", {
@@ -60,6 +71,10 @@ const OrderLineSummary = () => {
       }
 
       const data = await res.json();
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+      }, 2000);
       console.log("Order saved:", enrichedOrder);
       console.log("Response from server:", data);
       setOrderLine({});
@@ -183,13 +198,21 @@ const OrderLineSummary = () => {
           <div className={styles.sectionHeader}>Payment Method</div>
           <div className={styles.paymentCardContainer}>
             <div className={styles.paymentCard}>
-              <Button className="w-full" variant="outline">
+              <Button
+                className="w-full"
+                variant={paymentMethod === "cash" ? "default" : "outline"}
+                onClick={() => setPaymentMethod("cash")}
+              >
                 <Receipt />
                 Cash
               </Button>
             </div>
             <div className={styles.paymentCard}>
-              <Button className="w-full" variant="outline">
+              <Button
+                className="w-full"
+                variant={paymentMethod === "card" ? "default" : "outline"}
+                onClick={() => setPaymentMethod("card")}
+              >
                 <IdCard />
                 Card
               </Button>
@@ -205,10 +228,17 @@ const OrderLineSummary = () => {
           </Button>
         </div>
         <div className={styles.placeOrderButton}>
-          <Button className="w-full" onClick={handlePlaceOrder}>
-            <Mouse />
-            Place Order
-          </Button>
+          {loading ? (
+            <Button className="w-full" disabled>
+              <LoaderCircle className="animate-spin" />
+              Placing Order...
+            </Button>
+          ) : (
+            <Button className="w-full" onClick={handlePlaceOrder}>
+              <Mouse />
+              Place Order
+            </Button>
+          )}
         </div>
       </div>
     </div>
