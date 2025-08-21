@@ -7,16 +7,18 @@ import {
   Printer,
   Mouse,
   LoaderCircle,
+  Utensils,
+  ShoppingBag,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRestaurantContext } from "@/context/RestaurantContext";
 import { Skeleton } from "@/components/ui/skeleton";
 import CreateOrderDialog from "./CreateOrderDialog";
-import { set } from "mongoose";
 
 const OrderLineSummary = () => {
   const { orderLine, setOrderLine, restaurant } = useRestaurantContext();
   const [paymentMethod, setPaymentMethod] = useState("cash");
+  const [orderType, setOrderType] = useState("dine-in");
   const [loading, setLoading] = useState(false);
 
   // Calculate subtotal
@@ -55,6 +57,7 @@ const OrderLineSummary = () => {
         totalItems: totalItems,
         status: "Queued",
         paymentMethod: paymentMethod,
+        orderType: orderType,
       };
 
       const res = await fetch("/api/pos/create-order", {
@@ -74,10 +77,10 @@ const OrderLineSummary = () => {
       setLoading(true);
       setTimeout(() => {
         setLoading(false);
+        setOrderLine({});
       }, 2000);
       console.log("Order saved:", enrichedOrder);
       console.log("Response from server:", data);
-      setOrderLine({});
     } catch (error) {
       console.error("Error:", error);
     }
@@ -191,6 +194,31 @@ const OrderLineSummary = () => {
                   2
                 )}`}</div>
               </div>
+            </div>
+          </div>
+        </div>
+        <div className={styles.bottomCard}>
+          <div className={styles.sectionHeader}>Order Type</div>
+          <div className={styles.paymentCardContainer}>
+            <div className={styles.paymentCard}>
+              <Button
+                className="w-full"
+                variant={orderType === "dine-in" ? "default" : "outline"}
+                onClick={() => setOrderType("dine-in")}
+              >
+                <Utensils />
+                Dine-In
+              </Button>
+            </div>
+            <div className={styles.paymentCard}>
+              <Button
+                className="w-full"
+                variant={orderType === "takeaway" ? "default" : "outline"}
+                onClick={() => setOrderType("takeaway")}
+              >
+                <ShoppingBag />
+                Takeaway
+              </Button>
             </div>
           </div>
         </div>

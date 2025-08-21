@@ -30,6 +30,11 @@ const OrderSchema = new mongoose.Schema(
       enum: ["cash", "card"],
       default: "cash",
     },
+    orderType: {
+      type: String,
+      enum: ["dine-in", "takeaway"],
+      default: "dine-in",
+    },
   },
   { timestamps: true }
 );

@@ -40,6 +40,7 @@ export async function POST(req) {
       totalItems,
       status,
       paymentMethod,
+      orderType,
     } = body;
 
     if (
@@ -67,6 +68,7 @@ export async function POST(req) {
       totalItems,
       status,
       paymentMethod,
+      orderType,
     });
 
     await newOrder.save();
