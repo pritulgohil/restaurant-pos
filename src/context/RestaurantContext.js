@@ -1,5 +1,6 @@
 "use client";
 
+import { set } from "mongoose";
 import { createContext, useState, useContext, useEffect } from "react";
 
 const RestaurantContext = createContext();
@@ -16,6 +17,7 @@ export const RestaurantProvider = ({ children }) => {
   const [categoryName, setCategoryName] = useState("");
   const [orderLine, setOrderLine] = useState({});
   const [orders, setOrders] = useState([]);
+  const [orderType, setOrderType] = useState("Dine-in");
 
   // Load localStorage values on client only
   useEffect(() => {
@@ -205,6 +207,8 @@ export const RestaurantProvider = ({ children }) => {
         setOrderLine,
         orders,
         fetchAllOrders,
+        orderType,
+        setOrderType,
       }}
     >
       {children}

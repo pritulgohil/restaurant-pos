@@ -23,7 +23,8 @@ import styles from "./CreateOrderDialog.module.css";
 import { useRestaurantContext } from "@/context/RestaurantContext";
 
 const CreateOrderDialog = () => {
-  const { orderLine, setOrderLine } = useRestaurantContext();
+  const { orderLine, setOrderLine, orderType, setOrderType } =
+    useRestaurantContext();
   const [table, setTable] = useState("");
   const [customerName, setCustomerName] = useState("");
   const [peopleCount, setPeopleCount] = useState("");
@@ -62,26 +63,38 @@ const CreateOrderDialog = () => {
       </DialogTrigger>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Create Order</DialogTitle>
-          <DialogDescription>
-            Assign table, customer's name and people count.
-          </DialogDescription>
+          {orderType === "Dine-in" ? (
+            <DialogTitle>Create a Dine-in Order</DialogTitle>
+          ) : (
+            <DialogTitle>Create a Takeaway Order</DialogTitle>
+          )}
+          {orderType === "Dine-in" ? (
+            <DialogDescription>
+              Assign table, customer's name and people count.
+            </DialogDescription>
+          ) : (
+            <DialogDescription>
+              Assign customer's name to the order.
+            </DialogDescription>
+          )}
         </DialogHeader>
 
         <div className={`space-y-4 py-4 ${styles.container}`}>
-          <div className={styles.marginBottom}>
-            <Label htmlFor="table">Table</Label>
-            <Select value={table} onValueChange={setTable}>
-              <SelectTrigger id="table">
-                <SelectValue placeholder="Select table" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="1">Table 1</SelectItem>
-                <SelectItem value="2">Table 2</SelectItem>
-                <SelectItem value="3">Table 3</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+          {orderType === "Dine-in" && (
+            <div className={styles.marginBottom}>
+              <Label htmlFor="table">Table</Label>
+              <Select value={table} onValueChange={setTable}>
+                <SelectTrigger id="table">
+                  <SelectValue placeholder="Select table" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1">Table 1</SelectItem>
+                  <SelectItem value="2">Table 2</SelectItem>
+                  <SelectItem value="3">Table 3</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
 
           <div className={styles.marginBottom}>
             <Label htmlFor="customerName">Customer Name</Label>
@@ -93,17 +106,19 @@ const CreateOrderDialog = () => {
             />
           </div>
 
-          <div className={styles.marginBottom}>
-            <Label htmlFor="peopleCount">Total People</Label>
-            <Input
-              id="peopleCount"
-              type="number"
-              placeholder="0"
-              min={1}
-              value={peopleCount}
-              onChange={(e) => setPeopleCount(e.target.value)}
-            />
-          </div>
+          {orderType === "Dine-in" && (
+            <div className={styles.marginBottom}>
+              <Label htmlFor="peopleCount">Total People</Label>
+              <Input
+                id="peopleCount"
+                type="number"
+                placeholder="0"
+                min={1}
+                value={peopleCount}
+                onChange={(e) => setPeopleCount(e.target.value)}
+              />
+            </div>
+          )}
         </div>
 
         <DialogFooter>

@@ -18,9 +18,8 @@ import CreateOrderDialog from "./CreateOrderDialog";
 const OrderLineSummary = () => {
   const { orderLine, setOrderLine, restaurant } = useRestaurantContext();
   const [paymentMethod, setPaymentMethod] = useState("cash");
-  const [orderType, setOrderType] = useState("Dine-in");
   const [loading, setLoading] = useState(false);
-  const { fetchAllOrders } = useRestaurantContext();
+  const { fetchAllOrders, orderType, setOrderType } = useRestaurantContext();
 
   // Calculate subtotal
   const subtotal = Object.values(orderLine?.dishes || {}).reduce(
