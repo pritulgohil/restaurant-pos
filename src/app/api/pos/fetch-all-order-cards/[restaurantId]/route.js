@@ -34,11 +34,9 @@ export async function GET(req, { params }) {
       );
     }
 
-    const orders = await Order.find({ restaurantId }).exec();
-
-    if (!orders || orders.length === 0) {
-      return NextResponse.json({ orders: [] }, { status: 200 });
-    }
+    const orders = await Order.find({ restaurantId })
+      .sort({ createdAt: -1 })
+      .exec();
 
     return NextResponse.json({ orders }, { status: 200 });
   } catch (error) {
