@@ -91,6 +91,31 @@ const OrderLineSummary = () => {
   return (
     <div className={styles.mainContainer}>
       <div className={styles.summaryTopContainer}>
+        <div className={styles.bottomCard}>
+          <div className={styles.sectionHeader}>Order Type</div>
+          <div className={styles.paymentCardContainer}>
+            <div className={styles.paymentCard}>
+              <Button
+                className="w-full"
+                variant={orderType === "Dine-in" ? "default" : "outline"}
+                onClick={() => setOrderType("Dine-in")}
+              >
+                <Utensils />
+                Dine-In
+              </Button>
+            </div>
+            <div className={styles.paymentCard}>
+              <Button
+                className="w-full"
+                variant={orderType === "Takeaway" ? "default" : "outline"}
+                onClick={() => setOrderType("Takeaway")}
+              >
+                <ShoppingBag />
+                Takeaway
+              </Button>
+            </div>
+          </div>
+        </div>
         <div className={styles.topCard}>
           <div className={styles.summaryContainer}>
             <div className={styles.tableContainer}>
@@ -199,31 +224,7 @@ const OrderLineSummary = () => {
             </div>
           </div>
         </div>
-        <div className={styles.bottomCard}>
-          <div className={styles.sectionHeader}>Order Type</div>
-          <div className={styles.paymentCardContainer}>
-            <div className={styles.paymentCard}>
-              <Button
-                className="w-full"
-                variant={orderType === "Dine-in" ? "default" : "outline"}
-                onClick={() => setOrderType("Dine-in")}
-              >
-                <Utensils />
-                Dine-In
-              </Button>
-            </div>
-            <div className={styles.paymentCard}>
-              <Button
-                className="w-full"
-                variant={orderType === "Takeaway" ? "default" : "outline"}
-                onClick={() => setOrderType("Takeaway")}
-              >
-                <ShoppingBag />
-                Takeaway
-              </Button>
-            </div>
-          </div>
-        </div>
+
         <div className={styles.bottomCard}>
           <div className={styles.sectionHeader}>Payment Method</div>
           <div className={styles.paymentCardContainer}>
