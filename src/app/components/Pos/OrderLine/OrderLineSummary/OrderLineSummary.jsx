@@ -140,24 +140,26 @@ const OrderLineSummary = () => {
                   </Button>
                 </div>
               </div>
-              <div className={styles.bottomContainer}>
-                <div className={styles.orderId}>
-                  {/* Name goes here */}
-                  {orderLine.customerName ? (
-                    orderLine.customerName
-                  ) : (
-                    <Skeleton className="h-4 w-[80px]" />
-                  )}
+              {orderType === "Dine-in" && (
+                <div className={styles.bottomContainer}>
+                  <div className={styles.orderId}>
+                    {/* Name goes here */}
+                    {orderLine.customerName ? (
+                      orderLine.customerName
+                    ) : (
+                      <Skeleton className="h-4 w-[80px]" />
+                    )}
+                  </div>
+                  <div className={styles.peopleContainer}>
+                    {/* People goes here */}
+                    {orderLine.peopleCount ? (
+                      `${orderLine.peopleCount} People`
+                    ) : (
+                      <Skeleton className="h-4 w-[60px]" />
+                    )}
+                  </div>
                 </div>
-                <div className={styles.peopleContainer}>
-                  {/* People goes here */}
-                  {orderLine.peopleCount ? (
-                    `${orderLine.peopleCount} People`
-                  ) : (
-                    <Skeleton className="h-4 w-[60px]" />
-                  )}
-                </div>
-              </div>
+              )}
             </div>
             <hr className="border-t border-dashed border-gray-300" />
             <div className={styles.orderedItemsContainer}>
