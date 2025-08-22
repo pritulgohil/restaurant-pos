@@ -2,11 +2,15 @@ import React, { useRef, useState, useEffect } from "react";
 import styles from "./OrderLineSlider.module.css";
 import { Button } from "@/components/ui/button";
 import { ChevronRightIcon, ChevronLeftIcon } from "lucide-react";
+import { useRestaurantContext } from "@/context/RestaurantContext";
+import { set } from "mongoose";
 
 const OrderLineSlider = () => {
   const cardContainerRef = useRef(null);
+  const [orders, setOrders] = useState([]);
   const [isScrollStart, setIsScrollStart] = useState(true);
   const [isScrollEnd, setIsScrollEnd] = useState(false);
+  const { restaurant } = useRestaurantContext();
   const SCROLL_AMOUNT = 300;
 
   const handleScrollRight = () => {
@@ -59,6 +63,38 @@ const OrderLineSlider = () => {
     };
   }, []);
 
+  const fetchAllOrders = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const res = await fetch(`/api/pos/fetch-all-order-cards/${restaurant}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        const orders = data.orders || [];
+        console.log("Fetched Orders:", orders);
+        setOrders(orders);
+      } else {
+        console.error(
+          "Failed to fetch orders:",
+          data.message || res.statusText
+        );
+      }
+    } catch (err) {
+      console.error("Error fetching orders:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchAllOrders();
+  }, []);
+
   return (
     <div className={styles.mainContainer}>
       <div className={styles.header}>
@@ -103,21 +139,35 @@ const OrderLineSlider = () => {
         )}
 
         <div className={styles.cardContainer} ref={cardContainerRef}>
-          <div className={styles.card}>
-            <div className={styles.cardTop}>
-              <div className={styles.orderId}>Order #F0027</div>
-              <div className={styles.table}>Table 03</div>
-            </div>
-            <div className={styles.cardMiddle}>
-              <div className={styles.itemCount}>Item: 8X</div>
-            </div>
-            <div className={styles.cardBottom}>
-              <div className={styles.timeStamp}>2 mins ago</div>
-              <div className={styles.statusPill}>In Kitchen</div>
-            </div>
-          </div>
+          {orders.length > 0 &&
+            orders.map((order) => (
+              <div key={order._id} className={styles.card}>
+                <div className={styles.cardTop}>
+                  <div className={styles.orderId}>
+                    Order #{order._id.slice(-6)}
+                  </div>
+                  <div className={styles.table}>
+                    Table {String(order.table).padStart(2, "0")}
+                  </div>
+                </div>
 
-          <div className={`${styles.card} ${styles.waitListCard}`}>
+                <div className={styles.cardMiddle}>
+                  <div className={styles.itemCount}>
+                    Item: {order.totalItems}X
+                  </div>
+                </div>
+
+                <div className={styles.cardBottom}>
+                  <div className={styles.timeStamp}>
+                    {/* Replace with <TimeStamp createdAt={order.createdAt} /> later */}
+                    2 mins ago
+                  </div>
+                  <div className={styles.statusPill}>{order.status}</div>
+                </div>
+              </div>
+            ))}
+
+          {/* <div className={`${styles.card} ${styles.waitListCard}`}>
             <div className={styles.cardTop}>
               <div className={styles.orderId}>Order #F0028</div>
               <div className={styles.table}>Table 07</div>
@@ -175,7 +225,7 @@ const OrderLineSlider = () => {
               <div className={styles.timeStamp}>10 mins ago</div>
               <div className={styles.statusPill}>In Kitchen</div>
             </div>
-          </div>
+          </div> */}
         </div>
 
         {!isScrollEnd && (
