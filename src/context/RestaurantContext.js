@@ -15,6 +15,7 @@ export const RestaurantProvider = ({ children }) => {
   const [dishCountbyCategory, setDishCountbyCategory] = useState(0);
   const [categoryName, setCategoryName] = useState("");
   const [orderLine, setOrderLine] = useState({});
+  const [orders, setOrders] = useState([]);
 
   // Load localStorage values on client only
   useEffect(() => {
@@ -148,6 +149,34 @@ export const RestaurantProvider = ({ children }) => {
     }
   };
 
+  const fetchAllOrders = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const res = await fetch(`/api/pos/fetch-all-order-cards/${restaurant}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        const orders = data.orders || [];
+        console.log("Fetched Orders:", orders);
+        setOrders(orders);
+      } else {
+        console.error(
+          "Failed to fetch orders:",
+          data.message || res.statusText
+        );
+      }
+    } catch (err) {
+      console.error("Error fetching orders:", err);
+    }
+  };
+
   return (
     <RestaurantContext.Provider
       value={{
@@ -174,6 +203,8 @@ export const RestaurantProvider = ({ children }) => {
         orderLineFetchDishByCategory,
         orderLine,
         setOrderLine,
+        orders,
+        fetchAllOrders,
       }}
     >
       {children}

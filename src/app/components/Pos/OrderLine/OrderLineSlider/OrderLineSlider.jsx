@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, use } from "react";
 import styles from "./OrderLineSlider.module.css";
 import { Button } from "@/components/ui/button";
 import { ChevronRightIcon, ChevronLeftIcon } from "lucide-react";
@@ -7,10 +7,9 @@ import TimeStamp from "@/app/components/Pos/OrderLine/OrderLineSlider/Timestamp"
 
 const OrderLineSlider = () => {
   const cardContainerRef = useRef(null);
-  const [orders, setOrders] = useState([]);
   const [isScrollStart, setIsScrollStart] = useState(true);
   const [isScrollEnd, setIsScrollEnd] = useState(false);
-  const { restaurant } = useRestaurantContext();
+  const { orders, fetchAllOrders } = useRestaurantContext();
   const SCROLL_AMOUNT = 300;
 
   const handleScrollRight = () => {
@@ -53,7 +52,6 @@ const OrderLineSlider = () => {
 
     container.addEventListener("scroll", checkScrollPosition);
 
-    // Delay initial check to ensure layout is ready
     requestAnimationFrame(() => {
       checkScrollPosition();
     });
@@ -62,34 +60,6 @@ const OrderLineSlider = () => {
       container.removeEventListener("scroll", checkScrollPosition);
     };
   }, []);
-
-  const fetchAllOrders = async () => {
-    const token = localStorage.getItem("token");
-    try {
-      const res = await fetch(`/api/pos/fetch-all-order-cards/${restaurant}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        const orders = data.orders || [];
-        console.log("Fetched Orders:", orders);
-        setOrders(orders);
-      } else {
-        console.error(
-          "Failed to fetch orders:",
-          data.message || res.statusText
-        );
-      }
-    } catch (err) {
-      console.error("Error fetching orders:", err);
-    }
-  };
 
   useEffect(() => {
     fetchAllOrders();

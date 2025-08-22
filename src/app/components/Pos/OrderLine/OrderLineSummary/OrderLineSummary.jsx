@@ -20,6 +20,7 @@ const OrderLineSummary = () => {
   const [paymentMethod, setPaymentMethod] = useState("cash");
   const [orderType, setOrderType] = useState("dine-in");
   const [loading, setLoading] = useState(false);
+  const { fetchAllOrders } = useRestaurantContext();
 
   // Calculate subtotal
   const subtotal = Object.values(orderLine?.dishes || {}).reduce(
@@ -78,6 +79,7 @@ const OrderLineSummary = () => {
       setTimeout(() => {
         setLoading(false);
         setOrderLine({});
+        fetchAllOrders();
       }, 2000);
       console.log("Order saved:", enrichedOrder);
       console.log("Response from server:", data);
