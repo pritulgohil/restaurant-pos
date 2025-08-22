@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, use } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import styles from "./OrderLineSlider.module.css";
 import { Button } from "@/components/ui/button";
 import { ChevronRightIcon, ChevronLeftIcon } from "lucide-react";
@@ -10,24 +10,22 @@ const OrderLineSlider = () => {
   const [isScrollStart, setIsScrollStart] = useState(true);
   const [isScrollEnd, setIsScrollEnd] = useState(false);
   const { orders, fetchAllOrders } = useRestaurantContext();
+  const [selectedCapsule, setSelectedCapsule] = useState("All");
   const SCROLL_AMOUNT = 300;
 
+  // Scroll handlers
   const handleScrollRight = () => {
-    if (cardContainerRef.current) {
-      cardContainerRef.current.scrollBy({
-        left: SCROLL_AMOUNT,
-        behavior: "smooth",
-      });
-    }
+    cardContainerRef.current?.scrollBy({
+      left: SCROLL_AMOUNT,
+      behavior: "smooth",
+    });
   };
 
   const handleScrollLeft = () => {
-    if (cardContainerRef.current) {
-      cardContainerRef.current.scrollBy({
-        left: -SCROLL_AMOUNT,
-        behavior: "smooth",
-      });
-    }
+    cardContainerRef.current?.scrollBy({
+      left: -SCROLL_AMOUNT,
+      behavior: "smooth",
+    });
   };
 
   const checkScrollPosition = () => {
@@ -39,7 +37,7 @@ const OrderLineSlider = () => {
     const scrollWidth = container.scrollWidth;
 
     const atStart = scrollLeft <= 0;
-    const atEnd = scrollLeft + clientWidth >= scrollWidth - 1; // -1 to allow rounding tolerance
+    const atEnd = scrollLeft + clientWidth >= scrollWidth - 1;
     const isScrollable = scrollWidth > clientWidth;
 
     setIsScrollStart(atStart);
@@ -51,19 +49,59 @@ const OrderLineSlider = () => {
     if (!container) return;
 
     container.addEventListener("scroll", checkScrollPosition);
+    requestAnimationFrame(checkScrollPosition);
 
-    requestAnimationFrame(() => {
-      checkScrollPosition();
-    });
-
-    return () => {
-      container.removeEventListener("scroll", checkScrollPosition);
-    };
+    return () => container.removeEventListener("scroll", checkScrollPosition);
   }, []);
 
   useEffect(() => {
     fetchAllOrders();
   }, []);
+
+  // Capsules
+  const capsules = [
+    { label: "All", count: orders.length },
+    {
+      label: "Dine-in",
+      count: orders.filter((o) => o.orderType === "Dine-in").length,
+      style: styles.dineIn,
+    },
+    {
+      label: "Queued",
+      count: orders.filter((o) => o.status === "Queued").length,
+      style: styles.waitlist,
+    },
+    {
+      label: "Takeaway",
+      count: orders.filter((o) => o.orderType === "Takeaway").length,
+      style: styles.takeaway,
+    },
+    {
+      label: "Served",
+      count: orders.filter((o) => o.status === "Served").length,
+      style: styles.served,
+    },
+  ];
+
+  // Map capsule label to filter field/value
+  const capsuleFilterMap = {
+    All: null,
+    "Dine-in": { field: "orderType", value: "Dine-in" },
+    Takeaway: { field: "orderType", value: "Takeaway" },
+    Queued: { field: "status", value: "Queued" },
+    Served: { field: "status", value: "Served" },
+  };
+
+  // Filter orders based on selected capsule
+  let filteredOrders = [...orders].sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  );
+  const filterInfo = capsuleFilterMap[selectedCapsule];
+  if (filterInfo) {
+    filteredOrders = filteredOrders.filter(
+      (order) => order[filterInfo.field] === filterInfo.value
+    );
+  }
 
   return (
     <div className={styles.mainContainer}>
@@ -71,29 +109,27 @@ const OrderLineSlider = () => {
         <h2>Order Line</h2>
       </div>
 
+      {/* Capsules */}
       <div className={styles.capsuleContainer}>
-        <div className={styles.capsule}>
-          <div className={styles.capsuleText}>All</div>
-          <div className={styles.capsuleNumber}>78</div>
-        </div>
-        <div className={`${styles.capsule} ${styles.inactiveCapsule}`}>
-          <div className={styles.capsuleText}>Dine in</div>
-          <div className={`${styles.capsuleNumber} ${styles.dineIn}`}>04</div>
-        </div>
-        <div className={`${styles.capsule} ${styles.inactiveCapsule}`}>
-          <div className={styles.capsuleText}>Wait List</div>
-          <div className={`${styles.capsuleNumber} ${styles.waitlist}`}>03</div>
-        </div>
-        <div className={`${styles.capsule} ${styles.inactiveCapsule}`}>
-          <div className={styles.capsuleText}>Takeaway</div>
-          <div className={`${styles.capsuleNumber} ${styles.takeaway}`}>12</div>
-        </div>
-        <div className={`${styles.capsule} ${styles.inactiveCapsule}`}>
-          <div className={styles.capsuleText}>Served</div>
-          <div className={`${styles.capsuleNumber} ${styles.served}`}>59</div>
-        </div>
+        {capsules.map((c) => (
+          <div
+            key={c.label}
+            className={`${styles.capsule} ${
+              selectedCapsule === c.label
+                ? styles.activeCapsule
+                : styles.inactiveCapsule
+            }`}
+            onClick={() => setSelectedCapsule(c.label)}
+          >
+            <div className={styles.capsuleText}>{c.label}</div>
+            <div className={`${styles.capsuleNumber} ${c.style || ""}`}>
+              {c.count.toString().padStart(2, "0")}
+            </div>
+          </div>
+        ))}
       </div>
 
+      {/* Card Slider */}
       <div className={styles.cardSliderContainer}>
         {!isScrollStart && (
           <div className={styles.leftButton}>
@@ -109,8 +145,8 @@ const OrderLineSlider = () => {
         )}
 
         <div className={styles.cardContainer} ref={cardContainerRef}>
-          {orders.length > 0 ? (
-            orders.map((order) => (
+          {filteredOrders.length > 0 ? (
+            filteredOrders.map((order) => (
               <div
                 key={order._id}
                 className={`${styles.card} ${
@@ -125,16 +161,13 @@ const OrderLineSlider = () => {
                     Table {String(order.table).padStart(2, "0")}
                   </div>
                 </div>
-
                 <div className={styles.cardMiddle}>
                   <div className={styles.itemCount}>
                     Item: {order.totalItems}X
                   </div>
                 </div>
-
                 <div className={styles.cardBottom}>
                   <div className={styles.timeStamp}>
-                    {/* Replace with <TimeStamp createdAt={order.createdAt} /> later */}
                     <TimeStamp createdAt={order.createdAt} />
                   </div>
                   <div
@@ -148,70 +181,8 @@ const OrderLineSlider = () => {
               </div>
             ))
           ) : (
-            <>
-              <div className={styles.cardPlaceholder}>No Active Orders</div>
-            </>
+            <div className={styles.cardPlaceholder}>No Active Orders</div>
           )}
-
-          {/* <div className={`${styles.card} ${styles.waitListCard}`}>
-            <div className={styles.cardTop}>
-              <div className={styles.orderId}>Order #F0028</div>
-              <div className={styles.table}>Table 07</div>
-            </div>
-            <div className={styles.cardMiddle}>
-              <div className={styles.itemCount}>Item: 3X</div>
-            </div>
-            <div className={styles.cardBottom}>
-              <div className={styles.timeStamp}>Just Now</div>
-              <div className={`${styles.statusPill} ${styles.waitlist}`}>
-                Wait List
-              </div>
-            </div>
-          </div>
-
-          <div className={`${styles.card} ${styles.takeawayCard}`}>
-            <div className={styles.cardTop}>
-              <div className={styles.orderId}>Order #F0019</div>
-              <div className={styles.table}>Table 09</div>
-            </div>
-            <div className={styles.cardMiddle}>
-              <div className={styles.itemCount}>Item: 2X</div>
-            </div>
-            <div className={styles.cardBottom}>
-              <div className={styles.timeStamp}>25 mins ago</div>
-              <div className={`${styles.statusPill} ${styles.takeaway}`}>
-                Ready
-              </div>
-            </div>
-          </div>
-
-          <div className={styles.card}>
-            <div className={styles.cardTop}>
-              <div className={styles.orderId}>Order #F0020</div>
-              <div className={styles.table}>Table 04</div>
-            </div>
-            <div className={styles.cardMiddle}>
-              <div className={styles.itemCount}>Item: 3X</div>
-            </div>
-            <div className={styles.cardBottom}>
-              <div className={styles.timeStamp}>6 mins ago</div>
-              <div className={styles.statusPill}>In Kitchen</div>
-            </div>
-          </div>
-
-          <div className={styles.card}>
-            <div className={styles.cardTop}>
-              <div className={styles.orderId}>Order #F0021</div>
-              <div className={styles.table}>Table 06</div>
-            </div>
-            <div className={styles.cardMiddle}>
-              <div className={styles.itemCount}>Item: 5X</div>
-            </div>
-            <div className={styles.cardBottom}>
-              <div className={styles.timeStamp}>10 mins ago</div>
-              <div className={styles.statusPill}>In Kitchen</div>
-            </div>
-          </div> */}
         </div>
 
         {!isScrollEnd && (

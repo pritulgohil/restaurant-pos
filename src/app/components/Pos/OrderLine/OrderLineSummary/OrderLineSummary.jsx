@@ -18,7 +18,7 @@ import CreateOrderDialog from "./CreateOrderDialog";
 const OrderLineSummary = () => {
   const { orderLine, setOrderLine, restaurant } = useRestaurantContext();
   const [paymentMethod, setPaymentMethod] = useState("cash");
-  const [orderType, setOrderType] = useState("dine-in");
+  const [orderType, setOrderType] = useState("Dine-in");
   const [loading, setLoading] = useState(false);
   const { fetchAllOrders } = useRestaurantContext();
 
@@ -205,8 +205,8 @@ const OrderLineSummary = () => {
             <div className={styles.paymentCard}>
               <Button
                 className="w-full"
-                variant={orderType === "dine-in" ? "default" : "outline"}
-                onClick={() => setOrderType("dine-in")}
+                variant={orderType === "Dine-in" ? "default" : "outline"}
+                onClick={() => setOrderType("Dine-in")}
               >
                 <Utensils />
                 Dine-In
@@ -215,8 +215,8 @@ const OrderLineSummary = () => {
             <div className={styles.paymentCard}>
               <Button
                 className="w-full"
-                variant={orderType === "takeaway" ? "default" : "outline"}
-                onClick={() => setOrderType("takeaway")}
+                variant={orderType === "Takeaway" ? "default" : "outline"}
+                onClick={() => setOrderType("Takeaway")}
               >
                 <ShoppingBag />
                 Takeaway

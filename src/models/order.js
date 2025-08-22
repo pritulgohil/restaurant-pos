@@ -32,8 +32,8 @@ const OrderSchema = new mongoose.Schema(
     },
     orderType: {
       type: String,
-      enum: ["dine-in", "takeaway"],
-      default: "dine-in",
+      enum: ["Dine-in", "Takeaway"],
+      default: "Dine-in",
     },
   },
   { timestamps: true }
