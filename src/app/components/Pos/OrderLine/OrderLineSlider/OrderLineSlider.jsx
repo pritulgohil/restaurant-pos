@@ -3,7 +3,7 @@ import styles from "./OrderLineSlider.module.css";
 import { Button } from "@/components/ui/button";
 import { ChevronRightIcon, ChevronLeftIcon } from "lucide-react";
 import { useRestaurantContext } from "@/context/RestaurantContext";
-import { set } from "mongoose";
+import TimeStamp from "@/app/components/Pos/OrderLine/OrderLineSlider/Timestamp";
 
 const OrderLineSlider = () => {
   const cardContainerRef = useRef(null);
@@ -141,7 +141,12 @@ const OrderLineSlider = () => {
         <div className={styles.cardContainer} ref={cardContainerRef}>
           {orders.length > 0 &&
             orders.map((order) => (
-              <div key={order._id} className={styles.card}>
+              <div
+                key={order._id}
+                className={`${styles.card} ${
+                  order.status === "Queued" ? styles.waitListCard : ""
+                }`}
+              >
                 <div className={styles.cardTop}>
                   <div className={styles.orderId}>
                     Order #{order._id.slice(-6)}
@@ -160,9 +165,15 @@ const OrderLineSlider = () => {
                 <div className={styles.cardBottom}>
                   <div className={styles.timeStamp}>
                     {/* Replace with <TimeStamp createdAt={order.createdAt} /> later */}
-                    2 mins ago
+                    <TimeStamp createdAt={order.createdAt} />
                   </div>
-                  <div className={styles.statusPill}>{order.status}</div>
+                  <div
+                    className={`${styles.statusPill} ${
+                      order.status === "Queued" ? styles.waitlist : ""
+                    }`}
+                  >
+                    {order.status}
+                  </div>
                 </div>
               </div>
             ))}
