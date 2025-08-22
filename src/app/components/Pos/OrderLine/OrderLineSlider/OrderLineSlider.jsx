@@ -139,7 +139,7 @@ const OrderLineSlider = () => {
         )}
 
         <div className={styles.cardContainer} ref={cardContainerRef}>
-          {orders.length > 0 &&
+          {orders.length > 0 ? (
             orders.map((order) => (
               <div
                 key={order._id}
@@ -176,7 +176,12 @@ const OrderLineSlider = () => {
                   </div>
                 </div>
               </div>
-            ))}
+            ))
+          ) : (
+            <>
+              <div className={styles.cardPlaceholder}>No Active Orders</div>
+            </>
+          )}
 
           {/* <div className={`${styles.card} ${styles.waitListCard}`}>
             <div className={styles.cardTop}>

@@ -92,6 +92,18 @@
   flex-shrink: 0;
 }
 
+.cardPlaceholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 24.2%;
+  height: 120px;
+  background-color: #f0f0f0;
+  border-radius: 12px;
+  font-size: 12px;
+  color: gray;
+}
+
 .waitListCard {
   background-color: #ffe2de;
 }
@@ -149,6 +161,10 @@
 
 @media (max-width: 1600px) {
   .card {
+    width: 32.4%;
+  }
+
+  .cardPlaceholder {
     width: 32.4%;
   }
 }
