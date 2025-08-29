@@ -1,0 +1,48 @@
+.cardCapsuleContainer {
+  margin-top: 12px;
+  font-size: 12px;
+  display: flex;
+  gap: 8px;
+}
+
+.cardCapsule {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  cursor: pointer;
+}
+
+.pendingCapsule {
+  border: 2px solid #facc15;
+}
+
+.capsuleIconContainer {
+  padding: 6px;
+  border-radius: 100%;
+}
+
+.pendingIconContainer {
+  background-color: #facc15;
+}
+
+.completeCapsule {
+  border: 2px solid gainsboro;
+}
+
+.completeIconContainer {
+  background-color: #22c55e;
+}
+
+.capsuleIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.completeCapsuleIcon {
+  width: 16px;
+  height: 16px;
+  color: white;
+}
