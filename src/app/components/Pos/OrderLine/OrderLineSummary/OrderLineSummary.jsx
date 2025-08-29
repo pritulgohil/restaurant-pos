@@ -119,14 +119,25 @@ const OrderLineSummary = () => {
           <div className={styles.summaryContainer}>
             <div className={styles.tableContainer}>
               <div className={styles.topContainer}>
-                <div className={styles.tableNumber}>
-                  {/* Table number goes here */}
-                  {orderLine.table ? (
-                    `Table No #0${orderLine.table}`
-                  ) : (
-                    <Skeleton className="h-4 w-[120px]" />
-                  )}
-                </div>
+                {orderType === "Dine-in" ? (
+                  <div className={styles.tableNumber}>
+                    {/* Table number goes here */}
+                    {orderLine.table ? (
+                      `Table No #0${orderLine.table}`
+                    ) : (
+                      <Skeleton className="h-4 w-[120px]" />
+                    )}
+                  </div>
+                ) : (
+                  <div className={styles.tableNumber}>
+                    {/* Table number goes here */}
+                    {orderLine.customerName ? (
+                      orderLine.customerName
+                    ) : (
+                      <Skeleton className="h-4 w-[120px]" />
+                    )}
+                  </div>
+                )}
                 <div className={styles.iconContainer}>
                   <CreateOrderDialog />
                   <Button

@@ -13,9 +13,15 @@ const OrderSchema = new mongoose.Schema(
       ref: "Restaurant",
       required: true,
     },
-    table: Number,
+    table: {
+      type: mongoose.Schema.Types.Mixed,
+      default: "n/a",
+    },
     customerName: String,
-    peopleCount: Number,
+    peopleCount: {
+      type: mongoose.Schema.Types.Mixed,
+      default: "n/a",
+    },
     totalItems: Number,
     dishes: {
       type: Map,

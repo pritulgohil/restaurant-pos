@@ -23,8 +23,7 @@ import styles from "./CreateOrderDialog.module.css";
 import { useRestaurantContext } from "@/context/RestaurantContext";
 
 const CreateOrderDialog = () => {
-  const { orderLine, setOrderLine, orderType, setOrderType } =
-    useRestaurantContext();
+  const { orderLine, setOrderLine, orderType } = useRestaurantContext();
   const [table, setTable] = useState("");
   const [customerName, setCustomerName] = useState("");
   const [peopleCount, setPeopleCount] = useState("");
@@ -36,9 +35,10 @@ const CreateOrderDialog = () => {
     setTimeout(() => {
       setOrderLine({
         ...orderLine,
-        table,
+        table: table || "n/a",
         customerName,
-        peopleCount: parseInt(peopleCount, 10) || 0,
+        peopleCount:
+          !peopleCount || parseInt(peopleCount, 10) === 0 ? "n/a" : peopleCount,
       });
       setIsDialogOpen(false);
       setLoading(false);
