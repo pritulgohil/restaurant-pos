@@ -157,9 +157,13 @@ const OrderLineSlider = () => {
                   <div className={styles.orderId}>
                     Order #{order._id.slice(-6)}
                   </div>
-                  <div className={styles.table}>
-                    Table {String(order.table).padStart(2, "0")}
-                  </div>
+                  {order.table === "n/a" ? (
+                    <div className={styles.table}>Takeaway</div>
+                  ) : (
+                    <div className={styles.table}>
+                      Table {String(order.table).padStart(2, "0")}
+                    </div>
+                  )}
                 </div>
                 <div className={styles.cardMiddle}>
                   <div className={styles.itemCount}>

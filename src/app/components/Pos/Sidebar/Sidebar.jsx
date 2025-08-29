@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./Sidebar.module.css";
-import { LayoutDashboard } from "lucide-react";
+import { LayoutDashboard, ClipboardList } from "lucide-react";
 import { ArrowRightLeft } from "lucide-react";
 import { TableCellsMerge } from "lucide-react";
 import { Soup } from "lucide-react";
@@ -88,6 +88,17 @@ const Sidebar = () => {
             >
               <Soup className={styles.sidebarIcon} />
               Manage Dishes
+            </li>
+            <li
+              className={` ${
+                pathname === "/pos/order-board"
+                  ? styles.active
+                  : styles.sidebarItem
+              }`}
+              onClick={() => handleNavigation("/pos/order-board")}
+            >
+              <ClipboardList className={styles.sidebarIcon} />
+              Order Board
             </li>
             <li
               className={` ${
