@@ -25,6 +25,7 @@
   align-items: center;
   justify-content: center;
   font-size: 10px;
+  font-weight: 700;
 }
 
 .allCapsule {
@@ -55,6 +56,7 @@
 
 .completeIconContainer {
   background-color: #10b981;
+  color: white;
 }
 
 .inProgressIconContainer {
@@ -70,4 +72,39 @@
   width: 14px;
   height: 14px;
   color: white;
+}
+
+.orderCardContainer {
+  display: inline-flex;
+  margin-top: 24px;
+  width: 100%;
+}
+
+.orderCard {
+  background-color: #fef3c7;
+  width: 25%;
+  padding: 12px;
+  border-radius: 10px;
+}
+
+.orderId {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.firstContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.orderStatus {
+  font-size: 12px;
+  background-color: #f59e0b;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }

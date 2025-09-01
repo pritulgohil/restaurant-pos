@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./OrderBoard.module.css";
+import { Hourglass } from "lucide-react";
 
 export const OrderBoard = () => {
   return (
@@ -14,7 +15,7 @@ export const OrderBoard = () => {
           </div>
         </div>
         <div className={`${styles.cardCapsule} ${styles.inProgressCapsule}`}>
-          <div className="capsuleHeader">In Progress</div>
+          <div className="capsuleHeader">Queued</div>
           <div
             className={`${styles.capsuleIconContainer} ${styles.inProgressIconContainer}`}
           >
@@ -22,7 +23,7 @@ export const OrderBoard = () => {
           </div>
         </div>
         <div className={`${styles.cardCapsule} ${styles.pendingCapsule}`}>
-          <div className="capsuleHeader">Pending</div>
+          <div className="capsuleHeader">In Progresss</div>
           <div
             className={`${styles.capsuleIconContainer} ${styles.pendingIconContainer}`}
           >
@@ -38,7 +39,17 @@ export const OrderBoard = () => {
           </div>
         </div>
       </div>
-      <div className={styles.orderCardContainer}></div>
+      <div className={styles.orderCardContainer}>
+        <div className={styles.orderCard}>
+          <div className={styles.firstContainer}>
+            <div className={styles.orderId}>Order #3dbefr</div>
+            <div className={styles.orderStatus}>
+              <Hourglass size={12} strokeWidth={2.5} />
+              Queued
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
