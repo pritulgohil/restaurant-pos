@@ -89,7 +89,7 @@
 
 .orderId {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .firstContainer {
@@ -99,12 +99,43 @@
 }
 
 .orderStatus {
-  font-size: 12px;
+  font-size: 10px;
   background-color: #f59e0b;
   padding: 4px 12px;
   border-radius: 9999px;
-  font-weight: 600;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.userContainer {
   display: flex;
   align-items: center;
   gap: 4px;
+  font-size: 12px;
+  margin-top: 16px;
+}
+
+.secondContainer {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.orderType {
+  font-size: 12px;
+  padding: 2px 8px;
+  border: 1px solid gainsboro;
+  display: inline-flex;
+  border-radius: 4px;
+}
+
+.orderTime {
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  color: gray;
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./OrderBoard.module.css";
-import { Hourglass } from "lucide-react";
+import { Hourglass, User, Clock } from "lucide-react";
 
 export const OrderBoard = () => {
   return (
@@ -44,8 +44,19 @@ export const OrderBoard = () => {
           <div className={styles.firstContainer}>
             <div className={styles.orderId}>Order #3dbefr</div>
             <div className={styles.orderStatus}>
-              <Hourglass size={12} strokeWidth={2.5} />
+              <Hourglass size={12} strokeWidth={2} />
               Queued
+            </div>
+          </div>
+          <div className={styles.userContainer}>
+            <User size={14} strokeWidth={2.5} />
+            Pritul Gohil
+          </div>
+          <div className={styles.secondContainer}>
+            <div className={styles.orderType}>Dine-in</div>
+            <div className={styles.orderTime}>
+              <Clock size={12} />
+              Just Now
             </div>
           </div>
         </div>
