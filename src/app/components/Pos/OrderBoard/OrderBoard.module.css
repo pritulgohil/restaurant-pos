@@ -76,13 +76,15 @@
 
 .orderCardContainer {
   display: inline-flex;
+  flex-wrap: wrap;
   margin-top: 24px;
   width: 100%;
+  gap: 16px;
 }
 
 .orderCard {
   background-color: #fef3c7;
-  width: 25%;
+  width: 24%;
   padding: 16px 12px;
   border-radius: 10px;
   border-left: 4px solid #f59e0b;
