@@ -83,8 +83,9 @@
 .orderCard {
   background-color: #fef3c7;
   width: 25%;
-  padding: 12px;
+  padding: 16px 12px;
   border-radius: 10px;
+  border-left: 4px solid #f59e0b;
 }
 
 .orderId {
@@ -138,4 +139,36 @@
   align-items: center;
   gap: 3px;
   color: gray;
+}
+
+.thirdContainer {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.orderItemContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.orderItemContainer {
+  font-size: 14px;
+}
+
+.buttonContainer {
+  margin-top: 16px;
+}
+
+.startPrepButton {
+  width: 100%;
+  background-color: #3b82f6;
+  color: white;
+}
+
+.startPrepButton:hover {
+  background-color: #2563eb;
+  color: white;
 }
