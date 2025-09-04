@@ -75,8 +75,9 @@
 }
 
 .orderCardContainer {
-  display: inline-flex;
+  display: flex; /* instead of inline-flex */
   flex-wrap: wrap;
+  align-items: flex-start; /* ✅ prevents stretching */
   margin-top: 24px;
   width: 100%;
   gap: 16px;
