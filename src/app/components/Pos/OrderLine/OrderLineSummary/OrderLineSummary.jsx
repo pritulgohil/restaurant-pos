@@ -16,10 +16,16 @@ import { Skeleton } from "@/components/ui/skeleton";
 import CreateOrderDialog from "./CreateOrderDialog";
 
 const OrderLineSummary = () => {
-  const { orderLine, setOrderLine, restaurant } = useRestaurantContext();
   const [paymentMethod, setPaymentMethod] = useState("cash");
   const [loading, setLoading] = useState(false);
-  const { fetchAllOrders, orderType, setOrderType } = useRestaurantContext();
+  const {
+    orderType,
+    setOrderType,
+    fetchAllOrders,
+    orderLine,
+    setOrderLine,
+    restaurant,
+  } = useRestaurantContext();
 
   // Calculate subtotal
   const subtotal = Object.values(orderLine?.dishes || {}).reduce(

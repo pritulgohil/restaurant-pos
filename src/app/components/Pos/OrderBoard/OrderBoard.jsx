@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import styles from "./OrderBoard.module.css";
 import { Hourglass, User, Clock, Rocket } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,14 +8,16 @@ import { useRestaurantContext } from "@/context/RestaurantContext";
 import TimeStamp from "@/app/components/Pos/OrderLine/OrderLineSlider/Timestamp";
 
 export const OrderBoard = () => {
-  const { orders, fetchAllOrders } = useRestaurantContext();
+  const { orders, fetchAllOrders, orderTrigger } = useRestaurantContext();
 
+  // Initial fetch on mount
   useEffect(() => {
     fetchAllOrders();
-  }, [orders]);
+  }, [orderTrigger]);
 
   return (
     <div className={styles.mainContainer}>
+      {/* Order summary cards */}
       <div className={styles.cardCapsuleContainer}>
         <div className={`${styles.cardCapsule} ${styles.allCapsule}`}>
           <div className="capsuleHeader">All</div>
@@ -51,10 +53,11 @@ export const OrderBoard = () => {
         </div>
       </div>
 
+      {/* Orders list */}
       <div className={styles.orderCardContainer}>
         {orders && orders.length > 0 ? (
           orders.map((order) => (
-            <div key={order._id} className={`${styles.orderCard} shadow-md`}>
+            <div key={order._id} className={`${styles.orderCard}`}>
               <div className={styles.firstContainer}>
                 <div className={styles.orderId}>
                   Order #{order._id.slice(-6)}
