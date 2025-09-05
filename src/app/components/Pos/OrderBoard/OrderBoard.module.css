@@ -94,6 +94,7 @@
 .inProgressOrderCard {
   background-color: #dbeafe;
   border-left: 4px solid #3b82f6;
+  transition: background-color 0.3s ease;
 }
 
 .completedOrderCard {
@@ -126,11 +127,13 @@
 .inProgressStatus {
   background-color: #3b82f6;
   color: white;
+  transition: background-color 0.3s ease;
 }
 
 .completedStatus {
   background-color: #10b981;
   color: white;
+  transition: background-color 0.3s ease;
 }
 
 .userContainer {
@@ -193,6 +196,7 @@
 
 .inProgressButton {
   background-color: #10b981;
+  transition: background-color 0.3s ease;
 }
 
 .inProgressButton:hover {
@@ -207,9 +211,9 @@
 .completeButton {
   width: 100%;
   background-color: #10b981;
+  transition: background-color 0.3s ease;
 }
 
 .completeButton:hover {
   background-color: #10b981;
-  cursor: not-allowed;
 }

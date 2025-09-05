@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./OrderBoard.module.css";
 import {
   Hourglass,
@@ -11,28 +11,41 @@ import {
   CircleCheckBig,
   CheckCheck,
   Layers,
+  LoaderCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRestaurantContext } from "@/context/RestaurantContext";
 import TimeStamp from "@/app/components/Pos/OrderLine/OrderLineSlider/Timestamp";
 
 export const OrderBoard = () => {
-  const { orders, fetchAllOrders } = useRestaurantContext();
+  const { orders, fetchAllOrders, orderTrigger, setOrderTrigger } =
+    useRestaurantContext();
 
-  // Initial fetch on mount + refetch on trigger
+  // Track multiple loading orders using a Set
+  const [loadingOrders, setLoadingOrders] = useState(new Set());
+
   useEffect(() => {
     fetchAllOrders();
-  }, []);
+  }, [orderTrigger]);
 
   const handleStatusUpdate = async (order) => {
     try {
       let newStatus;
+
+      // Add order to loading set
+      setLoadingOrders((prev) => new Set(prev).add(order._id));
+
       if (order.status === "Queued") {
         newStatus = "In Progress";
       } else if (order.status === "In Progress") {
         newStatus = "Completed";
       } else {
-        return; // Already completed → no action
+        setLoadingOrders((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(order._id);
+          return newSet;
+        });
+        return;
       }
 
       const token = localStorage.getItem("token");
@@ -45,13 +58,26 @@ export const OrderBoard = () => {
         body: JSON.stringify({ status: newStatus }),
       });
 
-      if (!res.ok) {
-        throw new Error("Failed to update order status");
-      }
+      if (!res.ok) throw new Error("Failed to update order status");
 
       await res.json();
+
+      // Keep loader visible for 2s, then remove and refresh orders
+      setTimeout(() => {
+        setLoadingOrders((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(order._id);
+          return newSet;
+        });
+        setOrderTrigger((prev) => !prev);
+      }, 2000);
     } catch (err) {
       console.error("Error updating order status:", err);
+      setLoadingOrders((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(order._id);
+        return newSet;
+      });
     }
   };
 
@@ -125,7 +151,6 @@ export const OrderBoard = () => {
                   ) : order.status === "Completed" ? (
                     <CheckCheck size={12} strokeWidth={2} />
                   ) : null}
-
                   {order.status}
                 </div>
               </div>
@@ -161,11 +186,24 @@ export const OrderBoard = () => {
                         : ""
                     } w-full`}
                     onClick={() => handleStatusUpdate(order)}
+                    disabled={loadingOrders.has(order._id)}
                   >
                     {order.status === "Queued" ? (
+                      loadingOrders.has(order._id) ? (
+                        <>
+                          <LoaderCircle className="animate-spin" />
+                          Start Preparing...
+                        </>
+                      ) : (
+                        <>
+                          <Rocket />
+                          Start Preparing
+                        </>
+                      )
+                    ) : loadingOrders.has(order._id) ? (
                       <>
-                        <Rocket />
-                        Start Preparing
+                        <LoaderCircle className="animate-spin" />
+                        Marking Complete...
                       </>
                     ) : (
                       <>
@@ -179,6 +217,7 @@ export const OrderBoard = () => {
                     className={`${
                       order.status === "Completed" ? styles.completeButton : ""
                     }`}
+                    disabled
                   >
                     <CircleCheckBig />
                     Completed
