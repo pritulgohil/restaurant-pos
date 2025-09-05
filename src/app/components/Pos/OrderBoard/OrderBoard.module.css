@@ -91,6 +91,16 @@
   border-left: 4px solid #f59e0b;
 }
 
+.inProgressOrderCard {
+  background-color: #dbeafe;
+  border-left: 4px solid #3b82f6;
+}
+
+.completedOrderCard {
+  background-color: #d1fae5;
+  border-left: 4px solid #10b981;
+}
+
 .orderId {
   font-size: 14px;
   font-weight: 500;
@@ -111,6 +121,16 @@
   display: flex;
   align-items: center;
   gap: 2px;
+}
+
+.inProgressStatus {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.completedStatus {
+  background-color: #10b981;
+  color: white;
 }
 
 .userContainer {
@@ -171,7 +191,21 @@
   color: white;
 }
 
+.inProgressButton {
+  background-color: #10b981;
+}
+
 .startPrepButton:hover {
   background-color: #2563eb;
   color: white;
+}
+
+.completeButton {
+  width: 100%;
+  background-color: #10b981;
+}
+
+.completeButton:hover {
+  background-color: #10b981;
+  cursor: not-allowed;
 }

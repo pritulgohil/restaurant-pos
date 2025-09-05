@@ -9,6 +9,8 @@ import {
   Rocket,
   Check,
   CircleCheckBig,
+  CheckCheck,
+  Layers,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRestaurantContext } from "@/context/RestaurantContext";
@@ -99,13 +101,35 @@ export const OrderBoard = () => {
       <div className={styles.orderCardContainer}>
         {orders && orders.length > 0 ? (
           orders.map((order) => (
-            <div key={order._id} className={`${styles.orderCard}`}>
+            <div
+              key={order._id}
+              className={`${styles.orderCard} ${
+                order.status === "In Progress" ? styles.inProgressOrderCard : ""
+              } ${
+                order.status === "Completed" ? styles.completedOrderCard : ""
+              }`}
+            >
               <div className={styles.firstContainer}>
                 <div className={styles.orderId}>
                   Order #{order._id.slice(-6)}
                 </div>
-                <div className={styles.orderStatus}>
-                  <Hourglass size={12} strokeWidth={2} />
+                <div
+                  className={`${styles.orderStatus} ${
+                    order.status === "In Progress"
+                      ? styles.inProgressStatus
+                      : ""
+                  } ${
+                    order.status === "Completed" ? styles.completedStatus : ""
+                  }`}
+                >
+                  {order.status === "Queued" ? (
+                    <Layers size={12} strokeWidth={2} />
+                  ) : order.status === "In Progress" ? (
+                    <Hourglass size={12} strokeWidth={2} />
+                  ) : order.status === "Completed" ? (
+                    <CheckCheck size={12} strokeWidth={2} />
+                  ) : null}
+
                   {order.status}
                 </div>
               </div>
@@ -135,7 +159,11 @@ export const OrderBoard = () => {
               <div className={styles.buttonContainer}>
                 {order.status !== "Completed" ? (
                   <Button
-                    className={styles.startPrepButton}
+                    className={`${styles.startPrepButton} ${
+                      order.status === "In Progress"
+                        ? styles.inProgressButton
+                        : ""
+                    } w-full`}
                     onClick={() => handleStatusUpdate(order)}
                   >
                     {order.status === "Queued" ? (
@@ -146,12 +174,16 @@ export const OrderBoard = () => {
                     ) : (
                       <>
                         <Check />
-                        Mark Completed
+                        Mark Complete
                       </>
                     )}
                   </Button>
                 ) : (
-                  <Button className="w-full" disabled>
+                  <Button
+                    className={`${
+                      order.status === "Completed" ? styles.completeButton : ""
+                    }`}
+                  >
                     <CircleCheckBig />
                     Completed
                   </Button>
