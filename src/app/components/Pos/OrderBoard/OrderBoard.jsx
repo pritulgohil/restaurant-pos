@@ -1,19 +1,61 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import styles from "./OrderBoard.module.css";
-import { Hourglass, User, Clock, Rocket } from "lucide-react";
+import {
+  Hourglass,
+  User,
+  Clock,
+  Rocket,
+  Check,
+  CircleCheckBig,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRestaurantContext } from "@/context/RestaurantContext";
 import TimeStamp from "@/app/components/Pos/OrderLine/OrderLineSlider/Timestamp";
 
 export const OrderBoard = () => {
-  const { orders, fetchAllOrders, orderTrigger } = useRestaurantContext();
+  const { orders, fetchAllOrders, orderTrigger, setOrderTrigger } =
+    useRestaurantContext();
 
-  // Initial fetch on mount
+  // Initial fetch on mount + refetch on trigger
   useEffect(() => {
     fetchAllOrders();
   }, [orderTrigger]);
+
+  const handleStatusUpdate = async (order) => {
+    try {
+      let newStatus;
+      if (order.status === "Queued") {
+        newStatus = "In Progress";
+      } else if (order.status === "In Progress") {
+        newStatus = "Completed";
+      } else {
+        return; // Already completed → no action
+      }
+
+      const token = localStorage.getItem("token");
+      const res = await fetch(`/api/pos/update-order-status/${order._id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ status: newStatus }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to update order status");
+      }
+
+      await res.json();
+
+      // Refetch orders after update
+      setOrderTrigger(!orderTrigger);
+    } catch (err) {
+      console.error("Error updating order status:", err);
+    }
+  };
 
   return (
     <div className={styles.mainContainer}>
@@ -91,10 +133,29 @@ export const OrderBoard = () => {
               </div>
 
               <div className={styles.buttonContainer}>
-                <Button className={styles.startPrepButton}>
-                  <Rocket />
-                  Start Preparing
-                </Button>
+                {order.status !== "Completed" ? (
+                  <Button
+                    className={styles.startPrepButton}
+                    onClick={() => handleStatusUpdate(order)}
+                  >
+                    {order.status === "Queued" ? (
+                      <>
+                        <Rocket />
+                        Start Preparing
+                      </>
+                    ) : (
+                      <>
+                        <Check />
+                        Mark Completed
+                      </>
+                    )}
+                  </Button>
+                ) : (
+                  <Button className="w-full" disabled>
+                    <CircleCheckBig />
+                    Completed
+                  </Button>
+                )}
               </div>
             </div>
           ))
