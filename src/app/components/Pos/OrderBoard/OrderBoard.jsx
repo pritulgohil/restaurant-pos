@@ -17,13 +17,12 @@ import { useRestaurantContext } from "@/context/RestaurantContext";
 import TimeStamp from "@/app/components/Pos/OrderLine/OrderLineSlider/Timestamp";
 
 export const OrderBoard = () => {
-  const { orders, fetchAllOrders, orderTrigger, setOrderTrigger } =
-    useRestaurantContext();
+  const { orders, fetchAllOrders } = useRestaurantContext();
 
   // Initial fetch on mount + refetch on trigger
   useEffect(() => {
     fetchAllOrders();
-  }, [orderTrigger]);
+  }, []);
 
   const handleStatusUpdate = async (order) => {
     try {
@@ -51,9 +50,6 @@ export const OrderBoard = () => {
       }
 
       await res.json();
-
-      // Refetch orders after update
-      setOrderTrigger(!orderTrigger);
     } catch (err) {
       console.error("Error updating order status:", err);
     }

@@ -17,7 +17,6 @@ export const RestaurantProvider = ({ children }) => {
   const [orderLine, setOrderLine] = useState({});
   const [orders, setOrders] = useState([]);
   const [orderType, setOrderType] = useState("Dine-in");
-  const [orderTrigger, setOrderTrigger] = useState(false);
 
   // Load localStorage values on client only
   useEffect(() => {
@@ -210,8 +209,6 @@ export const RestaurantProvider = ({ children }) => {
         orderType,
         setOrderType,
         setOrders,
-        orderTrigger,
-        setOrderTrigger,
       }}
     >
       {children}
