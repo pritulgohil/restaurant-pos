@@ -26,7 +26,7 @@ export async function PATCH(req, { params }) {
       );
     }
 
-    const { orderId } = params;
+    const { orderId } = await params;
     const body = await req.json();
     const { status } = body;
 

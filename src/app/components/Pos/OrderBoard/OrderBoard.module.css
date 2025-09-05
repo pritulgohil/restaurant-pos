@@ -195,6 +195,10 @@
   background-color: #10b981;
 }
 
+.inProgressButton:hover {
+  background-color: #0d986a !important;
+}
+
 .startPrepButton:hover {
   background-color: #2563eb;
   color: white;
