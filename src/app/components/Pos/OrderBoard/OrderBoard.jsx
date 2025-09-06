@@ -24,6 +24,9 @@ export const OrderBoard = () => {
   // Track multiple loading orders using a Set
   const [loadingOrders, setLoadingOrders] = useState(new Set());
 
+  // Track selected status filter
+  const [filterStatus, setFilterStatus] = useState("All");
+
   useEffect(() => {
     fetchAllOrders();
   }, [orderTrigger]);
@@ -81,11 +84,22 @@ export const OrderBoard = () => {
     }
   };
 
+  // Filter orders based on selected status
+  const filteredOrders =
+    filterStatus === "All"
+      ? orders
+      : orders.filter((o) => o.status === filterStatus);
+
   return (
     <div className={styles.mainContainer}>
       {/* Order summary cards */}
       <div className={styles.cardCapsuleContainer}>
-        <div className={`${styles.cardCapsule} ${styles.allCapsule}`}>
+        <div
+          className={`${styles.cardCapsule} ${
+            filterStatus === "All" ? styles.activeCapsule : ""
+          } ${styles.allCapsule}`}
+          onClick={() => setFilterStatus("All")}
+        >
           <div className="capsuleHeader">All</div>
           <div
             className={`${styles.capsuleIconContainer} ${styles.allIconContainer}`}
@@ -93,7 +107,13 @@ export const OrderBoard = () => {
             {orders.length}
           </div>
         </div>
-        <div className={`${styles.cardCapsule} ${styles.inProgressCapsule}`}>
+
+        <div
+          className={`${styles.cardCapsule} ${
+            filterStatus === "Queued" ? styles.activeCapsule : ""
+          } ${styles.inProgressCapsule}`}
+          onClick={() => setFilterStatus("Queued")}
+        >
           <div className="capsuleHeader">Queued</div>
           <div
             className={`${styles.capsuleIconContainer} ${styles.inProgressIconContainer}`}
@@ -101,7 +121,13 @@ export const OrderBoard = () => {
             {orders.filter((o) => o.status === "Queued").length}
           </div>
         </div>
-        <div className={`${styles.cardCapsule} ${styles.pendingCapsule}`}>
+
+        <div
+          className={`${styles.cardCapsule} ${
+            filterStatus === "In Progress" ? styles.activeCapsule : ""
+          } ${styles.pendingCapsule}`}
+          onClick={() => setFilterStatus("In Progress")}
+        >
           <div className="capsuleHeader">In Progress</div>
           <div
             className={`${styles.capsuleIconContainer} ${styles.pendingIconContainer}`}
@@ -109,7 +135,13 @@ export const OrderBoard = () => {
             {orders.filter((o) => o.status === "In Progress").length}
           </div>
         </div>
-        <div className={`${styles.cardCapsule} ${styles.completeCapsule}`}>
+
+        <div
+          className={`${styles.cardCapsule} ${
+            filterStatus === "Completed" ? styles.activeCapsule : ""
+          } ${styles.completeCapsule}`}
+          onClick={() => setFilterStatus("Completed")}
+        >
           <div className="capsuleHeader">Completed</div>
           <div
             className={`${styles.capsuleIconContainer} ${styles.completeIconContainer}`}
@@ -121,8 +153,8 @@ export const OrderBoard = () => {
 
       {/* Orders list */}
       <div className={styles.orderCardContainer}>
-        {orders && orders.length > 0 ? (
-          orders.map((order) => (
+        {filteredOrders && filteredOrders.length > 0 ? (
+          filteredOrders.map((order) => (
             <div
               key={order._id}
               className={`${styles.orderCard} ${
@@ -213,12 +245,7 @@ export const OrderBoard = () => {
                     )}
                   </Button>
                 ) : (
-                  <Button
-                    className={`${
-                      order.status === "Completed" ? styles.completeButton : ""
-                    }`}
-                    disabled
-                  >
+                  <Button className={`${styles.completeButton}`} disabled>
                     <CircleCheckBig />
                     Completed
                   </Button>
