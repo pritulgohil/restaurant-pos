@@ -28,10 +28,6 @@
   font-weight: 700;
 }
 
-.allCapsule {
-  border: 2px solid #8b5cf6;
-}
-
 /* .pendingCapsule {
   border: 2px solid #3b82f6;
 }
@@ -216,4 +212,20 @@
 
 .completeButton:hover {
   background-color: #10b981;
+}
+
+.queueActiveCapsule {
+  border: 2px solid #f59e0b;
+}
+
+.allActiveCapsule {
+  border: 2px solid #8b5cf6;
+}
+
+.progressActiveCapsule {
+  border: 2px solid #3b82f6;
+}
+
+.completeActiveCapsule {
+  border: 2px solid #10b981;
 }

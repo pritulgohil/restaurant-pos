@@ -96,8 +96,8 @@ export const OrderBoard = () => {
       <div className={styles.cardCapsuleContainer}>
         <div
           className={`${styles.cardCapsule} ${
-            filterStatus === "All" ? styles.activeCapsule : ""
-          } ${styles.allCapsule}`}
+            filterStatus === "All" ? styles.allActiveCapsule : ""
+          }`}
           onClick={() => setFilterStatus("All")}
         >
           <div className="capsuleHeader">All</div>
@@ -110,7 +110,7 @@ export const OrderBoard = () => {
 
         <div
           className={`${styles.cardCapsule} ${
-            filterStatus === "Queued" ? styles.activeCapsule : ""
+            filterStatus === "Queued" ? styles.queueActiveCapsule : ""
           } ${styles.inProgressCapsule}`}
           onClick={() => setFilterStatus("Queued")}
         >
@@ -124,7 +124,7 @@ export const OrderBoard = () => {
 
         <div
           className={`${styles.cardCapsule} ${
-            filterStatus === "In Progress" ? styles.activeCapsule : ""
+            filterStatus === "In Progress" ? styles.progressActiveCapsule : ""
           } ${styles.pendingCapsule}`}
           onClick={() => setFilterStatus("In Progress")}
         >
@@ -138,7 +138,7 @@ export const OrderBoard = () => {
 
         <div
           className={`${styles.cardCapsule} ${
-            filterStatus === "Completed" ? styles.activeCapsule : ""
+            filterStatus === "Completed" ? styles.completeActiveCapsule : ""
           } ${styles.completeCapsule}`}
           onClick={() => setFilterStatus("Completed")}
         >
