@@ -65,21 +65,25 @@ const OrderLineSlider = () => {
       label: "Dine-in",
       count: orders.filter((o) => o.orderType === "Dine-in").length,
       style: styles.dineIn,
+      borderStyle: styles.dineInCapsule,
     },
     {
       label: "Queued",
       count: orders.filter((o) => o.status === "Queued").length,
       style: styles.waitlist,
+      borderStyle: styles.waitlistCapsule,
     },
     {
       label: "Takeaway",
       count: orders.filter((o) => o.orderType === "Takeaway").length,
       style: styles.takeaway,
+      borderStyle: styles.takeawayCapsule,
     },
     {
       label: "Served",
       count: orders.filter((o) => o.status === "Served").length,
       style: styles.served,
+      borderStyle: styles.servedCapsule,
     },
   ];
 
@@ -116,7 +120,7 @@ const OrderLineSlider = () => {
             key={c.label}
             className={`${styles.capsule} ${
               selectedCapsule === c.label
-                ? styles.activeCapsule
+                ? `${styles.activeCapsule} ${c.borderStyle || ""}`
                 : styles.inactiveCapsule
             }`}
             onClick={() => setSelectedCapsule(c.label)}
