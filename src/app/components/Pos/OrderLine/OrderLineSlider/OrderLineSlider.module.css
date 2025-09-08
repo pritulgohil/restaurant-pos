@@ -70,6 +70,7 @@
   scrollbar-width: none;
   -ms-overflow-style: none;
   scroll-behavior: smooth;
+  width: 1130px;
 }
 
 .cardContainer::-webkit-scrollbar {
@@ -175,6 +176,10 @@
 @media (max-width: 1600px) {
   .card {
     width: 32.4%;
+  }
+
+  .cardContainer {
+    width: 850px;
   }
 
   .cardPlaceholder {
