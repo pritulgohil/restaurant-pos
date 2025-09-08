@@ -30,6 +30,11 @@ const CreateOrderDialog = () => {
   const [loading, setLoading] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+  const isFormValid =
+    orderType === "Dine-in"
+      ? table && !!customerName && peopleCount && parseInt(peopleCount, 10) > 0
+      : !!customerName;
+
   const handleSubmit = () => {
     setLoading(true);
     setTimeout(() => {
@@ -128,7 +133,11 @@ const CreateOrderDialog = () => {
               Assigning...
             </Button>
           ) : (
-            <Button type="button" onClick={handleSubmit}>
+            <Button
+              type="button"
+              onClick={handleSubmit}
+              disabled={!isFormValid}
+            >
               Assign Order
             </Button>
           )}
