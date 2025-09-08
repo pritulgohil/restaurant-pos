@@ -27,6 +27,15 @@ const OrderLineSummary = () => {
     restaurant,
   } = useRestaurantContext();
 
+  const isOrderValid =
+    orderLine &&
+    orderLine.dishes &&
+    Object.values(orderLine.dishes).length > 0 &&
+    !!orderLine.customerName &&
+    (orderType === "Dine-in"
+      ? !!orderLine.table && !!orderLine.peopleCount
+      : true);
+
   // Calculate subtotal
   const subtotal = Object.values(orderLine?.dishes || {}).reduce(
     (acc, dish) => acc + dish.price * dish.quantity,
@@ -283,7 +292,11 @@ const OrderLineSummary = () => {
               Placing Order...
             </Button>
           ) : (
-            <Button className="w-full" onClick={handlePlaceOrder}>
+            <Button
+              className="w-full"
+              onClick={handlePlaceOrder}
+              disabled={!isOrderValid}
+            >
               <Mouse />
               Place Order
             </Button>
