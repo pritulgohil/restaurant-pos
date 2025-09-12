@@ -71,9 +71,9 @@
 }
 
 .orderCardContainer {
-  display: flex; /* instead of inline-flex */
+  display: flex;
   flex-wrap: wrap;
-  align-items: flex-start; /* ✅ prevents stretching */
+  align-items: flex-start;
   margin-top: 24px;
   width: 100%;
   gap: 16px;
@@ -81,7 +81,7 @@
 
 .orderCard {
   background-color: #fef3c7;
-  width: 24%;
+  width: 19.2%;
   padding: 16px 12px;
   border-radius: 10px;
   border-left: 4px solid #f59e0b;
@@ -228,4 +228,10 @@
 
 .completeActiveCapsule {
   border: 2px solid #10b981;
+}
+
+@media (max-width: 1600px) {
+  .orderCard {
+    width: 24%;
+  }
 }
