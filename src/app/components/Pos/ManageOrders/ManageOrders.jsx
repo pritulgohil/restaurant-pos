@@ -11,78 +11,94 @@ import {
 } from "@/components/ui/table";
 
 const ManageOrders = () => {
-  const invoices = [
+  const orders = [
     {
-      invoice: "INV001",
-      paymentStatus: "Paid",
-      totalAmount: "$250.00",
-      paymentMethod: "Credit Card",
+      orderId: "ORD001",
+      table: "1",
+      customerName: "Pritul Gohil",
+      peopleCount: 2,
+      totalItems: 3,
+      totalPayable: 29.1,
+      status: "Completed",
+      orderType: "Dine-in",
+      createdAt: "2025-09-05T02:26:30.414Z",
     },
     {
-      invoice: "INV002",
-      paymentStatus: "Pending",
-      totalAmount: "$150.00",
-      paymentMethod: "PayPal",
+      orderId: "ORD002",
+      table: "3",
+      customerName: "Jane Doe",
+      peopleCount: 4,
+      totalItems: 5,
+      totalPayable: 76.5,
+      status: "In Progress",
+      orderType: "Dine-in",
+      createdAt: "2025-09-05T04:10:12.111Z",
     },
     {
-      invoice: "INV003",
-      paymentStatus: "Unpaid",
-      totalAmount: "$350.00",
-      paymentMethod: "Bank Transfer",
-    },
-    {
-      invoice: "INV004",
-      paymentStatus: "Paid",
-      totalAmount: "$450.00",
-      paymentMethod: "Credit Card",
-    },
-    {
-      invoice: "INV005",
-      paymentStatus: "Paid",
-      totalAmount: "$550.00",
-      paymentMethod: "PayPal",
-    },
-    {
-      invoice: "INV006",
-      paymentStatus: "Pending",
-      totalAmount: "$200.00",
-      paymentMethod: "Bank Transfer",
-    },
-    {
-      invoice: "INV007",
-      paymentStatus: "Unpaid",
-      totalAmount: "$300.00",
-      paymentMethod: "Credit Card",
+      orderId: "ORD003",
+      table: "Takeaway",
+      customerName: "John Smith",
+      peopleCount: 1,
+      totalItems: 2,
+      totalPayable: 18.0,
+      status: "Pending",
+      orderType: "Takeaway",
+      createdAt: "2025-09-05T06:45:50.000Z",
     },
   ];
 
   return (
     <Table>
-      <TableCaption>A list of your recent invoices.</TableCaption>
+      <TableCaption>Track and review all your orders</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[100px]">Invoice</TableHead>
+          <TableHead className="w-[100px]">Order ID</TableHead>
+          <TableHead>Table</TableHead>
+          <TableHead>Customer</TableHead>
+          <TableHead>People</TableHead>
+          <TableHead>Items</TableHead>
           <TableHead>Status</TableHead>
-          <TableHead>Method</TableHead>
-          <TableHead className="text-right">Amount</TableHead>
+          <TableHead>Type</TableHead>
+          <TableHead>Created</TableHead>
+          <TableHead className="text-right">Total</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {invoices.map((invoice) => (
-          <TableRow key={invoice.invoice}>
-            <TableCell className="font-medium">{invoice.invoice}</TableCell>
-            <TableCell>{invoice.paymentStatus}</TableCell>
-            <TableCell>{invoice.paymentMethod}</TableCell>
-            <TableCell className="text-right">{invoice.totalAmount}</TableCell>
+        {orders.map((order) => (
+          <TableRow
+            className="cursor-pointer hover:bg-muted/50"
+            key={order.orderId}
+          >
+            <TableCell className="font-medium">{order.orderId}</TableCell>
+            <TableCell>{order.table}</TableCell>
+            <TableCell>{order.customerName}</TableCell>
+            <TableCell>{order.peopleCount}</TableCell>
+            <TableCell>{order.totalItems}X</TableCell>
+            <TableCell>{order.status}</TableCell>
+            <TableCell>{order.orderType}</TableCell>
+            <TableCell>
+              {new Date(order.createdAt).toLocaleString([], {
+                dateStyle: "medium",
+                timeStyle: "short",
+              })}
+            </TableCell>
+            <TableCell className="text-right">
+              ${order.totalPayable.toFixed(2)}
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>
-      <TableFooter>
+      {/* <TableFooter>
         <TableRow>
-          <TableCell colSpan={3}>Total</TableCell>
-          <TableCell className="text-right">$2,500.00</TableCell>
+          <TableCell colSpan={9}>
+            Last Updated:{" "}
+            {new Date().toLocaleString([], {
+              dateStyle: "medium",
+              timeStyle: "short",
+            })}
+          </TableCell>
         </TableRow>
-      </TableFooter>
+      </TableFooter> */}
     </Table>
   );
 };
