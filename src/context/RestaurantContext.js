@@ -154,7 +154,7 @@ export const RestaurantProvider = ({ children }) => {
   const fetchAllOrders = async () => {
     const token = localStorage.getItem("token");
     try {
-      const res = await fetch(`/api/pos/fetch-all-order-cards/${restaurant}`, {
+      const res = await fetch(`/api/pos/fetch-all-orders/${restaurant}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
