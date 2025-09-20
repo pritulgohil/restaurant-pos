@@ -75,6 +75,18 @@
   border-left: 4px solid #f59e0b;
 }
 
+.placeholderCard {
+  background-color: #f3f4f6;
+  width: 19.2%;
+  padding: 16px 12px;
+  border-radius: 10px;
+  border-left: 4px solid #e5e7eb;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .inProgressOrderCard {
   background-color: #dbeafe;
   border-left: 4px solid #3b82f6;
@@ -220,6 +232,9 @@
 
 @media (max-width: 1600px) {
   .orderCard {
+    width: 24%;
+  }
+  .placeholderCard {
     width: 24%;
   }
 }

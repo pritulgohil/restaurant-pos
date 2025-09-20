@@ -254,7 +254,7 @@ export const OrderBoard = () => {
             </div>
           ))
         ) : (
-          <p>No orders yet.</p>
+          <div className={styles.placeholderCard}>No Active Orders</div>
         )}
       </div>
     </div>
