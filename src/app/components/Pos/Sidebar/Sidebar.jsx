@@ -10,6 +10,7 @@ import { Settings } from "lucide-react";
 import { Globe } from "lucide-react";
 import { LogOut } from "lucide-react";
 import { LoaderCircle } from "lucide-react";
+import { History } from "lucide-react";
 import { useState } from "react";
 import { useAuthContext } from "@/context/AuthContext";
 import { useRouter, usePathname } from "next/navigation";
@@ -69,6 +70,17 @@ const Sidebar = () => {
             </li>
             <li
               className={` ${
+                pathname === "/pos/order-board"
+                  ? styles.active
+                  : styles.sidebarItem
+              }`}
+              onClick={() => handleNavigation("/pos/order-board")}
+            >
+              <ClipboardList className={styles.sidebarIcon} />
+              Order Board
+            </li>
+            <li
+              className={` ${
                 pathname === "/pos/manage-table"
                   ? styles.active
                   : styles.sidebarItem
@@ -91,14 +103,14 @@ const Sidebar = () => {
             </li>
             <li
               className={` ${
-                pathname === "/pos/order-board"
+                pathname === "/pos/manage-orders"
                   ? styles.active
                   : styles.sidebarItem
               }`}
-              onClick={() => handleNavigation("/pos/order-board")}
+              onClick={() => handleNavigation("/pos/manage-orders")}
             >
-              <ClipboardList className={styles.sidebarIcon} />
-              Order Board
+              <History className={styles.sidebarIcon} />
+              Manage Orders
             </li>
             <li
               className={` ${
