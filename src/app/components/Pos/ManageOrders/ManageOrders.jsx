@@ -117,7 +117,6 @@ const ManageOrders = () => {
               <TableCell>
                 {new Date(order.createdAt).toLocaleString([], {
                   dateStyle: "medium",
-                  timeStyle: "short",
                 })}
               </TableCell>
               <TableCell className="text-right">
