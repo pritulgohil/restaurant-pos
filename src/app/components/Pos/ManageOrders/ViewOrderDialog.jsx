@@ -14,11 +14,22 @@ import {
   Users,
   Calendar,
   Clock,
+  ChevronDown,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
+import { useState } from "react";
 
-export function ViewOrderDialog({ children, order }) {
+export function ViewOrderDialog({ children, order, onUpdate }) {
+  const [status, setStatus] = useState(order.status);
+
   const orderDate = new Date(order.createdAt);
 
   const formattedDate = orderDate.toLocaleDateString([], {
@@ -35,8 +46,10 @@ export function ViewOrderDialog({ children, order }) {
   };
 
   const handleUpdate = () => {
-    console.log("Update order clicked:", order._id);
-    // 🔑 Here you can open an update form or trigger API call
+    console.log("Update order clicked:", order._id, "New status:", status);
+    if (onUpdate) {
+      onUpdate(order._id, { status });
+    }
   };
 
   return (
@@ -49,22 +62,38 @@ export function ViewOrderDialog({ children, order }) {
             <DialogTitle className="text-2xl font-bold">
               Order #{order._id ? order._id.slice(-6) : order.orderId}
             </DialogTitle>
+
+            {/* Status with dropdown */}
             <div className="flex items-center space-x-2 mt-2 text-sm">
               <span className="relative flex items-center justify-center">
-                {order.status === "In Progress" && (
+                {status === "In Progress" && (
                   <span className="absolute w-2 h-2 rounded-full bg-blue-500 opacity-75 animate-ping" />
                 )}
                 <span
                   className={`w-2 h-2 rounded-full ${
-                    order.status === "Queued"
+                    status === "Queued"
                       ? "bg-orange-500"
-                      : order.status === "In Progress"
+                      : status === "In Progress"
                       ? "bg-blue-500"
                       : "bg-green-500"
                   }`}
                 />
               </span>
-              <span>{order.status}</span>
+
+              {/* dropdown trigger */}
+              <Select value={status} onValueChange={(val) => setStatus(val)}>
+                <SelectTrigger className="flex items-center gap-2 border-none bg-transparent shadow-none p-0 h-auto focus:ring-0 focus:outline-none [&>svg]:hidden">
+                  <div className="flex items-center">
+                    <SelectValue className="text-sm font-medium" />
+                    <ChevronDown className="w-4 h-4 ml-1 text-gray-500 shrink-0" />
+                  </div>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Queued">Queued</SelectItem>
+                  <SelectItem value="In Progress">In Progress</SelectItem>
+                  <SelectItem value="Completed">Completed</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
         </DialogHeader>
@@ -156,7 +185,6 @@ export function ViewOrderDialog({ children, order }) {
             </div>
           </div>
 
-          {/* ACTION BUTTONS */}
           {/* ACTION BUTTONS */}
           <div className="flex w-full gap-3 mt-6">
             <Button className="w-1/2" variant="outline" onClick={handleUpdate}>
