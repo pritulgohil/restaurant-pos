@@ -14,13 +14,13 @@ import { useRestaurantContext } from "@/context/RestaurantContext";
 import styles from "./ManageOrders.module.css";
 import { ViewOrderDialog } from "@/app/components/Pos/ManageOrders/ViewOrderDialog";
 import {
-  UserRound,
+  Utensils,
   Hash,
   Users,
   List,
   Clock,
   DollarSign,
-  Tag,
+  ClipboardCheck,
 } from "lucide-react";
 
 const ManageOrders = () => {
@@ -52,13 +52,13 @@ const ManageOrders = () => {
             </TableHead>
             <TableHead>
               <div className="flex items-center gap-2">
-                <Tag className="w-4 h-4" />
+                <ClipboardCheck className="w-4 h-4" />
                 Status
               </div>
             </TableHead>
             <TableHead>
               <div className="flex items-center gap-2">
-                <UserRound className="w-4 h-4" />
+                <Utensils className="w-4 h-4" />
                 Type
               </div>
             </TableHead>

@@ -1,0 +1,83 @@
+.orderDetailsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.orderDetails {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  text-align: right;
+}
+
+.capitalize {
+  width: 100px;
+}
+
+.orderStatus {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 14px;
+}
+
+.statusDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.divider {
+  height: 1px;
+  background-color: #e0e0e0;
+  margin-top: 32px;
+}
+
+.orderItemsContainer {
+  margin-top: 32px;
+}
+
+.sectionHeader {
+  font-family: "Epilogue";
+  font-weight: 500;
+}
+
+.itemsListContainer {
+  font-size: 14px;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+.quantity {
+  color: gray;
+}
+
+.payableDivider {
+  height: 1px;
+  background-color: #e0e0e0;
+  margin-top: 16px;
+}
+
+.payableContainer {
+  margin-top: 16px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.totalPayablePrice {
+  font-weight: 500;
+}
