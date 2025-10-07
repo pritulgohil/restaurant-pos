@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { use, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -24,7 +24,38 @@ import {
 } from "lucide-react";
 
 const ManageOrders = () => {
-  const { orders } = useRestaurantContext();
+  const { orders, setOrders, restaurant } = useRestaurantContext();
+
+  const fetchOrders = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await fetch(`/api/pos/fetch-all-orders/${restaurant}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch orders: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("Orders fetched:", data);
+
+      if (setOrders) {
+        setOrders(data.orders || []);
+      }
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchOrders();
+  }, []);
 
   return (
     <>
@@ -79,7 +110,11 @@ const ManageOrders = () => {
         <TableBody>
           {orders?.length > 0 ? (
             orders.map((order) => (
-              <ViewOrderDialog key={order._id || order.orderId} order={order}>
+              <ViewOrderDialog
+                key={order._id || order.orderId}
+                order={order}
+                fetchOrders={fetchOrders} // ✅ pass function
+              >
                 <TableRow
                   className={`cursor-pointer hover:bg-muted/50 ${styles.tableRow}`}
                 >

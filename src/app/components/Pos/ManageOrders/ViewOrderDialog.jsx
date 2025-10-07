@@ -25,10 +25,11 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export function ViewOrderDialog({ children, order, onUpdate }) {
+export function ViewOrderDialog({ children, order, onUpdate, fetchOrders }) {
   const [status, setStatus] = useState(order.status);
+  const [open, setOpen] = useState(false);
 
   const orderDate = new Date(order.createdAt);
 
@@ -71,17 +72,27 @@ export function ViewOrderDialog({ children, order, onUpdate }) {
 
       const updatedOrder = await response.json();
       console.log("Order updated successfully:", updatedOrder);
+      fetchOrders();
 
       if (onUpdate) {
         onUpdate(order._id, { status: updatedOrder.status });
       }
+      setOpen(false);
     } catch (error) {
       console.error("Error updating order:", error);
     }
   };
 
+  useEffect(() => {
+    if (!open) {
+      setStatus(order.status);
+    }
+  }, [open, order.status]);
+
+  const hasStatusChanged = status !== order.status;
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         {/* HEADER */}
@@ -215,7 +226,12 @@ export function ViewOrderDialog({ children, order, onUpdate }) {
 
           {/* ACTION BUTTONS */}
           <div className="flex w-full gap-3 mt-6">
-            <Button className="w-1/2" variant="outline" onClick={handleUpdate}>
+            <Button
+              className="w-1/2"
+              variant="outline"
+              onClick={handleUpdate}
+              disabled={!hasStatusChanged}
+            >
               Update
             </Button>
             <Button className="w-1/2" onClick={handlePrint}>
