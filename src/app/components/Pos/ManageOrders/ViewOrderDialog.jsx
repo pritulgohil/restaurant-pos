@@ -45,10 +45,38 @@ export function ViewOrderDialog({ children, order, onUpdate }) {
     window.print();
   };
 
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
     console.log("Update order clicked:", order._id, "New status:", status);
-    if (onUpdate) {
-      onUpdate(order._id, { status });
+
+    const token = localStorage.getItem("token");
+
+    try {
+      const response = await fetch(
+        `/api/pos/update-order-status/${order._id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            status: status,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Failed to update order. Status: ${response.status}`);
+      }
+
+      const updatedOrder = await response.json();
+      console.log("Order updated successfully:", updatedOrder);
+
+      if (onUpdate) {
+        onUpdate(order._id, { status: updatedOrder.status });
+      }
+    } catch (error) {
+      console.error("Error updating order:", error);
     }
   };
 
