@@ -93,7 +93,7 @@ const OrderLineSlider = () => {
     "Dine-in": { field: "orderType", value: "Dine-in" },
     Takeaway: { field: "orderType", value: "Takeaway" },
     Queued: { field: "status", value: "Queued" },
-    Served: { field: "status", value: "Served" },
+    Served: { field: "status", value: "Completed" },
   };
 
   // Filter orders based on selected capsule
