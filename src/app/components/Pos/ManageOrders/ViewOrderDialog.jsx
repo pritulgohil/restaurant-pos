@@ -30,6 +30,7 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { useState, useEffect } from "react";
+import DeleteOrderDialog from "./DeleteOrderDialog";
 
 export function ViewOrderDialog({ children, order, onUpdate, fetchOrders }) {
   const [status, setStatus] = useState(order.status);
@@ -253,10 +254,13 @@ export function ViewOrderDialog({ children, order, onUpdate, fetchOrders }) {
               </Button>
             )}
 
-            <Button className="flex-1" variant="destructive">
-              <Trash2 />
-              Delete
-            </Button>
+            <DeleteOrderDialog
+              orderId={order._id}
+              onDelete={() => {
+                fetchOrders();
+                setOpen(false);
+              }}
+            />
 
             <Button className="flex-1">
               <Printer />
