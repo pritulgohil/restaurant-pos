@@ -258,7 +258,6 @@ export function ViewOrderDialog({ children, order, onUpdate, fetchOrders }) {
               orderId={order._id}
               onDelete={() => {
                 fetchOrders();
-                setOpen(false);
               }}
             />
 

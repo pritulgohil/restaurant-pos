@@ -6,16 +6,16 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogCancel,
-  AlertDialogAction,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
 import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
+import { Trash2, LoaderCircle } from "lucide-react";
 import { useState } from "react";
 
 function DeleteOrderDialog({ orderId, onDelete }) {
   const [isDeleting, setIsDeleting] = useState(false);
+  const [open, setOpen] = useState(false); // fully controlled
 
   const handleDelete = async () => {
     setIsDeleting(true);
@@ -34,42 +34,84 @@ function DeleteOrderDialog({ orderId, onDelete }) {
         throw new Error(`Failed to delete order. Status: ${response.status}`);
       }
 
-      if (onDelete) {
-        onDelete(orderId);
-      }
+      // Keep dialog open for 5 seconds
+      setTimeout(() => {
+        setIsDeleting(false);
+        setOpen(false); // CLOSE after delay
+        if (onDelete) {
+          onDelete(orderId);
+        }
+      }, 2000);
     } catch (error) {
       console.error("Error deleting order:", error);
-    } finally {
       setIsDeleting(false);
     }
   };
 
   return (
-    <AlertDialog>
+    <AlertDialog
+      open={open}
+      onOpenChange={(value) => {
+        if (!isDeleting) setOpen(value); // block closing while deleting
+      }}
+    >
+      {/* Trigger */}
       <AlertDialogTrigger asChild>
-        <Button className="flex-1" variant="destructive">
+        <Button
+          variant="destructive"
+          className="flex-1"
+          onClick={(e) => {
+            e.preventDefault(); // Prevent default closing behavior
+            setOpen(true);
+          }}
+        >
           <Trash2 className="w-4 h-4 mr-2" />
           Delete
         </Button>
       </AlertDialogTrigger>
 
-      <AlertDialogContent>
+      {/* Dialog Content */}
+
+      <AlertDialogContent
+        onEscapeKeyDown={(e) => e.preventDefault()}
+        onPointerDownOutside={(e) => e.preventDefault()}
+      >
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+          <AlertDialogTitle>
+            {isDeleting ? "Deleting..." : "Are you sure?"}
+          </AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete order #
-            {orderId.slice(-6)} from the records.
+            {isDeleting
+              ? "Please wait while we delete the order..."
+              : `This action cannot be undone. This will permanently delete order #${orderId.slice(
+                  -6
+                )} from the records.`}
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
-          <AlertDialogAction
+
+        <AlertDialogFooter className="flex gap-2">
+          <AlertDialogCancel
+            disabled={isDeleting}
+            onClick={() => setOpen(false)}
+          >
+            Cancel
+          </AlertDialogCancel>
+
+          <Button
+            type="button"
             onClick={handleDelete}
             disabled={isDeleting}
-            className="bg-red-600 hover:bg-red-700"
+            className="bg-red-600 hover:bg-red-700 flex items-center gap-2"
           >
-            {isDeleting ? "Deleting..." : "Delete"}
-          </AlertDialogAction>
+            {isDeleting ? (
+              <>
+                <LoaderCircle className="w-4 h-4 animate-spin" />
+                Deleting...
+              </>
+            ) : (
+              "Delete"
+            )}
+          </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
