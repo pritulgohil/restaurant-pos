@@ -44,10 +44,6 @@ export function ViewOrderDialog({ children, order, onUpdate, fetchOrders }) {
     minute: "2-digit",
   });
 
-  const handlePrint = () => {
-    window.print();
-  };
-
   const handleUpdate = async () => {
     console.log("Update order clicked:", order._id, "New status:", status);
     setIsUpdating(true);
@@ -252,9 +248,7 @@ export function ViewOrderDialog({ children, order, onUpdate, fetchOrders }) {
                 Update
               </Button>
             )}
-            <Button className="w-1/2" onClick={handlePrint}>
-              Print Receipt
-            </Button>
+            <Button className="w-1/2">Print Receipt</Button>
           </div>
         </div>
       </DialogContent>
