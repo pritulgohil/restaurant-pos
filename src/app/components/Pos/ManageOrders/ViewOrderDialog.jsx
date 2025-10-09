@@ -16,6 +16,9 @@ import {
   Clock,
   ChevronDown,
   LoaderCircle,
+  RotateCw,
+  Trash2,
+  Printer,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -230,25 +233,35 @@ export function ViewOrderDialog({ children, order, onUpdate, fetchOrders }) {
           <div className="flex w-full gap-3 mt-6">
             {isUpdating ? (
               <Button
-                className="w-1/2"
+                className="flex-1"
                 variant="outline"
                 onClick={handleUpdate}
                 disabled={!hasStatusChanged}
               >
-                <LoaderCircle className="animate-spin" />
+                <LoaderCircle className="w-4 h-4 mr-2 animate-spin" />
                 Updating
               </Button>
             ) : (
               <Button
-                className="w-1/2"
+                className="flex-1"
                 variant="outline"
                 onClick={handleUpdate}
                 disabled={!hasStatusChanged}
               >
+                <RotateCw />
                 Update
               </Button>
             )}
-            <Button className="w-1/2">Print Receipt</Button>
+
+            <Button className="flex-1" variant="destructive">
+              <Trash2 />
+              Delete
+            </Button>
+
+            <Button className="flex-1">
+              <Printer />
+              Print Receipt
+            </Button>
           </div>
         </div>
       </DialogContent>
