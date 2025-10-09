@@ -15,6 +15,7 @@ import {
   Calendar,
   Clock,
   ChevronDown,
+  LoaderCircle,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -30,6 +31,7 @@ import { useState, useEffect } from "react";
 export function ViewOrderDialog({ children, order, onUpdate, fetchOrders }) {
   const [status, setStatus] = useState(order.status);
   const [open, setOpen] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   const orderDate = new Date(order.createdAt);
 
@@ -48,6 +50,7 @@ export function ViewOrderDialog({ children, order, onUpdate, fetchOrders }) {
 
   const handleUpdate = async () => {
     console.log("Update order clicked:", order._id, "New status:", status);
+    setIsUpdating(true);
 
     const token = localStorage.getItem("token");
 
@@ -72,12 +75,15 @@ export function ViewOrderDialog({ children, order, onUpdate, fetchOrders }) {
 
       const updatedOrder = await response.json();
       console.log("Order updated successfully:", updatedOrder);
+      setTimeout(() => {
+        setIsUpdating(false);
+        setOpen(false);
+      }, 1000);
       fetchOrders();
 
       if (onUpdate) {
         onUpdate(order._id, { status: updatedOrder.status });
       }
-      setOpen(false);
     } catch (error) {
       console.error("Error updating order:", error);
     }
@@ -226,14 +232,26 @@ export function ViewOrderDialog({ children, order, onUpdate, fetchOrders }) {
 
           {/* ACTION BUTTONS */}
           <div className="flex w-full gap-3 mt-6">
-            <Button
-              className="w-1/2"
-              variant="outline"
-              onClick={handleUpdate}
-              disabled={!hasStatusChanged}
-            >
-              Update
-            </Button>
+            {isUpdating ? (
+              <Button
+                className="w-1/2"
+                variant="outline"
+                onClick={handleUpdate}
+                disabled={!hasStatusChanged}
+              >
+                <LoaderCircle className="animate-spin" />
+                Updating
+              </Button>
+            ) : (
+              <Button
+                className="w-1/2"
+                variant="outline"
+                onClick={handleUpdate}
+                disabled={!hasStatusChanged}
+              >
+                Update
+              </Button>
+            )}
             <Button className="w-1/2" onClick={handlePrint}>
               Print Receipt
             </Button>
