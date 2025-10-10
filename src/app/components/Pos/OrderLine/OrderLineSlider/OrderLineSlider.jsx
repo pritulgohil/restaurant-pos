@@ -81,7 +81,7 @@ const OrderLineSlider = () => {
     },
     {
       label: "Served",
-      count: orders.filter((o) => o.status === "Served").length,
+      count: orders.filter((o) => o.status === "Completed").length,
       style: styles.served,
       borderStyle: styles.servedCapsule,
     },
@@ -153,9 +153,9 @@ const OrderLineSlider = () => {
             filteredOrders.map((order) => (
               <div
                 key={order._id}
-                className={`${styles.card} ${
-                  order.status === "Queued" ? styles.waitListCard : ""
-                }`}
+                className={`${styles.card} 
+    ${order.status === "Queued" ? styles.waitListCard : ""} 
+    ${order.status === "In Progress" ? styles.inProgressCard : ""}`}
               >
                 <div className={styles.cardTop}>
                   <div className={styles.orderId}>
@@ -179,9 +179,9 @@ const OrderLineSlider = () => {
                     <TimeStamp createdAt={order.createdAt} />
                   </div>
                   <div
-                    className={`${styles.statusPill} ${
-                      order.status === "Queued" ? styles.waitlist : ""
-                    }`}
+                    className={`${styles.statusPill}
+    ${order.status === "Queued" ? styles.waitlist : ""} 
+    ${order.status === "In Progress" ? styles.inProgressPill : ""}`}
                   >
                     {order.status}
                   </div>
