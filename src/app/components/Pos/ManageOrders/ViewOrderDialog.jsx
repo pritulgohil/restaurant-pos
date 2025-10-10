@@ -32,7 +32,14 @@ import {
 import { useState, useEffect } from "react";
 import DeleteOrderDialog from "./DeleteOrderDialog";
 
-export function ViewOrderDialog({ children, order, onUpdate, fetchOrders }) {
+export function ViewOrderDialog({
+  children,
+  order,
+  onUpdate,
+  fetchOrders,
+  onOpen,
+  onClose,
+}) {
   const [status, setStatus] = useState(order.status);
   const [open, setOpen] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
@@ -47,6 +54,13 @@ export function ViewOrderDialog({ children, order, onUpdate, fetchOrders }) {
     hour: "2-digit",
     minute: "2-digit",
   });
+
+  useEffect(() => {
+    if (onOpen) onOpen();
+    return () => {
+      if (onClose) onClose();
+    };
+  }, []);
 
   const handleUpdate = async () => {
     console.log("Update order clicked:", order._id, "New status:", status);
@@ -98,7 +112,17 @@ export function ViewOrderDialog({ children, order, onUpdate, fetchOrders }) {
   const hasStatusChanged = status !== order.status;
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={(isOpen) => {
+        setOpen(isOpen);
+        if (isOpen) {
+          onOpen?.();
+        } else {
+          onClose?.();
+        }
+      }}
+    >
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         {/* HEADER */}
