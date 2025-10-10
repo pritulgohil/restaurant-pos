@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import {
   Table,
   TableBody,
@@ -25,11 +26,19 @@ import {
 
 const ManageOrders = () => {
   const { orders, setOrders, restaurant } = useRestaurantContext();
+  const searchParams = useSearchParams();
+  const orderIdToView = searchParams.get("orderId");
+  const [selectedOrderId, setSelectedOrderId] = useState(null);
+
+  useEffect(() => {
+    if (orderIdToView) {
+      setSelectedOrderId(orderIdToView);
+    }
+  }, [orderIdToView]);
 
   const fetchOrders = async () => {
     try {
       const token = localStorage.getItem("token");
-
       const response = await fetch(`/api/pos/fetch-all-orders/${restaurant}`, {
         method: "GET",
         headers: {
@@ -43,8 +52,6 @@ const ManageOrders = () => {
       }
 
       const data = await response.json();
-      console.log("Orders fetched:", data);
-
       setOrders && setOrders(data.orders || []);
     } catch (error) {
       console.error("Error fetching orders:", error);
@@ -112,8 +119,12 @@ const ManageOrders = () => {
               key={order._id || order.orderId}
               order={order}
               fetchOrders={fetchOrders}
+              open={selectedOrderId === order._id}
             >
-              <TableRow className={`cursor-pointer hover:bg-muted/50`}>
+              <TableRow
+                className="cursor-pointer hover:bg-muted/50"
+                onClick={() => setSelectedOrderId(order._id)}
+              >
                 <TableCell className="font-medium">
                   #{order._id ? order._id.slice(-6) : order.orderId}
                 </TableCell>

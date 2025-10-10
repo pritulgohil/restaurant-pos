@@ -4,8 +4,10 @@ import { Button } from "@/components/ui/button";
 import { ChevronRightIcon, ChevronLeftIcon } from "lucide-react";
 import { useRestaurantContext } from "@/context/RestaurantContext";
 import TimeStamp from "@/app/components/Pos/OrderLine/OrderLineSlider/Timestamp";
+import { useRouter } from "next/navigation";
 
 const OrderLineSlider = () => {
+  const router = useRouter();
   const cardContainerRef = useRef(null);
   const [isScrollStart, setIsScrollStart] = useState(true);
   const [isScrollEnd, setIsScrollEnd] = useState(false);
@@ -156,6 +158,9 @@ const OrderLineSlider = () => {
                 className={`${styles.card} 
     ${order.status === "Queued" ? styles.waitListCard : ""} 
     ${order.status === "In Progress" ? styles.inProgressCard : ""}`}
+                onClick={() =>
+                  router.push(`/pos/manage-orders?orderId=${order._id}`)
+                }
               >
                 <div className={styles.cardTop}>
                   <div className={styles.orderId}>

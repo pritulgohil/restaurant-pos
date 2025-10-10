@@ -29,6 +29,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
+
 import { useState, useEffect } from "react";
 import DeleteOrderDialog from "./DeleteOrderDialog";
 
@@ -55,15 +56,23 @@ export function ViewOrderDialog({
     minute: "2-digit",
   });
 
+  // Callbacks for dialog open/close
   useEffect(() => {
-    if (onOpen) onOpen();
-    return () => {
-      if (onClose) onClose();
-    };
-  }, []);
+    if (order?._id && window.location.search.includes(`orderId=${order._id}`)) {
+      setOpen(true);
+    }
+  }, [order._id]);
+
+  // Reset status when dialog closes
+  useEffect(() => {
+    if (!open) {
+      setStatus(order.status);
+    }
+  }, [open, order.status]);
+
+  const hasStatusChanged = status !== order.status;
 
   const handleUpdate = async () => {
-    console.log("Update order clicked:", order._id, "New status:", status);
     setIsUpdating(true);
 
     const token = localStorage.getItem("token");
@@ -77,9 +86,7 @@ export function ViewOrderDialog({
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({
-            status: status,
-          }),
+          body: JSON.stringify({ status }),
         }
       );
 
@@ -88,11 +95,12 @@ export function ViewOrderDialog({
       }
 
       const updatedOrder = await response.json();
-      console.log("Order updated successfully:", updatedOrder);
+
       setTimeout(() => {
         setIsUpdating(false);
         setOpen(false);
       }, 1000);
+
       fetchOrders();
 
       if (onUpdate) {
@@ -100,20 +108,14 @@ export function ViewOrderDialog({
       }
     } catch (error) {
       console.error("Error updating order:", error);
+      setIsUpdating(false);
     }
   };
 
-  useEffect(() => {
-    if (!open) {
-      setStatus(order.status);
-    }
-  }, [open, order.status]);
-
-  const hasStatusChanged = status !== order.status;
-
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={(val) => setOpen(val)}>
       <DialogTrigger asChild>{children}</DialogTrigger>
+
       <DialogContent>
         {/* HEADER */}
         <DialogHeader>
@@ -160,7 +162,7 @@ export function ViewOrderDialog({
         {/* ORDER DETAILS */}
         <div className={styles.mainContainer}>
           <div className={styles.orderDetailsContainer}>
-            {/* Row 1: Customer & Order Type */}
+            {/* Row 1 */}
             <div className={styles.row}>
               <div className={styles.orderDetails}>
                 <User className="w-4 h-4 text-gray-500" />
@@ -172,7 +174,7 @@ export function ViewOrderDialog({
               </div>
             </div>
 
-            {/* Row 2: Table & People Count */}
+            {/* Row 2 */}
             {order.orderType === "Dine-in" && (
               <div className={styles.row}>
                 <div className={styles.orderDetails}>
@@ -187,7 +189,7 @@ export function ViewOrderDialog({
               </div>
             )}
 
-            {/* Row 3: Date & Time */}
+            {/* Row 3 */}
             <div className={styles.row}>
               <div className={styles.orderDetails}>
                 <Calendar className="w-4 h-4 text-gray-500" />
@@ -246,36 +248,28 @@ export function ViewOrderDialog({
 
           {/* ACTION BUTTONS */}
           <div className="flex w-full gap-3 mt-6">
-            {isUpdating ? (
-              <Button
-                className="flex-1"
-                variant="outline"
-                onClick={handleUpdate}
-                disabled={!hasStatusChanged}
-              >
-                <LoaderCircle className="w-4 h-4 mr-2 animate-spin" />
-                Updating
-              </Button>
-            ) : (
-              <Button
-                className="flex-1"
-                variant="outline"
-                onClick={handleUpdate}
-                disabled={!hasStatusChanged}
-              >
-                <RotateCw />
-                Update
-              </Button>
-            )}
+            <Button
+              className="flex-1 flex items-center justify-center gap-2"
+              variant="outline"
+              onClick={handleUpdate}
+              disabled={!hasStatusChanged || isUpdating}
+            >
+              {isUpdating ? (
+                <>
+                  <LoaderCircle className="w-4 h-4 animate-spin" />
+                  Updating
+                </>
+              ) : (
+                <>
+                  <RotateCw />
+                  Update
+                </>
+              )}
+            </Button>
 
-            <DeleteOrderDialog
-              orderId={order._id}
-              onDelete={() => {
-                fetchOrders();
-              }}
-            />
+            <DeleteOrderDialog orderId={order._id} onDelete={fetchOrders} />
 
-            <Button className="flex-1">
+            <Button className="flex-1 flex items-center justify-center gap-2">
               <Printer />
               Print Receipt
             </Button>
