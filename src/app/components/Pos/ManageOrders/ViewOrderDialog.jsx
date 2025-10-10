@@ -112,17 +112,7 @@ export function ViewOrderDialog({
   const hasStatusChanged = status !== order.status;
 
   return (
-    <Dialog
-      open={open}
-      onOpenChange={(isOpen) => {
-        setOpen(isOpen);
-        if (isOpen) {
-          onOpen?.();
-        } else {
-          onClose?.();
-        }
-      }}
-    >
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         {/* HEADER */}

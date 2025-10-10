@@ -25,7 +25,6 @@ import {
 
 const ManageOrders = () => {
   const { orders, setOrders, restaurant } = useRestaurantContext();
-  const [openOrderId, setOpenOrderId] = useState(null);
 
   const fetchOrders = async () => {
     try {
@@ -113,23 +112,8 @@ const ManageOrders = () => {
               key={order._id || order.orderId}
               order={order}
               fetchOrders={fetchOrders}
-              onOpen={() => setOpenOrderId(order._id || order.orderId)}
-              onClose={() => setOpenOrderId(null)}
             >
-              <TableRow
-                className={`cursor-pointer hover:bg-muted/50 ${
-                  openOrderId === (order._id || order.orderId)
-                    ? "bg-black text-white"
-                    : ""
-                }`}
-                onClick={() =>
-                  setOpenOrderId(
-                    openOrderId === (order._id || order.orderId)
-                      ? null
-                      : order._id || order.orderId
-                  )
-                }
-              >
+              <TableRow className={`cursor-pointer hover:bg-muted/50`}>
                 <TableCell className="font-medium">
                   #{order._id ? order._id.slice(-6) : order.orderId}
                 </TableCell>
