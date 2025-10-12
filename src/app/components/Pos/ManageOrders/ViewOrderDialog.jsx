@@ -32,6 +32,7 @@ import {
 
 import { useState, useEffect } from "react";
 import DeleteOrderDialog from "./DeleteOrderDialog";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export function ViewOrderDialog({
   children,
@@ -41,6 +42,8 @@ export function ViewOrderDialog({
   onOpen,
   onClose,
 }) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [status, setStatus] = useState(order.status);
   const [open, setOpen] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
@@ -62,6 +65,12 @@ export function ViewOrderDialog({
       setOpen(true);
     }
   }, [order._id]);
+
+  useEffect(() => {
+    if (order?._id && searchParams.get("orderId") === order._id) {
+      setOpen(true);
+    }
+  }, [order?._id, searchParams]);
 
   // Reset status when dialog closes
   useEffect(() => {
@@ -111,8 +120,17 @@ export function ViewOrderDialog({
     }
   };
 
+  const handleDialogChange = (val) => {
+    setOpen(val);
+    if (!val) {
+      // Remove orderId from URL without reloading
+      const newUrl = window.location.pathname;
+      router.replace(newUrl);
+    }
+  };
+
   return (
-    <Dialog open={open} onOpenChange={(val) => setOpen(val)}>
+    <Dialog open={open} onOpenChange={handleDialogChange}>
       <DialogTrigger asChild>{children}</DialogTrigger>
 
       <DialogContent>

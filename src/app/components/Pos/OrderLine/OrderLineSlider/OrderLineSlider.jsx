@@ -152,7 +152,7 @@ const OrderLineSlider = () => {
 
         <div className={styles.cardContainer} ref={cardContainerRef}>
           {filteredOrders.length > 0 ? (
-            filteredOrders.map((order) => (
+            filteredOrders.slice(0, 10).map((order) => (
               <div
                 key={order._id}
                 className={`${styles.card} 
