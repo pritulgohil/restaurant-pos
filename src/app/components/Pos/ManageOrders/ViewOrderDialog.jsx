@@ -99,9 +99,8 @@ export function ViewOrderDialog({
       setTimeout(() => {
         setIsUpdating(false);
         setOpen(false);
-      }, 1000);
-
-      fetchOrders();
+        fetchOrders();
+      }, 2000);
 
       if (onUpdate) {
         onUpdate(order._id, { status: updatedOrder.status });

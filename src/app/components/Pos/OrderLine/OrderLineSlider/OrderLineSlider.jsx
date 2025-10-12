@@ -158,9 +158,10 @@ const OrderLineSlider = () => {
                 className={`${styles.card} 
     ${order.status === "Queued" ? styles.waitListCard : ""} 
     ${order.status === "In Progress" ? styles.inProgressCard : ""}`}
-                onClick={() =>
-                  router.push(`/pos/manage-orders?orderId=${order._id}`)
-                }
+                onClick={() => {
+                  const url = `${window.location.origin}/pos/manage-orders?orderId=${order._id}`;
+                  window.open(url, "_blank");
+                }}
               >
                 <div className={styles.cardTop}>
                   <div className={styles.orderId}>
