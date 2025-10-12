@@ -21,10 +21,7 @@ export const OrderBoard = () => {
   const { orders, fetchAllOrders, orderTrigger, setOrderTrigger } =
     useRestaurantContext();
 
-  // Track multiple loading orders using a Set
   const [loadingOrders, setLoadingOrders] = useState(new Set());
-
-  // Track selected status filter
   const [filterStatus, setFilterStatus] = useState("All");
 
   useEffect(() => {
@@ -90,6 +87,22 @@ export const OrderBoard = () => {
       ? orders
       : orders.filter((o) => o.status === filterStatus);
 
+  // Sort and limit orders
+  const statusPriority = { Queued: 1, "In Progress": 2, Completed: 3 };
+  const sortedOrders = [...filteredOrders].sort(
+    (a, b) => statusPriority[a.status] - statusPriority[b.status]
+  );
+
+  const queuedAndInProgress = sortedOrders.filter(
+    (o) => o.status !== "Completed"
+  );
+  const completedOrders = sortedOrders
+    .filter((o) => o.status === "Completed")
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    .slice(0, 5);
+
+  const finalOrders = [...queuedAndInProgress, ...completedOrders];
+
   return (
     <div className={styles.mainContainer}>
       {/* Order summary cards */}
@@ -153,8 +166,8 @@ export const OrderBoard = () => {
 
       {/* Orders list */}
       <div className={styles.orderCardContainer}>
-        {filteredOrders && filteredOrders.length > 0 ? (
-          filteredOrders.map((order) => (
+        {finalOrders.length > 0 ? (
+          finalOrders.map((order) => (
             <div
               key={order._id}
               className={`${styles.orderCard} ${
