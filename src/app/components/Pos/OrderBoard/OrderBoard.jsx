@@ -117,7 +117,13 @@ export const OrderBoard = () => {
           <div
             className={`${styles.capsuleIconContainer} ${styles.allIconContainer}`}
           >
-            {orders.length}
+            {orders.filter(
+              (o) => o.status !== "Completed" // include all non-completed
+            ).length +
+              Math.min(
+                orders.filter((o) => o.status === "Completed").length, // completed ones
+                5 // cap at 5
+              )}
           </div>
         </div>
 
@@ -159,7 +165,7 @@ export const OrderBoard = () => {
           <div
             className={`${styles.capsuleIconContainer} ${styles.completeIconContainer}`}
           >
-            {orders.filter((o) => o.status === "Completed").length}
+            {Math.min(orders.filter((o) => o.status === "Completed").length, 5)}
           </div>
         </div>
       </div>
