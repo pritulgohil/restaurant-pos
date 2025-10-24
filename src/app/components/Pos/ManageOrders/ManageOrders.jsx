@@ -38,7 +38,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { format } from "date-fns";
-import { Search, Filter, CalendarDays } from "lucide-react"; // add this import at the top
+import { Search, Filter, CalendarDays } from "lucide-react";
 
 const ManageOrders = () => {
   const { orders, setOrders, restaurant } = useRestaurantContext();
@@ -48,8 +48,8 @@ const ManageOrders = () => {
   const [selectedOrderId, setSelectedOrderId] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredOrders, setFilteredOrders] = useState([]);
-  const [statusFilter, setStatusFilter] = useState("all"); // For status dropdown
-  const [dateFilter, setDateFilter] = useState(null); // For date picker
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [dateFilter, setDateFilter] = useState(null);
 
   const ordersPerPage = 10;
 
@@ -98,7 +98,6 @@ const ManageOrders = () => {
   useEffect(() => {
     let filtered = orders;
 
-    // Search filter
     if (searchTerm) {
       filtered = filtered.filter(
         (order) =>
@@ -111,14 +110,12 @@ const ManageOrders = () => {
       );
     }
 
-    // Status filter
     if (statusFilter && statusFilter !== "all") {
       filtered = filtered.filter(
         (order) => order.status.toLowerCase() === statusFilter.toLowerCase()
       );
     }
 
-    // Date filter
     if (dateFilter) {
       filtered = filtered.filter((order) => {
         const orderDate = new Date(order.createdAt);
@@ -143,7 +140,6 @@ const ManageOrders = () => {
 
   return (
     <div className="space-y-4">
-      {/* Filters */}
       <div className="flex items-center gap-2">
         <div className="relative w-80">
           <Input
@@ -158,12 +154,11 @@ const ManageOrders = () => {
           />
         </div>
 
-        {/* Status Dropdown */}
         <Select
-          value={statusFilter || "all"} // default to "all" if empty
+          value={statusFilter || "all"}
           onValueChange={(value) =>
             setStatusFilter(value === "all" ? "" : value)
-          } // clear filter for "all"
+          }
         >
           <SelectTrigger className="w-34 flex items-center gap-2">
             <Filter size={16} className="text-gray-400" />
@@ -178,7 +173,6 @@ const ManageOrders = () => {
           </SelectContent>
         </Select>
 
-        {/* Date Picker */}
         <Popover>
           <PopoverTrigger>
             <div className="relative w-40">
@@ -186,7 +180,7 @@ const ManageOrders = () => {
                 readOnly
                 placeholder="Filter by date"
                 value={dateFilter ? format(dateFilter, "MMM dd, yyyy") : ""}
-                className="w-full cursor-pointer pl-10" // add padding for icon
+                className="w-full cursor-pointer pl-10"
               />
               <CalendarDays
                 className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
