@@ -101,6 +101,9 @@
 .orderId {
   font-size: 14px;
   font-weight: 500;
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
 .firstContainer {

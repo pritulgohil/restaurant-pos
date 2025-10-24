@@ -12,6 +12,7 @@ import {
   CheckCheck,
   Layers,
   LoaderCircle,
+  ExternalLink,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRestaurantContext } from "@/context/RestaurantContext";
@@ -170,7 +171,6 @@ export const OrderBoard = () => {
         </div>
       </div>
 
-      {/* Orders list */}
       <div className={styles.orderCardContainer}>
         {finalOrders.length > 0 ? (
           finalOrders.map((order) => (
@@ -185,6 +185,14 @@ export const OrderBoard = () => {
               <div className={styles.firstContainer}>
                 <div className={styles.orderId}>
                   Order #{order._id.slice(-6)}
+                  <ExternalLink
+                    size={16}
+                    className="cursor-pointer"
+                    onClick={() => {
+                      const url = `${window.location.origin}/pos/manage-orders?orderId=${order._id}`;
+                      window.open(url, "_blank");
+                    }}
+                  />
                 </div>
                 <div
                   className={`${styles.orderStatus} ${
