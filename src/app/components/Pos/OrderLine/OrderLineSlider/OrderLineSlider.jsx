@@ -61,29 +61,35 @@ const OrderLineSlider = () => {
   }, []);
 
   // Capsules
+  const formatCount = (count) => Math.min(count, 10);
+
   const capsules = [
-    { label: "All", count: orders.length },
+    { label: "All", count: formatCount(orders.length) },
     {
       label: "Dine-in",
-      count: orders.filter((o) => o.orderType === "Dine-in").length,
+      count: formatCount(
+        orders.filter((o) => o.orderType === "Dine-in").length
+      ),
       style: styles.dineIn,
       borderStyle: styles.dineInCapsule,
     },
     {
       label: "Queued",
-      count: orders.filter((o) => o.status === "Queued").length,
+      count: formatCount(orders.filter((o) => o.status === "Queued").length),
       style: styles.waitlist,
       borderStyle: styles.waitlistCapsule,
     },
     {
       label: "Takeaway",
-      count: orders.filter((o) => o.orderType === "Takeaway").length,
+      count: formatCount(
+        orders.filter((o) => o.orderType === "Takeaway").length
+      ),
       style: styles.takeaway,
       borderStyle: styles.takeawayCapsule,
     },
     {
       label: "Served",
-      count: orders.filter((o) => o.status === "Completed").length,
+      count: formatCount(orders.filter((o) => o.status === "Completed").length),
       style: styles.served,
       borderStyle: styles.servedCapsule,
     },
