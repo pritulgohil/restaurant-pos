@@ -130,6 +130,27 @@ const ManageOrders = () => {
     }
   }, [searchTerm, statusFilter, dateFilter, orders]);
 
+  // Auto-navigate to page containing orderIdToView
+  useEffect(() => {
+    if (!orderIdToView || !orders || orders.length === 0) return;
+
+    const index = orders.findIndex(
+      (order) => order._id === orderIdToView || order.orderId === orderIdToView
+    );
+
+    if (index !== -1) {
+      const pageOfOrder = Math.floor(index / ordersPerPage) + 1;
+
+      if (pageOfOrder !== currentPage) {
+        setCurrentPage(pageOfOrder);
+      }
+
+      setTimeout(() => {
+        setSelectedOrderId(orderIdToView);
+      }, 50);
+    }
+  }, [orderIdToView, orders]);
+
   const indexOfLastOrder = currentPage * ordersPerPage;
   const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
   const currentOrders = filteredOrders.slice(
