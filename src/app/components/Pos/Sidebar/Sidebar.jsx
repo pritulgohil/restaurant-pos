@@ -85,7 +85,7 @@ const Sidebar = () => {
                   ? styles.active
                   : styles.sidebarItem
               }`}
-              onClick={() => handleNavigation("/pos/manage-dishes")}
+              onClick={() => handleNavigation("/pos/manage-table")}
             >
               <TableCellsMerge className={styles.sidebarIcon} />
               Manage Table
