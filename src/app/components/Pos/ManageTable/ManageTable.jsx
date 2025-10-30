@@ -23,9 +23,18 @@ const ManageTable = () => {
               </Button>
             </div>
           </div>
+          <div className={styles.customerContainer}>
+            <div className={styles.customerCardContainer}>
+              <div className={styles.customerCard}>
+                <div className={styles.timeCard}>7:30 PM</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </>
+
+    // There will be some connection between manage table and order line for customers
   );
 };
 
