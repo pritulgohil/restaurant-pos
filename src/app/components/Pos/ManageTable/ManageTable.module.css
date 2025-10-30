@@ -1,6 +1,6 @@
 .leftSideContainer {
   height: 100vh;
-  width: 30%;
+  width: 20%;
   background-color: #f0f0f0;
   padding: 16px;
 }
@@ -12,4 +12,10 @@
 
 .searchBar {
   width: 90%;
+}
+
+@media (max-width: 1600px) {
+  .leftSideContainer {
+    width: 30%;
+  }
 }

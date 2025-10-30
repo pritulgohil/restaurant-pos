@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./ManageTable.module.css";
 import { Input } from "@/components/ui/input";
-import { SlidersHorizontal } from "lucide-react";
+import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const ManageTable = () => {
@@ -19,7 +19,7 @@ const ManageTable = () => {
             </div>
             <div className={styles.filterButton}>
               <Button variant="outline" size="icon">
-                <SlidersHorizontal />
+                <Plus />
               </Button>
             </div>
           </div>
