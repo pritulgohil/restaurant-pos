@@ -21,7 +21,62 @@
 .customerCard {
   background-color: white;
   border-radius: 6px;
-  padding: 6px 12px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.customerName {
+  font-weight: 600;
+}
+
+.timeCard {
+  display: inline-block;
+  background-color: #e9f4f5;
+  text-align: center;
+  padding: 16px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  color: #0b615b;
+}
+
+.tableDetails {
+  display: flex;
+  gap: 8px;
+}
+
+.table,
+.people {
+  display: flex;
+  font-size: 14px;
+  align-items: center;
+  gap: 4px;
+}
+
+.customerDetails {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.phoneNumber {
+  display: flex;
+  font-size: 12px;
+  align-items: center;
+  gap: 4px;
+}
+
+.checkIconContainer {
+  background-color: #4bab44;
+  border-radius: 100%;
+  padding: 4px;
+}
+
+.paymentStatus {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
 }
 
 @media (max-width: 1600px) {
