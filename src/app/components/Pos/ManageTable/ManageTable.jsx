@@ -11,6 +11,7 @@ import {
   UsersRound,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import AddTableDialog from "@/app/components/Pos/ManageTable/AddTableDialog";
 
 const ManageTable = () => {
   return (
@@ -448,12 +449,7 @@ const ManageTable = () => {
             </div>
           </div>
           <div className={styles.addTableButtonContainer}>
-            <Button
-              className="bg-black text-white border-0 w-full hover:bg-gray-800"
-              size="sm"
-            >
-              <SquarePlus /> Add Table
-            </Button>
+            <AddTableDialog />
           </div>
         </div>
         <div className={styles.rightSideContainer}>
