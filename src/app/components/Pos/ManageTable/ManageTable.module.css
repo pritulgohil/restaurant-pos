@@ -29,15 +29,14 @@
 
 .customerContainer {
   margin-top: 24px;
-  height: calc(100vh - 200px); /* adjust based on your layout */
-  overflow-y: auto; /* enable vertical scrolling */
-  overflow-x: hidden; /* hide horizontal scroll */
+  height: calc(100vh - 200px);
+  overflow-y: auto;
+  overflow-x: hidden;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  padding-bottom: 48px; /* add space equal or slightly larger than button height */
+  padding-bottom: 48px;
 }
 
-/* Hide scrollbar in Webkit browsers */
 .customerContainer::-webkit-scrollbar {
   display: none;
 }
@@ -159,16 +158,15 @@
 .tableCanvasContainer {
   background-color: #f0f0f0;
   width: 100%;
-  margin-top: 24px;
+  margin-top: 16px;
   border-radius: 8px;
-  height: calc(100vh - 168px);
+  height: calc(100vh - 186px);
   padding: 48px;
-  overflow-y: scroll; /* enable scrolling */
-  scrollbar-width: none; /* for Firefox */
-  -ms-overflow-style: none; /* for IE and Edge */
+  overflow-y: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-/* Hide scrollbar for Webkit browsers (Chrome, Safari, Opera) */
 .tableCanvasContainer::-webkit-scrollbar {
   display: none;
 }
@@ -211,7 +209,7 @@
   width: 160px;
   height: 80px;
   display: flex;
-  flex-direction: column; /* stack children vertically */
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   font-size: 12px;
@@ -225,7 +223,7 @@
   width: 80px;
   height: 80px;
   display: flex;
-  flex-direction: column; /* stack children vertically */
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   cursor: pointer;
@@ -240,7 +238,7 @@
   width: 80px;
   height: 80px;
   display: flex;
-  flex-direction: column; /* stack children vertically */
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   cursor: pointer;
@@ -250,10 +248,37 @@
 }
 
 .iconRow {
-  margin-top: 4px; /* space between Table 01 and the icon+number */
+  margin-top: 4px;
   display: flex;
   align-items: center;
-  gap: 2px; /* small gap between icon and number */
+  gap: 2px;
+}
+
+.tableLegendContainer {
+  margin-top: 8px;
+  font-size: 12px;
+  display: flex;
+  gap: 16px;
+}
+
+.OccupiedIndicator {
+  background-color: lightgreen;
+  width: 8px;
+  height: 8px;
+  border-radius: 100%;
+}
+
+.AvailableIndicator {
+  background-color: #99a5f9;
+  width: 8px;
+  height: 8px;
+  border-radius: 100%;
+}
+
+.tableLegendItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 @media (min-width: 1600px) {

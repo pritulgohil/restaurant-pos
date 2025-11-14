@@ -458,6 +458,16 @@ const ManageTable = () => {
         </div>
         <div className={styles.rightSideContainer}>
           <h2 className={styles.ManageTableHeader}>Manage Table</h2>
+          <div className={styles.tableLegendContainer}>
+            <div className={styles.tableLegendItem}>
+              <div className={styles.OccupiedIndicator}></div>
+              <div className={styles.legendLabel}>Occupied</div>
+            </div>
+            <div className={styles.tableLegendItem}>
+              <div className={styles.AvailableIndicator}></div>
+              <div className={styles.legendLabel}>Available</div>
+            </div>
+          </div>
           <div className={styles.tableCanvasContainer}>
             <div className={styles.tableRow}>
               <div className={styles.tableContainer}>
