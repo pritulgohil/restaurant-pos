@@ -36,6 +36,18 @@ export async function POST(req) {
       );
     }
 
+    const existing = await Table.findOne({
+      tableNumber,
+      restaurantId,
+    });
+
+    if (existing) {
+      return NextResponse.json(
+        { error: "Table number already exists" },
+        { status: 400 }
+      );
+    }
+
     const newTable = new Table({
       tableNumber,
       occupancy,
