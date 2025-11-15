@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useState, useEffect } from "react";
 import styles from "./ManageTable.module.css";
 import { Input } from "@/components/ui/input";
 import {
@@ -11,8 +13,42 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AddTableDialog from "@/app/components/Pos/ManageTable/AddTableDialog";
+import { useRestaurantContext } from "@/context/RestaurantContext";
 
 const ManageTable = () => {
+  const { restaurant } = useRestaurantContext();
+  const [tables, setTables] = useState([]);
+
+  const fetchTables = async () => {
+    if (!restaurant) return;
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`/api/pos/fetch-tables/${restaurant}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || "Failed to fetch tables");
+      } else {
+        setTables(data.tables);
+        console.log("Fetched tables:", data.tables);
+      }
+    } catch (err) {
+      console.error("Network error:", err);
+    } finally {
+      // setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchTables();
+  }, [restaurant]);
+  // set the create table api to have isOccupied as boolean value
   return (
     <>
       <div className={styles.mainContainer}>
@@ -33,7 +69,43 @@ const ManageTable = () => {
           </div>
           <div className={styles.customerContainer}>
             <div className={styles.customerCardContainer}>
-              <div className={styles.customerCard}>
+              {tables.map((table) => (
+                <div key={table._id} className={styles.customerCard}>
+                  <div className={styles.firstContainer}>
+                    <div className={styles.freeTimeCard}>
+                      {table.isOccupied ? "Occupied" : "Free"}
+                    </div>
+                    <div className={styles.customerDetails}>
+                      <div className={styles.tableDetails}>
+                        <div className={styles.table}>
+                          <Armchair size={16} color="gray" />
+                          Table {table.tableNumber.toString().padStart(2, "0")}
+                        </div>
+                        <div className={styles.people}>
+                          <CircleUser size={14} color="gray" />
+                          {table.currentOccupancy || 0}
+                        </div>
+                      </div>
+                      <div className={styles.phoneNumber}>
+                        <ListOrdered size={16} color="gray" />
+                        {table.currentOrder
+                          ? table.currentOrder
+                          : "No order assigned"}
+                      </div>
+                    </div>
+                  </div>
+                  <div className={styles.secondContainer}>
+                    <div className={styles.paymentStatus}>
+                      <div className={styles.UncheckIconContainer}>
+                        <Check size={10} color="white" strokeWidth={3} />
+                      </div>
+                      {table.isPaid ? "Paid" : "Unpaid"}
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              {/* <div className={styles.customerCard}>
                 <div className={styles.firstContainer}>
                   <div className={styles.timeCard}>
                     7:30
@@ -444,11 +516,11 @@ const ManageTable = () => {
                     Unpaid
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className={styles.addTableButtonContainer}>
-            <AddTableDialog />
+            <AddTableDialog onTableAdded={fetchTables} />
           </div>
         </div>
         <div className={styles.rightSideContainer}>

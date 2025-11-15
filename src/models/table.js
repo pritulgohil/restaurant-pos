@@ -17,8 +17,8 @@ const tableSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      default: "available",
-      enum: ["available", "occupied"],
+      default: "Free",
+      enum: ["Free", "Occupied"],
     },
   },
   { timestamps: true }

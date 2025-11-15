@@ -13,9 +13,14 @@ import { Label } from "@/components/ui/label";
 import { SquarePlus, TriangleAlert, LoaderCircle } from "lucide-react";
 import { useRestaurantContext } from "@/context/RestaurantContext";
 import styles from "./AddTableDialog.module.css";
-import { set } from "mongoose";
-
-export default function AddTableDialog() {
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+export default function AddTableDialog({ onTableAdded }) {
   const [tableNumber, setTableNumber] = useState("");
   const [occupancy, setOccupancy] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
@@ -53,6 +58,9 @@ export default function AddTableDialog() {
           setTableNumber("");
           setOccupancy("");
           setOpen(false);
+          if (onTableAdded) {
+            onTableAdded();
+          }
         }, 3000);
 
         setErrorMsg("");
@@ -96,19 +104,23 @@ export default function AddTableDialog() {
               required
             />
           </div>
-
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="occupancy" className="text-right">
               Occupancy
             </Label>
-            <Input
-              id="occupancy"
+            <Select
               value={occupancy}
-              onChange={(e) => setOccupancy(e.target.value)}
-              className="col-span-3"
-              placeholder="Enter maximum occupancy"
-              required
-            />
+              onValueChange={(value) => setOccupancy(value)}
+            >
+              <SelectTrigger className="col-span-3">
+                <SelectValue placeholder="Select occupancy" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="2">2</SelectItem>
+                <SelectItem value="4">4</SelectItem>
+                <SelectItem value="10">10</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
         {errorMsg && (
