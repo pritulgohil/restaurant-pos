@@ -10,21 +10,25 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { SquarePlus } from "lucide-react";
+import { SquarePlus, TriangleAlert, LoaderCircle } from "lucide-react";
 import { useRestaurantContext } from "@/context/RestaurantContext";
+import styles from "./AddTableDialog.module.css";
+import { set } from "mongoose";
 
 export default function AddTableDialog() {
   const [tableNumber, setTableNumber] = useState("");
   const [occupancy, setOccupancy] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
   const { restaurant } = useRestaurantContext();
-  console.log("Restaurant ID in AddTableDialog:", restaurant);
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleCreateTable = async (e) => {
     e.preventDefault();
+    setErrorMsg("");
 
     try {
-      const token = localStorage.getItem("token"); // your login token
-
+      const token = localStorage.getItem("token");
       const res = await fetch("/api/pos/create-table", {
         method: "POST",
         headers: {
@@ -42,19 +46,30 @@ export default function AddTableDialog() {
 
       if (!res.ok) {
         setErrorMsg(data.error || "Something went wrong");
+        console.error("Error creating table:", errorMsg);
       } else {
-        setTableNumber("");
-        setOccupancy("");
+        setLoading(true);
+        setTimeout(() => {
+          setTableNumber("");
+          setOccupancy("");
+          setOpen(false);
+        }, 3000);
+
+        setErrorMsg("");
       }
     } catch (error) {
-      // setErrorMsg("Network error");
+      console.error("Network error:", error);
+      setErrorMsg("Network error. Please try again.");
     } finally {
-      // setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 3000);
+      console.log("Create table request finished.");
     }
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
           className="bg-black text-white border-0 w-full hover:bg-gray-800"
@@ -67,7 +82,7 @@ export default function AddTableDialog() {
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold">Add Table</DialogTitle>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
+        <div className="grid gap-4 pt-2">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="tableNumber" className="text-right">
               Table Number
@@ -96,10 +111,16 @@ export default function AddTableDialog() {
             />
           </div>
         </div>
+        {errorMsg && (
+          <div className={styles.errorMsg}>
+            <TriangleAlert size={18} /> {errorMsg}
+          </div>
+        )}
         <Button
-          className="w-full bg-black text-white hover:bg-gray-800"
+          className="w-full bg-black text-white mt-2 hover:bg-gray-800"
           onClick={handleCreateTable}
         >
+          {loading && <LoaderCircle className="animate-spin" />}
           Save Table
         </Button>
       </DialogContent>

@@ -1,0 +1,9 @@
+.errorMsg {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  justify-content: center;
+  margin-top: 6px;
+  color: red;
+}
