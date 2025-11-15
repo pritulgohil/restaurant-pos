@@ -27,7 +27,7 @@ export default function AddTableDialog() {
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="rounded-2xl p-6 max-w-sm w-full">
+      <DialogContent className="rounded-2xl p-6 max-w-md">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold">Add Table</DialogTitle>
         </DialogHeader>
@@ -42,7 +42,7 @@ export default function AddTableDialog() {
               value={tableNumber}
               onChange={(e) => setTableNumber(e.target.value)}
               className="col-span-3"
-              placeholder="e.g. 12"
+              placeholder="Assign a table number"
             />
           </div>
 
@@ -55,13 +55,12 @@ export default function AddTableDialog() {
               value={occupancy}
               onChange={(e) => setOccupancy(e.target.value)}
               className="col-span-3"
-              placeholder="e.g. 4"
+              placeholder="Enter maximum occupancy"
             />
           </div>
         </div>
-
         <Button className="w-full bg-black text-white hover:bg-gray-800">
-          Save
+          Save Table
         </Button>
       </DialogContent>
     </Dialog>
