@@ -26,12 +26,10 @@ export default function AddTableDialog() {
           <SquarePlus /> Add Table
         </Button>
       </DialogTrigger>
-
       <DialogContent className="rounded-2xl p-6 max-w-md">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold">Add Table</DialogTitle>
         </DialogHeader>
-
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="tableNumber" className="text-right">
