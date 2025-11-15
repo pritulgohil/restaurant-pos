@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 import Table from "@/models/table";
 import jwt from "jsonwebtoken";
+import restaurant from "@/models/restaurant";
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
