@@ -15,10 +15,10 @@ const tableSchema = new mongoose.Schema(
       ref: "Restaurant",
       required: true,
     },
-    status: {
-      type: String,
-      default: "Free",
-      enum: ["Free", "Occupied"],
+    isOccupied: {
+      type: Boolean,
+      default: false,
+      enum: [true, false],
     },
   },
   { timestamps: true }

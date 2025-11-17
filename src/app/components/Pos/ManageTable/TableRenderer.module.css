@@ -1,0 +1,67 @@
+.tableContainer {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.tableContainer:hover {
+  transform: scale(1.1);
+}
+
+.tableFlex {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.tableGap {
+  gap: 16px;
+}
+
+.tableCard {
+  border-radius: 6px;
+  width: 160px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.tableCardSquare {
+  background-color: #c1eae5;
+  border-radius: 6px;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 12px;
+  color: #0b615b;
+  font-weight: 500;
+}
+
+.freeTableCard {
+  background-color: #d0d5fb;
+  color: #4157f9;
+}
+
+.occupiedTableCard {
+  background-color: #c1eae5;
+  color: #0b615b;
+}
+
+.iconRow {
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}

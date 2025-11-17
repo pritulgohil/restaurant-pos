@@ -3,17 +3,11 @@
 import React, { useState, useEffect } from "react";
 import styles from "./ManageTable.module.css";
 import { Input } from "@/components/ui/input";
-import {
-  Plus,
-  Armchair,
-  CircleUser,
-  ListOrdered,
-  Check,
-  UsersRound,
-} from "lucide-react";
+import { Plus, Armchair, CircleUser, ListOrdered, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AddTableDialog from "@/app/components/Pos/ManageTable/AddTableDialog";
 import { useRestaurantContext } from "@/context/RestaurantContext";
+import TableRenderer from "@/app/components/Pos/ManageTable/TableRenderer";
 
 const ManageTable = () => {
   const { restaurant } = useRestaurantContext();
@@ -72,8 +66,31 @@ const ManageTable = () => {
               {tables.map((table) => (
                 <div key={table._id} className={styles.customerCard}>
                   <div className={styles.firstContainer}>
-                    <div className={styles.freeTimeCard}>
-                      {table.isOccupied ? "Occupied" : "Free"}
+                    <div
+                      className={
+                        table.isOccupied ? styles.timeCard : styles.freeTimeCard
+                      }
+                    >
+                      {table.isOccupied
+                        ? (() => {
+                            const timeString = new Date(
+                              table.updatedAt?.$date || table.updatedAt
+                            ).toLocaleTimeString([], {
+                              hour: "numeric",
+                              minute: "2-digit",
+                              hour12: true,
+                            });
+                            const [time, ampm] = timeString.split(" ");
+                            return (
+                              <div style={{ textAlign: "center" }}>
+                                {time}
+                                <br />
+                                {ampm.replace(/\./g, "").toUpperCase()}
+                                {/* removes dots and capitalizes */}
+                              </div>
+                            );
+                          })()
+                        : "Free"}
                     </div>
                     <div className={styles.customerDetails}>
                       <div className={styles.tableDetails}>
@@ -537,7 +554,10 @@ const ManageTable = () => {
           </div>
           <div className={styles.tableCanvasContainer}>
             <div className={styles.tableRow}>
-              <div className={styles.tableContainer}>
+              {tables.map((table) => (
+                <TableRenderer key={table.tableNumber} table={table} />
+              ))}
+              {/* <div className={styles.tableContainer}>
                 <div className={`${styles.tableFlex} ${styles.tableGap}`}>
                   <Armchair size={16} className="text-green-700" />
                   <Armchair size={16} className="text-green-700" />
@@ -860,7 +880,7 @@ const ManageTable = () => {
                   <Armchair size={16} className="-rotate-180 text-green-700" />
                   <Armchair size={16} className="-rotate-180 text-gray-400" />
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

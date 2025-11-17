@@ -67,6 +67,8 @@
   font-weight: 500;
   color: #0b615b;
   height: 80px;
+  width: 60px;
+  justify-content: center;
 }
 
 .freeTimeCard {
@@ -79,6 +81,8 @@
   font-weight: 500;
   color: #6a69bb;
   height: 80px;
+  width: 60px;
+  justify-content: center;
 }
 
 .tableDetails {
@@ -180,86 +184,10 @@
   justify-content: center;
 }
 
-.tableContainer {
-  display: inline-flex;
-  flex-direction: column;
-  justify-content: center;
+.tableLegendItem {
+  display: flex;
   align-items: center;
-  gap: 12px;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.tableContainer:hover {
-  transform: scale(1.1);
-}
-
-.tableFlex {
-  display: inline-flex;
   gap: 8px;
-  align-items: center;
-}
-
-.tableGap {
-  gap: 16px;
-}
-
-.tableCard {
-  background-color: #c1eae5;
-  border-radius: 6px;
-  width: 160px;
-  height: 80px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-size: 12px;
-  color: #0b615b;
-  font-weight: 500;
-}
-
-.tableCardSquare {
-  background-color: #c1eae5;
-  border-radius: 6px;
-  width: 80px;
-  height: 80px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  font-size: 12px;
-  color: #0b615b;
-  font-weight: 500;
-}
-
-.freeTableCardSquare {
-  background-color: #d0d5fb;
-  border-radius: 6px;
-  width: 80px;
-  height: 80px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  font-size: 12px;
-  color: #4157f9;
-  font-weight: 500;
-}
-
-.iconRow {
-  margin-top: 4px;
-  display: flex;
-  align-items: center;
-  gap: 2px;
-}
-
-.tableLegendContainer {
-  margin-top: 8px;
-  font-size: 12px;
-  display: flex;
-  gap: 16px;
 }
 
 .OccupiedIndicator {
@@ -276,10 +204,11 @@
   border-radius: 100%;
 }
 
-.tableLegendItem {
+.tableLegendContainer {
+  margin-top: 8px;
+  font-size: 12px;
   display: flex;
-  align-items: center;
-  gap: 8px;
+  gap: 16px;
 }
 
 @media (min-width: 1600px) {
