@@ -80,7 +80,7 @@ export default function AddTableDialog({ onTableAdded }) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
-          className="bg-black text-white border-0 w-full hover:bg-gray-800"
+          className="bg-black text-white border-0 w-full hover:bg-primary/90"
           size="sm"
         >
           <SquarePlus /> Add Table

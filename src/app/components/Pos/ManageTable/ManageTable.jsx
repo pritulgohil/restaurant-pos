@@ -42,7 +42,6 @@ const ManageTable = () => {
   useEffect(() => {
     fetchTables();
   }, [restaurant]);
-  // set the create table api to have isOccupied as boolean value
   return (
     <>
       <div className={styles.mainContainer}>
@@ -62,67 +61,69 @@ const ManageTable = () => {
             </div>
           </div>
           <div className={styles.customerContainer}>
-            <div className={styles.customerCardContainer}>
-              {tables.map((table) => (
-                <div key={table._id} className={styles.customerCard}>
-                  <div className={styles.firstContainer}>
-                    <div
-                      className={
-                        table.isOccupied ? styles.timeCard : styles.freeTimeCard
-                      }
-                    >
-                      {table.isOccupied
-                        ? (() => {
-                            const timeString = new Date(
-                              table.updatedAt?.$date || table.updatedAt
-                            ).toLocaleTimeString([], {
-                              hour: "numeric",
-                              minute: "2-digit",
-                              hour12: true,
-                            });
-                            const [time, ampm] = timeString.split(" ");
-                            return (
-                              <div style={{ textAlign: "center" }}>
-                                {time}
-                                <br />
-                                {ampm.replace(/\./g, "").toUpperCase()}
-                                {/* removes dots and capitalizes */}
-                              </div>
-                            );
-                          })()
-                        : "Free"}
-                    </div>
-                    <div className={styles.customerDetails}>
-                      <div className={styles.tableDetails}>
-                        <div className={styles.table}>
-                          <Armchair size={16} color="gray" />
-                          Table {table.tableNumber.toString().padStart(2, "0")}
+            {tables.length > 0 ? (
+              <div className={styles.customerCardContainer}>
+                {tables.map((table) => (
+                  <div key={table._id} className={styles.customerCard}>
+                    <div className={styles.firstContainer}>
+                      <div
+                        className={
+                          table.isOccupied
+                            ? styles.timeCard
+                            : styles.freeTimeCard
+                        }
+                      >
+                        {table.isOccupied
+                          ? (() => {
+                              const timeString = new Date(
+                                table.updatedAt?.$date || table.updatedAt
+                              ).toLocaleTimeString([], {
+                                hour: "numeric",
+                                minute: "2-digit",
+                                hour12: true,
+                              });
+                              const [time, ampm] = timeString.split(" ");
+                              return (
+                                <div style={{ textAlign: "center" }}>
+                                  {time}
+                                  <br />
+                                  {ampm.replace(/\./g, "").toUpperCase()}
+                                </div>
+                              );
+                            })()
+                          : "Free"}
+                      </div>
+                      <div className={styles.customerDetails}>
+                        <div className={styles.tableDetails}>
+                          <div className={styles.table}>
+                            <Armchair size={16} color="gray" />
+                            Table{" "}
+                            {table.tableNumber.toString().padStart(2, "0")}
+                          </div>
+                          <div className={styles.people}>
+                            <CircleUser size={14} color="gray" />
+                            {table.currentOccupancy || 0}
+                          </div>
                         </div>
-                        <div className={styles.people}>
-                          <CircleUser size={14} color="gray" />
-                          {table.currentOccupancy || 0}
+                        <div className={styles.phoneNumber}>
+                          <ListOrdered size={16} color="gray" />
+                          {table.currentOrder
+                            ? table.currentOrder
+                            : "No order assigned"}
                         </div>
                       </div>
-                      <div className={styles.phoneNumber}>
-                        <ListOrdered size={16} color="gray" />
-                        {table.currentOrder
-                          ? table.currentOrder
-                          : "No order assigned"}
+                    </div>
+                    <div className={styles.secondContainer}>
+                      <div className={styles.paymentStatus}>
+                        <div className={styles.UncheckIconContainer}>
+                          <Check size={10} color="white" strokeWidth={3} />
+                        </div>
+                        {table.isPaid ? "Paid" : "Unpaid"}
                       </div>
                     </div>
                   </div>
-                  <div className={styles.secondContainer}>
-                    <div className={styles.paymentStatus}>
-                      <div className={styles.UncheckIconContainer}>
-                        <Check size={10} color="white" strokeWidth={3} />
-                      </div>
-                      {table.isPaid ? "Paid" : "Unpaid"}
-                    </div>
-                  </div>
-                </div>
-              ))}
-
-              {/* <div className={styles.customerCard}>
+                ))}
+                {/* <div className={styles.customerCard}>
                 <div className={styles.firstContainer}>
                   <div className={styles.timeCard}>
                     7:30
@@ -534,7 +535,10 @@ const ManageTable = () => {
                   </div>
                 </div>
               </div> */}
-            </div>
+              </div>
+            ) : (
+              <div className={styles.noTablesMessage}>No tables available</div>
+            )}
           </div>
           <div className={styles.addTableButtonContainer}>
             <AddTableDialog onTableAdded={fetchTables} />

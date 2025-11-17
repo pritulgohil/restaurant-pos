@@ -211,6 +211,15 @@
   gap: 16px;
 }
 
+.noTablesMessage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: gray;
+  font-size: 14px;
+}
+
 @media (min-width: 1600px) {
   .leftSideContainer {
     width: 30%;
