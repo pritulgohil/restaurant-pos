@@ -20,6 +20,10 @@ const tableSchema = new mongoose.Schema(
       default: false,
       enum: [true, false],
     },
+    peopleCount: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );

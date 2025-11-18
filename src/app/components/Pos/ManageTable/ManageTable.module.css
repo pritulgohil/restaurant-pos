@@ -218,6 +218,8 @@
   height: 100%;
   color: gray;
   font-size: 14px;
+  flex-direction: column;
+  gap: 12px;
 }
 
 @media (min-width: 1600px) {

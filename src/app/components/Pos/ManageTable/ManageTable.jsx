@@ -3,15 +3,25 @@
 import React, { useState, useEffect } from "react";
 import styles from "./ManageTable.module.css";
 import { Input } from "@/components/ui/input";
-import { Plus, Armchair, CircleUser, ListOrdered, Check } from "lucide-react";
+import {
+  Plus,
+  Armchair,
+  CircleUser,
+  ListOrdered,
+  Check,
+  SquarePlus,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import AddTableDialog from "@/app/components/Pos/ManageTable/AddTableDialog";
+import AddTableDialog from "./AddTableDialog"; // Adjust path if needed
 import { useRestaurantContext } from "@/context/RestaurantContext";
-import TableRenderer from "@/app/components/Pos/ManageTable/TableRenderer";
+import TableRenderer from "./TableRenderer"; // Adjust path if needed
 
 const ManageTable = () => {
   const { restaurant } = useRestaurantContext();
   const [tables, setTables] = useState([]);
+
+  // ✅ Dialog state for both triggers
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
 
   const fetchTables = async () => {
     if (!restaurant) return;
@@ -19,877 +29,174 @@ const ManageTable = () => {
       const token = localStorage.getItem("token");
       const res = await fetch(`/api/pos/fetch-tables/${restaurant}`, {
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || "Failed to fetch tables");
+        console.error(data.error || "Failed to fetch tables");
       } else {
         setTables(data.tables);
-        console.log("Fetched tables:", data.tables);
       }
     } catch (err) {
       console.error("Network error:", err);
-    } finally {
-      // setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchTables();
   }, [restaurant]);
+
   return (
-    <>
-      <div className={styles.mainContainer}>
-        <div className={styles.leftSideContainer}>
-          <div className={styles.searchBarContainer}>
-            <div className={styles.searchBar}>
-              <Input
-                className="bg-white"
-                type="email"
-                placeholder="Search Customers"
-              />
-            </div>
-            <div className={styles.filterButton}>
-              <Button variant="outline" size="icon">
-                <Plus />
-              </Button>
-            </div>
+    <div className={styles.mainContainer}>
+      {/* LEFT SIDE */}
+      <div className={styles.leftSideContainer}>
+        <div className={styles.searchBarContainer}>
+          <div className={styles.searchBar}>
+            <Input
+              className="bg-white"
+              type="email"
+              placeholder="Search Customers"
+            />
           </div>
-          <div className={styles.customerContainer}>
-            {tables.length > 0 ? (
-              <div className={styles.customerCardContainer}>
-                {tables.map((table) => (
-                  <div key={table._id} className={styles.customerCard}>
-                    <div className={styles.firstContainer}>
-                      <div
-                        className={
-                          table.isOccupied
-                            ? styles.timeCard
-                            : styles.freeTimeCard
-                        }
-                      >
-                        {table.isOccupied
-                          ? (() => {
-                              const timeString = new Date(
-                                table.updatedAt?.$date || table.updatedAt
-                              ).toLocaleTimeString([], {
-                                hour: "numeric",
-                                minute: "2-digit",
-                                hour12: true,
-                              });
-                              const [time, ampm] = timeString.split(" ");
-                              return (
-                                <div style={{ textAlign: "center" }}>
-                                  {time}
-                                  <br />
-                                  {ampm.replace(/\./g, "").toUpperCase()}
-                                </div>
-                              );
-                            })()
-                          : "Free"}
-                      </div>
-                      <div className={styles.customerDetails}>
-                        <div className={styles.tableDetails}>
-                          <div className={styles.table}>
-                            <Armchair size={16} color="gray" />
-                            Table{" "}
-                            {table.tableNumber.toString().padStart(2, "0")}
-                          </div>
-                          <div className={styles.people}>
-                            <CircleUser size={14} color="gray" />
-                            {table.currentOccupancy || 0}
-                          </div>
-                        </div>
-                        <div className={styles.phoneNumber}>
-                          <ListOrdered size={16} color="gray" />
-                          {table.currentOrder
-                            ? table.currentOrder
-                            : "No order assigned"}
-                        </div>
-                      </div>
-                    </div>
-                    <div className={styles.secondContainer}>
-                      <div className={styles.paymentStatus}>
-                        <div className={styles.UncheckIconContainer}>
-                          <Check size={10} color="white" strokeWidth={3} />
-                        </div>
-                        {table.isPaid ? "Paid" : "Unpaid"}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-                {/* <div className={styles.customerCard}>
-                <div className={styles.firstContainer}>
-                  <div className={styles.timeCard}>
-                    7:30
-                    <br />
-                    PM
-                  </div>
-                  <div className={styles.customerDetails}>
-                    <div className={styles.customerName}>John Doe</div>
-                    <div className={styles.tableDetails}>
-                      <div className={styles.table}>
-                        <Armchair size={16} color="gray" />
-                        Table 01
-                      </div>
-                      <div className={styles.people}>
-                        <CircleUser size={14} color="gray" />4
-                      </div>
-                    </div>
-                    <div className={styles.phoneNumber}>
-                      <ListOrdered size={16} color="gray" />
-                      Order #7a0e34
-                    </div>
-                  </div>
-                </div>
-                <div className={styles.secondContainer}>
-                  <div className={styles.paymentStatus}>
-                    <div className={styles.checkIconContainer}>
-                      <Check size={10} color="white" strokeWidth={3} />
-                    </div>
-                    Payment
-                  </div>
-                </div>
-              </div>
-              <div className={styles.customerCard}>
-                <div className={styles.firstContainer}>
-                  <div className={styles.timeCard}>
-                    9:47
-                    <br />
-                    PM
-                  </div>
-                  <div className={styles.customerDetails}>
-                    <div className={styles.customerName}>Tyson Schell</div>
-                    <div className={styles.tableDetails}>
-                      <div className={styles.table}>
-                        <Armchair size={16} color="gray" />
-                        Table 02
-                      </div>
-                      <div className={styles.people}>
-                        <CircleUser size={14} color="gray" />4
-                      </div>
-                    </div>
-                    <div className={styles.phoneNumber}>
-                      <ListOrdered size={16} color="gray" />
-                      No order assigned
-                    </div>
-                  </div>
-                </div>
-                <div className={styles.secondContainer}>
-                  <div className={styles.paymentStatus}>
-                    <div className={styles.UncheckIconContainer}>
-                      <Check size={10} color="white" strokeWidth={3} />
-                    </div>
-                    Unpaid
-                  </div>
-                </div>
-              </div>
-              <div className={styles.customerCard}>
-                <div className={styles.firstContainer}>
-                  <div className={styles.freeTimeCard}>Free</div>
-                  <div className={styles.customerDetails}>
-                    <div className={styles.tableDetails}>
-                      <div className={styles.table}>
-                        <Armchair size={16} color="gray" />
-                        Table 03
-                      </div>
-                      <div className={styles.people}>
-                        <CircleUser size={14} color="gray" />0
-                      </div>
-                    </div>
-                    <div className={styles.phoneNumber}>
-                      <ListOrdered size={16} color="gray" />
-                      No order assigned
-                    </div>
-                  </div>
-                </div>
-                <div className={styles.secondContainer}>
-                  <div className={styles.paymentStatus}>
-                    <div className={styles.UncheckIconContainer}>
-                      <Check size={10} color="white" strokeWidth={3} />
-                    </div>
-                    Unpaid
-                  </div>
-                </div>
-              </div>
-              <div className={styles.customerCard}>
-                <div className={styles.firstContainer}>
-                  <div className={styles.freeTimeCard}>Free</div>
-                  <div className={styles.customerDetails}>
-                    <div className={styles.tableDetails}>
-                      <div className={styles.table}>
-                        <Armchair size={16} color="gray" />
-                        Table 04
-                      </div>
-                      <div className={styles.people}>
-                        <CircleUser size={14} color="gray" />0
-                      </div>
-                    </div>
-                    <div className={styles.phoneNumber}>
-                      <ListOrdered size={16} color="gray" />
-                      No order assigned
-                    </div>
-                  </div>
-                </div>
-                <div className={styles.secondContainer}>
-                  <div className={styles.paymentStatus}>
-                    <div className={styles.UncheckIconContainer}>
-                      <Check size={10} color="white" strokeWidth={3} />
-                    </div>
-                    Unpaid
-                  </div>
-                </div>
-              </div>
-              <div className={styles.customerCard}>
-                <div className={styles.firstContainer}>
-                  <div className={styles.freeTimeCard}>Free</div>
-                  <div className={styles.customerDetails}>
-                    <div className={styles.tableDetails}>
-                      <div className={styles.table}>
-                        <Armchair size={16} color="gray" />
-                        Table 05
-                      </div>
-                      <div className={styles.people}>
-                        <CircleUser size={14} color="gray" />0
-                      </div>
-                    </div>
-                    <div className={styles.phoneNumber}>
-                      <ListOrdered size={16} color="gray" />
-                      No order assigned
-                    </div>
-                  </div>
-                </div>
-                <div className={styles.secondContainer}>
-                  <div className={styles.paymentStatus}>
-                    <div className={styles.UncheckIconContainer}>
-                      <Check size={10} color="white" strokeWidth={3} />
-                    </div>
-                    Unpaid
-                  </div>
-                </div>
-              </div>
-              <div className={styles.customerCard}>
-                <div className={styles.firstContainer}>
-                  <div className={styles.freeTimeCard}>Free</div>
-                  <div className={styles.customerDetails}>
-                    <div className={styles.tableDetails}>
-                      <div className={styles.table}>
-                        <Armchair size={16} color="gray" />
-                        Table 05
-                      </div>
-                      <div className={styles.people}>
-                        <CircleUser size={14} color="gray" />0
-                      </div>
-                    </div>
-                    <div className={styles.phoneNumber}>
-                      <ListOrdered size={16} color="gray" />
-                      No order assigned
-                    </div>
-                  </div>
-                </div>
-                <div className={styles.secondContainer}>
-                  <div className={styles.paymentStatus}>
-                    <div className={styles.UncheckIconContainer}>
-                      <Check size={10} color="white" strokeWidth={3} />
-                    </div>
-                    Unpaid
-                  </div>
-                </div>
-              </div>
-              <div className={styles.customerCard}>
-                <div className={styles.firstContainer}>
-                  <div className={styles.freeTimeCard}>Free</div>
-                  <div className={styles.customerDetails}>
-                    <div className={styles.tableDetails}>
-                      <div className={styles.table}>
-                        <Armchair size={16} color="gray" />
-                        Table 05
-                      </div>
-                      <div className={styles.people}>
-                        <CircleUser size={14} color="gray" />0
-                      </div>
-                    </div>
-                    <div className={styles.phoneNumber}>
-                      <ListOrdered size={16} color="gray" />
-                      No order assigned
-                    </div>
-                  </div>
-                </div>
-                <div className={styles.secondContainer}>
-                  <div className={styles.paymentStatus}>
-                    <div className={styles.UncheckIconContainer}>
-                      <Check size={10} color="white" strokeWidth={3} />
-                    </div>
-                    Unpaid
-                  </div>
-                </div>
-              </div>
-              <div className={styles.customerCard}>
-                <div className={styles.firstContainer}>
-                  <div className={styles.timeCard}>
-                    7:30
-                    <br />
-                    PM
-                  </div>
-                  <div className={styles.customerDetails}>
-                    <div className={styles.customerName}>John Doe</div>
-                    <div className={styles.tableDetails}>
-                      <div className={styles.table}>
-                        <Armchair size={16} color="gray" />
-                        Table 01
-                      </div>
-                      <div className={styles.people}>
-                        <CircleUser size={14} color="gray" />4
-                      </div>
-                    </div>
-                    <div className={styles.phoneNumber}>
-                      <ListOrdered size={16} color="gray" />
-                      Order #7a0e34
-                    </div>
-                  </div>
-                </div>
-                <div className={styles.secondContainer}>
-                  <div className={styles.paymentStatus}>
-                    <div className={styles.checkIconContainer}>
-                      <Check size={10} color="white" strokeWidth={3} />
-                    </div>
-                    Payment
-                  </div>
-                </div>
-              </div>
-              <div className={styles.customerCard}>
-                <div className={styles.firstContainer}>
-                  <div className={styles.timeCard}>
-                    9:47
-                    <br />
-                    PM
-                  </div>
-                  <div className={styles.customerDetails}>
-                    <div className={styles.customerName}>Tyson Schell</div>
-                    <div className={styles.tableDetails}>
-                      <div className={styles.table}>
-                        <Armchair size={16} color="gray" />
-                        Table 02
-                      </div>
-                      <div className={styles.people}>
-                        <CircleUser size={14} color="gray" />4
-                      </div>
-                    </div>
-                    <div className={styles.phoneNumber}>
-                      <ListOrdered size={16} color="gray" />
-                      No order assigned
-                    </div>
-                  </div>
-                </div>
-                <div className={styles.secondContainer}>
-                  <div className={styles.paymentStatus}>
-                    <div className={styles.UncheckIconContainer}>
-                      <Check size={10} color="white" strokeWidth={3} />
-                    </div>
-                    Unpaid
-                  </div>
-                </div>
-              </div>
-              <div className={styles.customerCard}>
-                <div className={styles.firstContainer}>
-                  <div className={styles.freeTimeCard}>Free</div>
-                  <div className={styles.customerDetails}>
-                    <div className={styles.tableDetails}>
-                      <div className={styles.table}>
-                        <Armchair size={16} color="gray" />
-                        Table 03
-                      </div>
-                      <div className={styles.people}>
-                        <CircleUser size={14} color="gray" />0
-                      </div>
-                    </div>
-                    <div className={styles.phoneNumber}>
-                      <ListOrdered size={16} color="gray" />
-                      No order assigned
-                    </div>
-                  </div>
-                </div>
-                <div className={styles.secondContainer}>
-                  <div className={styles.paymentStatus}>
-                    <div className={styles.UncheckIconContainer}>
-                      <Check size={10} color="white" strokeWidth={3} />
-                    </div>
-                    Unpaid
-                  </div>
-                </div>
-              </div>
-              <div className={styles.customerCard}>
-                <div className={styles.firstContainer}>
-                  <div className={styles.freeTimeCard}>Free</div>
-                  <div className={styles.customerDetails}>
-                    <div className={styles.tableDetails}>
-                      <div className={styles.table}>
-                        <Armchair size={16} color="gray" />
-                        Table 04
-                      </div>
-                      <div className={styles.people}>
-                        <CircleUser size={14} color="gray" />0
-                      </div>
-                    </div>
-                    <div className={styles.phoneNumber}>
-                      <ListOrdered size={16} color="gray" />
-                      No order assigned
-                    </div>
-                  </div>
-                </div>
-                <div className={styles.secondContainer}>
-                  <div className={styles.paymentStatus}>
-                    <div className={styles.UncheckIconContainer}>
-                      <Check size={10} color="white" strokeWidth={3} />
-                    </div>
-                    Unpaid
-                  </div>
-                </div>
-              </div>
-              <div className={styles.customerCard}>
-                <div className={styles.firstContainer}>
-                  <div className={styles.freeTimeCard}>Free</div>
-                  <div className={styles.customerDetails}>
-                    <div className={styles.tableDetails}>
-                      <div className={styles.table}>
-                        <Armchair size={16} color="gray" />
-                        Table 05
-                      </div>
-                      <div className={styles.people}>
-                        <CircleUser size={14} color="gray" />0
-                      </div>
-                    </div>
-                    <div className={styles.phoneNumber}>
-                      <ListOrdered size={16} color="gray" />
-                      No order assigned
-                    </div>
-                  </div>
-                </div>
-                <div className={styles.secondContainer}>
-                  <div className={styles.paymentStatus}>
-                    <div className={styles.UncheckIconContainer}>
-                      <Check size={10} color="white" strokeWidth={3} />
-                    </div>
-                    Unpaid
-                  </div>
-                </div>
-              </div>
-              <div className={styles.customerCard}>
-                <div className={styles.firstContainer}>
-                  <div className={styles.freeTimeCard}>Free</div>
-                  <div className={styles.customerDetails}>
-                    <div className={styles.tableDetails}>
-                      <div className={styles.table}>
-                        <Armchair size={16} color="gray" />
-                        Table 05
-                      </div>
-                      <div className={styles.people}>
-                        <CircleUser size={14} color="gray" />0
-                      </div>
-                    </div>
-                    <div className={styles.phoneNumber}>
-                      <ListOrdered size={16} color="gray" />
-                      No order assigned
-                    </div>
-                  </div>
-                </div>
-                <div className={styles.secondContainer}>
-                  <div className={styles.paymentStatus}>
-                    <div className={styles.UncheckIconContainer}>
-                      <Check size={10} color="white" strokeWidth={3} />
-                    </div>
-                    Unpaid
-                  </div>
-                </div>
-              </div>
-              <div className={styles.customerCard}>
-                <div className={styles.firstContainer}>
-                  <div className={styles.freeTimeCard}>Free</div>
-                  <div className={styles.customerDetails}>
-                    <div className={styles.tableDetails}>
-                      <div className={styles.table}>
-                        <Armchair size={16} color="gray" />
-                        Table 05
-                      </div>
-                      <div className={styles.people}>
-                        <CircleUser size={14} color="gray" />0
-                      </div>
-                    </div>
-                    <div className={styles.phoneNumber}>
-                      <ListOrdered size={16} color="gray" />
-                      No order assigned
-                    </div>
-                  </div>
-                </div>
-                <div className={styles.secondContainer}>
-                  <div className={styles.paymentStatus}>
-                    <div className={styles.UncheckIconContainer}>
-                      <Check size={10} color="white" strokeWidth={3} />
-                    </div>
-                    Unpaid
-                  </div>
-                </div>
-              </div> */}
-              </div>
-            ) : (
-              <div className={styles.noTablesMessage}>No tables available</div>
-            )}
-          </div>
-          <div className={styles.addTableButtonContainer}>
-            <AddTableDialog onTableAdded={fetchTables} />
+          <div className={styles.filterButton}>
+            <Button variant="outline" size="icon">
+              <Plus />
+            </Button>
           </div>
         </div>
-        <div className={styles.rightSideContainer}>
-          <h2 className={styles.ManageTableHeader}>Manage Table</h2>
-          <div className={styles.tableLegendContainer}>
-            <div className={styles.tableLegendItem}>
-              <div className={styles.OccupiedIndicator}></div>
-              <div className={styles.legendLabel}>Occupied</div>
+
+        <div className={styles.customerContainer}>
+          {tables.length > 0 ? (
+            <div className={styles.customerCardContainer}>
+              {tables.map((table) => (
+                <div key={table._id} className={styles.customerCard}>
+                  <div className={styles.firstContainer}>
+                    <div
+                      className={
+                        table.isOccupied ? styles.timeCard : styles.freeTimeCard
+                      }
+                    >
+                      {table.isOccupied
+                        ? (() => {
+                            const timeString = new Date(
+                              table.updatedAt?.$date || table.updatedAt
+                            ).toLocaleTimeString([], {
+                              hour: "numeric",
+                              minute: "2-digit",
+                              hour12: true,
+                            });
+                            const [time, ampm] = timeString.split(" ");
+                            return (
+                              <div style={{ textAlign: "center" }}>
+                                {time}
+                                <br />
+                                {ampm.replace(/\./g, "").toUpperCase()}
+                              </div>
+                            );
+                          })()
+                        : "Free"}
+                    </div>
+
+                    <div className={styles.customerDetails}>
+                      <div className={styles.tableDetails}>
+                        <div className={styles.table}>
+                          <Armchair size={16} color="gray" />
+                          Table {table.tableNumber.toString().padStart(2, "0")}
+                        </div>
+                        <div className={styles.people}>
+                          <CircleUser size={14} color="gray" />
+                          {table.currentOccupancy || 0}
+                        </div>
+                      </div>
+
+                      <div className={styles.phoneNumber}>
+                        <ListOrdered size={16} color="gray" />
+                        {table.currentOrder || "No order assigned"}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className={styles.secondContainer}>
+                    <div className={styles.paymentStatus}>
+                      <div
+                        className={`${
+                          table.isOccupied
+                            ? styles.UncheckIconContainer
+                            : styles.checkIconContainer
+                        }`}
+                      >
+                        <Check size={10} color="white" strokeWidth={3} />
+                      </div>
+                      {/* {table.isPaid ? "Paid" : "Unpaid"} */}
+                      {table.isOccupied === false ? "Available" : "Unpaid"}
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
-            <div className={styles.tableLegendItem}>
-              <div className={styles.AvailableIndicator}></div>
-              <div className={styles.legendLabel}>Available</div>
-            </div>
+          ) : (
+            <div className={styles.noTablesMessage}>No tables available</div>
+          )}
+        </div>
+
+        {/* LEFT PANEL ADD TABLE BUTTON */}
+        <div className={styles.addTableButtonContainer}>
+          <Button
+            className="bg-black text-white border-0 w-full hover:bg-primary/90"
+            size="sm"
+            onClick={() => setAddDialogOpen(true)}
+          >
+            <SquarePlus /> Add Table
+          </Button>
+        </div>
+      </div>
+
+      {/* RIGHT SIDE */}
+      <div className={styles.rightSideContainer}>
+        <h2 className={styles.ManageTableHeader}>Manage Table</h2>
+
+        <div className={styles.tableLegendContainer}>
+          <div className={styles.tableLegendItem}>
+            <div className={styles.OccupiedIndicator}></div>
+            <div className={styles.legendLabel}>Occupied</div>
           </div>
-          <div className={styles.tableCanvasContainer}>
+
+          <div className={styles.tableLegendItem}>
+            <div className={styles.AvailableIndicator}></div>
+            <div className={styles.legendLabel}>Available</div>
+          </div>
+        </div>
+
+        <div className={styles.tableCanvasContainer}>
+          {tables.length > 0 ? (
             <div className={styles.tableRow}>
               {tables.map((table) => (
                 <TableRenderer key={table.tableNumber} table={table} />
               ))}
-              {/* <div className={styles.tableContainer}>
-                <div className={`${styles.tableFlex} ${styles.tableGap}`}>
-                  <Armchair size={16} className="text-green-700" />
-                  <Armchair size={16} className="text-green-700" />
-                  <Armchair size={16} className="text-green-700" />
-                  <Armchair size={16} className="text-gray-400" />
-                </div>
-                <div className={styles.tableFlex}>
-                  <Armchair size={16} className="-rotate-90 text-gray-400" />
-                  <div className={styles.tableCard}>
-                    Table 01
-                    <div className={styles.iconRow}>
-                      <UsersRound size={14} />6
-                    </div>
-                  </div>
-                  <Armchair size={16} className="rotate-90 text-gray-400" />
-                </div>
-                <div className={`${styles.tableFlex} ${styles.tableGap}`}>
-                  <Armchair size={16} className="-rotate-180 text-green-700" />
-                  <Armchair size={16} className="-rotate-180 text-green-700" />
-                  <Armchair size={16} className="-rotate-180 text-green-700" />
-                  <Armchair size={16} className="-rotate-180 text-gray-400" />
-                </div>
-              </div>
-              <div className={styles.tableContainer}>
-                <div className={`${styles.tableFlex} ${styles.tableGap}`}>
-                  <Armchair size={16} className="text-green-700" />
-                </div>
-                <div className={styles.tableFlex}>
-                  <Armchair size={16} className="-rotate-90 text-gray-400" />
-                  <div className={styles.tableCardSquare}>
-                    Table 02
-                    <div className={styles.iconRow}>
-                      <UsersRound size={14} />2
-                    </div>
-                  </div>
-                  <Armchair size={16} className="rotate-90 text-gray-400" />
-                </div>
-                <div className={`${styles.tableFlex} ${styles.tableGap}`}>
-                  <Armchair size={16} className="-rotate-180 text-green-700" />
-                </div>
-              </div>
-              <div className={styles.tableContainer}>
-                <div className={`${styles.tableFlex} ${styles.tableGap}`}>
-                  <Armchair size={16} className="text-gray-400" />
-                </div>
-                <div className={styles.tableFlex}>
-                  <Armchair size={16} className="-rotate-90 text-gray-400" />
-                  <div className={styles.freeTableCardSquare}>
-                    Table 03
-                    <div className={styles.iconRow}>
-                      <UsersRound size={14} />0
-                    </div>
-                  </div>
-                  <Armchair size={16} className="rotate-90 text-gray-400" />
-                </div>
-                <div className={`${styles.tableFlex} ${styles.tableGap}`}>
-                  <Armchair size={16} className="-rotate-180 text-gray-400" />
-                </div>
-              </div>
-              <div className={styles.tableContainer}>
-                <div className={`${styles.tableFlex} ${styles.tableGap}`}>
-                  <Armchair size={16} className="text-gray-400" />
-                </div>
-                <div className={styles.tableFlex}>
-                  <Armchair size={16} className="-rotate-90 text-gray-400" />
-                  <div className={styles.freeTableCardSquare}>
-                    Table 03
-                    <div className={styles.iconRow}>
-                      <UsersRound size={14} />0
-                    </div>
-                  </div>
-                  <Armchair size={16} className="rotate-90 text-gray-400" />
-                </div>
-                <div className={`${styles.tableFlex} ${styles.tableGap}`}>
-                  <Armchair size={16} className="-rotate-180 text-gray-400" />
-                </div>
-              </div>
-              <div className={styles.tableContainer}>
-                <div className={`${styles.tableFlex} ${styles.tableGap}`}>
-                  <Armchair size={16} className="text-green-700" />
-                </div>
-                <div className={styles.tableFlex}>
-                  <Armchair size={16} className="-rotate-90 text-gray-400" />
-                  <div className={styles.tableCardSquare}>
-                    Table 02
-                    <div className={styles.iconRow}>
-                      <UsersRound size={14} />2
-                    </div>
-                  </div>
-                  <Armchair size={16} className="rotate-90 text-gray-400" />
-                </div>
-                <div className={`${styles.tableFlex} ${styles.tableGap}`}>
-                  <Armchair size={16} className="-rotate-180 text-green-700" />
-                </div>
-              </div>
-              <div className={styles.tableContainer}>
-                <div className={`${styles.tableFlex} ${styles.tableGap}`}>
-                  <Armchair size={16} className="text-green-700" />
-                  <Armchair size={16} className="text-green-700" />
-                  <Armchair size={16} className="text-green-700" />
-                  <Armchair size={16} className="text-gray-400" />
-                </div>
-                <div className={styles.tableFlex}>
-                  <Armchair size={16} className="-rotate-90 text-gray-400" />
-                  <div className={styles.tableCard}>
-                    Table 01
-                    <div className={styles.iconRow}>
-                      <UsersRound size={14} />6
-                    </div>
-                  </div>
-                  <Armchair size={16} className="rotate-90 text-gray-400" />
-                </div>
-                <div className={`${styles.tableFlex} ${styles.tableGap}`}>
-                  <Armchair size={16} className="-rotate-180 text-green-700" />
-                  <Armchair size={16} className="-rotate-180 text-green-700" />
-                  <Armchair size={16} className="-rotate-180 text-green-700" />
-                  <Armchair size={16} className="-rotate-180 text-gray-400" />
-                </div>
-              </div>
-              <div className={styles.tableContainer}>
-                <div className={`${styles.tableFlex} ${styles.tableGap}`}>
-                  <Armchair size={16} className="text-gray-400" />
-                </div>
-                <div className={styles.tableFlex}>
-                  <Armchair size={16} className="-rotate-90 text-gray-400" />
-                  <div className={styles.freeTableCardSquare}>
-                    Table 03
-                    <div className={styles.iconRow}>
-                      <UsersRound size={14} />0
-                    </div>
-                  </div>
-                  <Armchair size={16} className="rotate-90 text-gray-400" />
-                </div>
-                <div className={`${styles.tableFlex} ${styles.tableGap}`}>
-                  <Armchair size={16} className="-rotate-180 text-gray-400" />
-                </div>
-              </div>
-              <div className={styles.tableContainer}>
-                <div className={`${styles.tableFlex} ${styles.tableGap}`}>
-                  <Armchair size={16} className="text-green-700" />
-                  <Armchair size={16} className="text-green-700" />
-                  <Armchair size={16} className="text-green-700" />
-                  <Armchair size={16} className="text-gray-400" />
-                </div>
-                <div className={styles.tableFlex}>
-                  <Armchair size={16} className="-rotate-90 text-gray-400" />
-                  <div className={styles.tableCard}>
-                    Table 01
-                    <div className={styles.iconRow}>
-                      <UsersRound size={14} />6
-                    </div>
-                  </div>
-                  <Armchair size={16} className="rotate-90 text-gray-400" />
-                </div>
-                <div className={`${styles.tableFlex} ${styles.tableGap}`}>
-                  <Armchair size={16} className="-rotate-180 text-green-700" />
-                  <Armchair size={16} className="-rotate-180 text-green-700" />
-                  <Armchair size={16} className="-rotate-180 text-green-700" />
-                  <Armchair size={16} className="-rotate-180 text-gray-400" />
-                </div>
-              </div>
-              <div className={styles.tableContainer}>
-                <div className={`${styles.tableFlex} ${styles.tableGap}`}>
-                  <Armchair size={16} className="text-green-700" />
-                  <Armchair size={16} className="text-green-700" />
-                  <Armchair size={16} className="text-green-700" />
-                  <Armchair size={16} className="text-gray-400" />
-                </div>
-                <div className={styles.tableFlex}>
-                  <Armchair size={16} className="-rotate-90 text-gray-400" />
-                  <div className={styles.tableCard}>
-                    Table 01
-                    <div className={styles.iconRow}>
-                      <UsersRound size={14} />6
-                    </div>
-                  </div>
-                  <Armchair size={16} className="rotate-90 text-gray-400" />
-                </div>
-                <div className={`${styles.tableFlex} ${styles.tableGap}`}>
-                  <Armchair size={16} className="-rotate-180 text-green-700" />
-                  <Armchair size={16} className="-rotate-180 text-green-700" />
-                  <Armchair size={16} className="-rotate-180 text-green-700" />
-                  <Armchair size={16} className="-rotate-180 text-gray-400" />
-                </div>
-              </div>
-              <div className={styles.tableContainer}>
-                <div className={`${styles.tableFlex} ${styles.tableGap}`}>
-                  <Armchair size={16} className="text-green-700" />
-                </div>
-                <div className={styles.tableFlex}>
-                  <Armchair size={16} className="-rotate-90 text-gray-400" />
-                  <div className={styles.tableCardSquare}>
-                    Table 02
-                    <div className={styles.iconRow}>
-                      <UsersRound size={14} />2
-                    </div>
-                  </div>
-                  <Armchair size={16} className="rotate-90 text-gray-400" />
-                </div>
-                <div className={`${styles.tableFlex} ${styles.tableGap}`}>
-                  <Armchair size={16} className="-rotate-180 text-green-700" />
-                </div>
-              </div>
-              <div className={styles.tableContainer}>
-                <div className={`${styles.tableFlex} ${styles.tableGap}`}>
-                  <Armchair size={16} className="text-gray-400" />
-                </div>
-                <div className={styles.tableFlex}>
-                  <Armchair size={16} className="-rotate-90 text-gray-400" />
-                  <div className={styles.freeTableCardSquare}>
-                    Table 03
-                    <div className={styles.iconRow}>
-                      <UsersRound size={14} />0
-                    </div>
-                  </div>
-                  <Armchair size={16} className="rotate-90 text-gray-400" />
-                </div>
-                <div className={`${styles.tableFlex} ${styles.tableGap}`}>
-                  <Armchair size={16} className="-rotate-180 text-gray-400" />
-                </div>
-              </div>
-              <div className={styles.tableContainer}>
-                <div className={`${styles.tableFlex} ${styles.tableGap}`}>
-                  <Armchair size={16} className="text-gray-400" />
-                </div>
-                <div className={styles.tableFlex}>
-                  <Armchair size={16} className="-rotate-90 text-gray-400" />
-                  <div className={styles.freeTableCardSquare}>
-                    Table 03
-                    <div className={styles.iconRow}>
-                      <UsersRound size={14} />0
-                    </div>
-                  </div>
-                  <Armchair size={16} className="rotate-90 text-gray-400" />
-                </div>
-                <div className={`${styles.tableFlex} ${styles.tableGap}`}>
-                  <Armchair size={16} className="-rotate-180 text-gray-400" />
-                </div>
-              </div>
-              <div className={styles.tableContainer}>
-                <div className={`${styles.tableFlex} ${styles.tableGap}`}>
-                  <Armchair size={16} className="text-green-700" />
-                </div>
-                <div className={styles.tableFlex}>
-                  <Armchair size={16} className="-rotate-90 text-gray-400" />
-                  <div className={styles.tableCardSquare}>
-                    Table 02
-                    <div className={styles.iconRow}>
-                      <UsersRound size={14} />2
-                    </div>
-                  </div>
-                  <Armchair size={16} className="rotate-90 text-gray-400" />
-                </div>
-                <div className={`${styles.tableFlex} ${styles.tableGap}`}>
-                  <Armchair size={16} className="-rotate-180 text-green-700" />
-                </div>
-              </div>
-              <div className={styles.tableContainer}>
-                <div className={`${styles.tableFlex} ${styles.tableGap}`}>
-                  <Armchair size={16} className="text-green-700" />
-                  <Armchair size={16} className="text-green-700" />
-                  <Armchair size={16} className="text-green-700" />
-                  <Armchair size={16} className="text-gray-400" />
-                </div>
-                <div className={styles.tableFlex}>
-                  <Armchair size={16} className="-rotate-90 text-gray-400" />
-                  <div className={styles.tableCard}>
-                    Table 01
-                    <div className={styles.iconRow}>
-                      <UsersRound size={14} />6
-                    </div>
-                  </div>
-                  <Armchair size={16} className="rotate-90 text-gray-400" />
-                </div>
-                <div className={`${styles.tableFlex} ${styles.tableGap}`}>
-                  <Armchair size={16} className="-rotate-180 text-green-700" />
-                  <Armchair size={16} className="-rotate-180 text-green-700" />
-                  <Armchair size={16} className="-rotate-180 text-green-700" />
-                  <Armchair size={16} className="-rotate-180 text-gray-400" />
-                </div>
-              </div>
-              <div className={styles.tableContainer}>
-                <div className={`${styles.tableFlex} ${styles.tableGap}`}>
-                  <Armchair size={16} className="text-gray-400" />
-                </div>
-                <div className={styles.tableFlex}>
-                  <Armchair size={16} className="-rotate-90 text-gray-400" />
-                  <div className={styles.freeTableCardSquare}>
-                    Table 03
-                    <div className={styles.iconRow}>
-                      <UsersRound size={14} />0
-                    </div>
-                  </div>
-                  <Armchair size={16} className="rotate-90 text-gray-400" />
-                </div>
-                <div className={`${styles.tableFlex} ${styles.tableGap}`}>
-                  <Armchair size={16} className="-rotate-180 text-gray-400" />
-                </div>
-              </div>
-              <div className={styles.tableContainer}>
-                <div className={`${styles.tableFlex} ${styles.tableGap}`}>
-                  <Armchair size={16} className="text-green-700" />
-                  <Armchair size={16} className="text-green-700" />
-                  <Armchair size={16} className="text-green-700" />
-                  <Armchair size={16} className="text-gray-400" />
-                </div>
-                <div className={styles.tableFlex}>
-                  <Armchair size={16} className="-rotate-90 text-gray-400" />
-                  <div className={styles.tableCard}>
-                    Table 01
-                    <div className={styles.iconRow}>
-                      <UsersRound size={14} />6
-                    </div>
-                  </div>
-                  <Armchair size={16} className="rotate-90 text-gray-400" />
-                </div>
-                <div className={`${styles.tableFlex} ${styles.tableGap}`}>
-                  <Armchair size={16} className="-rotate-180 text-green-700" />
-                  <Armchair size={16} className="-rotate-180 text-green-700" />
-                  <Armchair size={16} className="-rotate-180 text-green-700" />
-                  <Armchair size={16} className="-rotate-180 text-gray-400" />
-                </div>
-              </div> */}
             </div>
-          </div>
+          ) : (
+            <div className={styles.noTablesMessage}>
+              <SquarePlus
+                size={30}
+                strokeWidth={1}
+                className="cursor-pointer"
+                onClick={() => setAddDialogOpen(true)}
+              />
+              Add a table to get started
+            </div>
+          )}
         </div>
       </div>
-    </>
+
+      {/* CONTROLLED DIALOG (shared by both triggers) */}
+      <AddTableDialog
+        open={addDialogOpen}
+        onOpenChange={setAddDialogOpen}
+        onTableAdded={fetchTables}
+      />
+    </div>
   );
 };
 
