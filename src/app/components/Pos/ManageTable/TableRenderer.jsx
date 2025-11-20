@@ -1,7 +1,14 @@
 import { Armchair, UsersRound } from "lucide-react";
 import styles from "./TableRenderer.module.css";
+import AssignTable from "./AssignTable";
 
-const TableRenderer = ({ table }) => {
+const TableRenderer = ({
+  table,
+  assignDialogOpen,
+  setAssignDialogOpen,
+  selectedTable,
+  setSelectedTable,
+}) => {
   const { occupancy, isOccupied, tableNumber, peopleCount } = table;
   let remaining = isOccupied ? peopleCount : 0;
 
@@ -41,7 +48,13 @@ const TableRenderer = ({ table }) => {
   );
 
   return (
-    <div className={styles.tableContainer}>
+    <div
+      className={styles.tableContainer}
+      onClick={() => {
+        setSelectedTable(table);
+        setAssignDialogOpen(true);
+      }}
+    >
       {/* TOP ROW */}
       <div className={`${styles.tableFlex} ${styles.tableGap}`}>
         {topColors.map((color, i) => (

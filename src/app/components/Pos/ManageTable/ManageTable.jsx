@@ -15,10 +15,13 @@ import { Button } from "@/components/ui/button";
 import AddTableDialog from "./AddTableDialog"; // Adjust path if needed
 import { useRestaurantContext } from "@/context/RestaurantContext";
 import TableRenderer from "./TableRenderer"; // Adjust path if needed
+import AssignTable from "./AssignTable";
 
 const ManageTable = () => {
   const { restaurant } = useRestaurantContext();
   const [tables, setTables] = useState([]);
+  const [assignDialogOpen, setAssignDialogOpen] = useState(false);
+  const [selectedTable, setSelectedTable] = useState(null);
 
   // ✅ Dialog state for both triggers
   const [addDialogOpen, setAddDialogOpen] = useState(false);
@@ -71,7 +74,14 @@ const ManageTable = () => {
           {tables.length > 0 ? (
             <div className={styles.customerCardContainer}>
               {tables.map((table) => (
-                <div key={table._id} className={styles.customerCard}>
+                <div
+                  key={table._id}
+                  className={styles.customerCard}
+                  onClick={() => {
+                    setSelectedTable(table);
+                    setAssignDialogOpen(true);
+                  }}
+                >
                   <div className={styles.firstContainer}>
                     <div
                       className={
@@ -100,6 +110,7 @@ const ManageTable = () => {
                     </div>
 
                     <div className={styles.customerDetails}>
+                      {/* <div className={styles.customerName}>Pritul Gohil</div> */}
                       <div className={styles.tableDetails}>
                         <div className={styles.table}>
                           <Armchair size={16} color="gray" />
@@ -173,7 +184,14 @@ const ManageTable = () => {
           {tables.length > 0 ? (
             <div className={styles.tableRow}>
               {tables.map((table) => (
-                <TableRenderer key={table.tableNumber} table={table} />
+                <TableRenderer
+                  key={table.tableNumber}
+                  table={table}
+                  assignDialogOpen={assignDialogOpen}
+                  setAssignDialogOpen={setAssignDialogOpen}
+                  selectedTable={selectedTable}
+                  setSelectedTable={setSelectedTable}
+                />
               ))}
             </div>
           ) : (
@@ -195,6 +213,12 @@ const ManageTable = () => {
         open={addDialogOpen}
         onOpenChange={setAddDialogOpen}
         onTableAdded={fetchTables}
+      />
+      <AssignTable
+        open={assignDialogOpen}
+        onOpenChange={setAssignDialogOpen}
+        table={selectedTable}
+        onTableUpdated={fetchTables}
       />
     </div>
   );
