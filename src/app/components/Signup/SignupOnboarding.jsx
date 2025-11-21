@@ -33,6 +33,7 @@ const SignupOnboarding = () => {
   const [signupButtonState, setSignupButtonState] = useState(false);
   const { loggedInUser } = useAuthContext();
   const { setRestaurant } = useRestaurantContext();
+  const { setRestaurantName } = useRestaurantContext();
 
   const form = useForm({
     resolver: zodResolver(FormSchema),
@@ -89,6 +90,7 @@ const SignupOnboarding = () => {
       if (restaurantResponse.ok) {
         // Save restaurantId when restaurant is created on signup
         setRestaurant(restaurantResult.restaurant._id);
+        setRestaurantName(restaurantResult.restaurant.restaurantName);
         setSignupButtonState(true);
 
         // Navigate to POS

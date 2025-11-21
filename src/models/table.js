@@ -24,6 +24,10 @@ const tableSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    customerName: {
+      type: String,
+      default: "",
+    },
   },
   { timestamps: true }
 );

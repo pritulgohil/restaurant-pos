@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -9,8 +12,57 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export default function AssignTable({ open, onOpenChange, table }) {
-  if (!table) return null; // Prevent render before table is selected
+export default function AssignTable({
+  open,
+  onOpenChange,
+  table,
+  onTableUpdated,
+}) {
+  if (!table) return null;
+
+  const [customerName, setCustomerName] = useState(table.customerName || "");
+  const [peopleCount, setPeopleCount] = useState(table.peopleCount || 0);
+  const [loading, setLoading] = useState(false);
+
+  const handleAssign = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const token = localStorage.getItem("token");
+
+      const res = await fetch(`/api/pos/update-table/${table._id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          customerName,
+          peopleCount: Number(peopleCount),
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.error("Error assigning table:", data);
+        alert(data.error || "Failed to assign table");
+        setLoading(false);
+        return;
+      }
+
+      // Refresh parent table list
+      onTableUpdated && onTableUpdated();
+
+      onOpenChange(false); // Close dialog
+    } catch (err) {
+      console.error("Network error:", err);
+      alert("Network error");
+    }
+
+    setLoading(false);
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -19,44 +71,44 @@ export default function AssignTable({ open, onOpenChange, table }) {
           <DialogTitle>Assign Table</DialogTitle>
         </DialogHeader>
 
-        <form className="space-y-8 mt-6">
+        <form className="space-y-8 mt-6" onSubmit={handleAssign}>
           {/* TABLE NUMBER */}
           <div className="grid gap-2">
-            <Label htmlFor="tableNumber">Table Number</Label>
-            <Input
-              id="tableNumber"
-              type="number"
-              defaultValue={table.tableNumber}
-              readOnly
-              className="bg-gray-100"
-              disabled
-            />
+            <Label>Table Number</Label>
+            <Input value={table.tableNumber} readOnly disabled />
+          </div>
+
+          <div className="grid gap-2">
+            <Label>Occupancy</Label>
+            <Input value={table.occupancy} readOnly disabled />
           </div>
 
           {/* CUSTOMER NAME */}
           <div className="grid gap-2">
-            <Label htmlFor="customerName">Customer Name</Label>
+            <Label>Customer Name</Label>
             <Input
-              id="customerName"
               type="text"
               placeholder="Enter customer name"
-              defaultValue={table.customerName || ""}
+              onChange={(e) => setCustomerName(e.target.value)}
             />
           </div>
 
           {/* PEOPLE COUNT */}
           <div className="grid gap-2">
-            <Label htmlFor="peopleCount">People Count</Label>
+            <Label>People Count</Label>
             <Input
-              id="peopleCount"
               type="number"
               placeholder="Enter number of people"
-              defaultValue={table.currentOccupancy || 0}
+              onChange={(e) => setPeopleCount(e.target.value)}
+              min={1}
+              max={table.occupancy}
             />
           </div>
 
           <DialogFooter>
-            <Button type="submit">Assign Table</Button>
+            <Button type="submit" disabled={loading}>
+              {loading ? "Assigning..." : "Assign Table"}
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>
