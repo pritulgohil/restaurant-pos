@@ -110,7 +110,11 @@ const ManageTable = () => {
                     </div>
 
                     <div className={styles.customerDetails}>
-                      {/* <div className={styles.customerName}>Pritul Gohil</div> */}
+                      {table.customerName && (
+                        <div className={styles.customerName}>
+                          {table.customerName}
+                        </div>
+                      )}
                       <div className={styles.tableDetails}>
                         <div className={styles.table}>
                           <Armchair size={16} color="gray" />
