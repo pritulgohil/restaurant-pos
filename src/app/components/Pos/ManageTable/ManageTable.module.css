@@ -54,7 +54,7 @@
 
 .customerName {
   font-weight: 500;
-  font-size: 15px;
+  font-size: 12px;
 }
 
 .timeCard {
@@ -93,7 +93,7 @@
 .table,
 .people {
   display: flex;
-  font-size: 14px;
+  font-size: 12px;
   align-items: center;
   gap: 4px;
 }

@@ -108,9 +108,16 @@ export default function AddTableDialog({ open, onOpenChange, onTableAdded }) {
         <Button
           className="w-full bg-black text-white mt-2 hover:bg-primary/90"
           onClick={handleCreateTable}
+          disabled={loading}
         >
-          {loading && <LoaderCircle className="animate-spin" />}
-          Save Table
+          {loading ? (
+            <div className="flex items-center justify-center gap-2">
+              <LoaderCircle className="h-4 w-4 animate-spin" />
+              <span>Saving Table</span>
+            </div>
+          ) : (
+            "Save Table"
+          )}
         </Button>
       </DialogContent>
     </Dialog>

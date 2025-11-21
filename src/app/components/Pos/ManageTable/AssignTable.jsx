@@ -11,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { LoaderCircle } from "lucide-react";
 
 export default function AssignTable({
   open,
@@ -54,8 +55,12 @@ export default function AssignTable({
 
       // Refresh parent table list
       onTableUpdated && onTableUpdated();
-
-      onOpenChange(false); // Close dialog
+      setTimeout(() => {
+        setLoading(false);
+        onOpenChange(false); // Close dialog
+      }, 3000);
+      setPeopleCount(0);
+      setCustomerName("");
     } catch (err) {
       console.error("Network error:", err);
       alert("Network error");
@@ -106,8 +111,18 @@ export default function AssignTable({
           </div>
 
           <DialogFooter>
-            <Button type="submit" disabled={loading}>
-              {loading ? "Assigning..." : "Assign Table"}
+            <Button
+              type="submit"
+              disabled={loading || !customerName || !peopleCount}
+            >
+              {loading ? (
+                <div className="flex items-center gap-2">
+                  <LoaderCircle className="h-4 w-4 animate-spin" />
+                  <span>Assigning Table</span>
+                </div>
+              ) : (
+                "Assign Table"
+              )}
             </Button>
           </DialogFooter>
         </form>

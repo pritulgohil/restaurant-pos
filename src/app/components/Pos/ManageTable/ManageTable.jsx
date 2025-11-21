@@ -122,7 +122,7 @@ const ManageTable = () => {
                         </div>
                         <div className={styles.people}>
                           <CircleUser size={14} color="gray" />
-                          {table.currentOccupancy || 0}
+                          {table.peopleCount || 0}
                         </div>
                       </div>
 
