@@ -11,7 +11,17 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { LoaderCircle } from "lucide-react";
+import {
+  LoaderCircle,
+  Table,
+  Armchair,
+  UtensilsCrossed,
+  CircleUser,
+  UsersRound,
+  ListOrdered,
+} from "lucide-react";
+import styles from "./AssignTable.module.css";
+import { Separator } from "@/components/ui/separator";
 
 export default function AssignTable({
   open,
@@ -71,61 +81,97 @@ export default function AssignTable({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-sm">
-        <DialogHeader>
-          <DialogTitle>Assign Table</DialogTitle>
-        </DialogHeader>
+      <DialogContent className="max-w-lg">
+        {table.isOccupied ? (
+          <>
+            <DialogHeader className={styles.dialogHeader}>
+              Table {table.tableNumber.toString().padStart(2, "0")}{" "}
+            </DialogHeader>
+            <div className={styles.dialogRow}>
+              <div className={styles.rowField}>
+                <Table size={16} />#{table._id.slice(-4)}
+              </div>
+              <div className={styles.rowField}>
+                <Armchair size={16} />
+                {table.occupancy} Seats
+              </div>
+              <div className={styles.rowField}>
+                <UtensilsCrossed size={16} />
+                Occupied
+              </div>
+            </div>
+            <Separator className="my-4" />
+            <div className={styles.dialogRow}>
+              <div className={styles.rowField}>
+                <CircleUser size={16} /> {table.customerName}
+              </div>
+              <div className={styles.rowField}>
+                <UsersRound size={16} /> {table.peopleCount} People
+              </div>
+              <div className={styles.rowField}>
+                <ListOrdered size={16} />{" "}
+                {table.currentOrder || "No order assigned"}
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <DialogHeader>
+              <DialogTitle>Assign Table</DialogTitle>
+            </DialogHeader>
 
-        <form className="space-y-8 mt-6" onSubmit={handleAssign}>
-          {/* TABLE NUMBER */}
-          <div className="grid gap-2">
-            <Label>Table Number</Label>
-            <Input value={table.tableNumber} readOnly disabled />
-          </div>
+            <form className="space-y-8 mt-6" onSubmit={handleAssign}>
+              {/* TABLE NUMBER */}
+              <div className="grid gap-2">
+                <Label>Table Number</Label>
+                <Input value={table.tableNumber} readOnly disabled />
+              </div>
 
-          <div className="grid gap-2">
-            <Label>Occupancy</Label>
-            <Input value={table.occupancy} readOnly disabled />
-          </div>
+              <div className="grid gap-2">
+                <Label>Occupancy</Label>
+                <Input value={table.occupancy} readOnly disabled />
+              </div>
 
-          {/* CUSTOMER NAME */}
-          <div className="grid gap-2">
-            <Label>Customer Name</Label>
-            <Input
-              type="text"
-              placeholder="Enter customer name"
-              onChange={(e) => setCustomerName(e.target.value)}
-            />
-          </div>
+              {/* CUSTOMER NAME */}
+              <div className="grid gap-2">
+                <Label>Customer Name</Label>
+                <Input
+                  type="text"
+                  placeholder="Enter customer name"
+                  onChange={(e) => setCustomerName(e.target.value)}
+                />
+              </div>
 
-          {/* PEOPLE COUNT */}
-          <div className="grid gap-2">
-            <Label>People Count</Label>
-            <Input
-              type="number"
-              placeholder="Enter number of people"
-              onChange={(e) => setPeopleCount(e.target.value)}
-              min={1}
-              max={table.occupancy}
-            />
-          </div>
+              {/* PEOPLE COUNT */}
+              <div className="grid gap-2">
+                <Label>People Count</Label>
+                <Input
+                  type="number"
+                  placeholder="Enter number of people"
+                  onChange={(e) => setPeopleCount(e.target.value)}
+                  min={1}
+                  max={table.occupancy}
+                />
+              </div>
 
-          <DialogFooter>
-            <Button
-              type="submit"
-              disabled={loading || !customerName || !peopleCount}
-            >
-              {loading ? (
-                <div className="flex items-center gap-2">
-                  <LoaderCircle className="h-4 w-4 animate-spin" />
-                  <span>Assigning Table</span>
-                </div>
-              ) : (
-                "Assign Table"
-              )}
-            </Button>
-          </DialogFooter>
-        </form>
+              <DialogFooter>
+                <Button
+                  type="submit"
+                  disabled={loading || !customerName || !peopleCount}
+                >
+                  {loading ? (
+                    <div className="flex items-center gap-2">
+                      <LoaderCircle className="h-4 w-4 animate-spin" />
+                      <span>Assigning Table</span>
+                    </div>
+                  ) : (
+                    "Assign Table"
+                  )}
+                </Button>
+              </DialogFooter>
+            </form>
+          </>
+        )}
       </DialogContent>
     </Dialog>
   );

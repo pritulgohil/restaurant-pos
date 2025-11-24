@@ -1,0 +1,17 @@
+.dialogHeader {
+  font-weight: 600;
+  font-size: 22px;
+  margin-bottom: 16px;
+}
+
+.dialogRow {
+  display: flex;
+  justify-content: space-between;
+}
+
+.rowField {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+}
