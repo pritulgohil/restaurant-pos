@@ -9,9 +9,25 @@
   justify-content: space-between;
 }
 
+.customDialogRow {
+  display: flex;
+}
+
 .rowField {
   display: flex;
   align-items: center;
   gap: 6px;
   font-size: 14px;
+  width: 150px;
+}
+
+.iconContainer {
+  width: 16px;
+  height: 16px;
+  padding: 2px;
+  background-color: rgb(180, 180, 180);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
 }

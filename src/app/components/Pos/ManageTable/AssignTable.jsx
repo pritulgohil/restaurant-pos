@@ -19,6 +19,11 @@ import {
   CircleUser,
   UsersRound,
   ListOrdered,
+  SquareX,
+  SquarePen,
+  CreditCard,
+  Clock,
+  Check,
 } from "lucide-react";
 import styles from "./AssignTable.module.css";
 import { Separator } from "@/components/ui/separator";
@@ -112,6 +117,51 @@ export default function AssignTable({
                 <ListOrdered size={16} />{" "}
                 {table.currentOrder || "No order assigned"}
               </div>
+            </div>
+            <Separator className="my-4" />
+            <div className={styles.customDialogRow}>
+              <div className={styles.rowField}>
+                <Clock size={16} />
+                {table.isOccupied &&
+                  (() => {
+                    const timeString = new Date(
+                      table.updatedAt?.$date || table.updatedAt
+                    ).toLocaleTimeString([], {
+                      hour: "numeric",
+                      minute: "2-digit",
+                      hour12: true,
+                    });
+
+                    const [time, ampm] = timeString.split(" ");
+
+                    return (
+                      <div>
+                        {time} {ampm.replace(/\./g, "").toUpperCase()}
+                      </div>
+                    );
+                  })()}
+              </div>
+              <div className={styles.rowField}>
+                <div className={styles.iconContainer}>
+                  <Check size={16} strokeWidth={3} className="text-white" />
+                </div>
+                Unpaid
+              </div>
+            </div>
+            <Separator className="my-4" />
+            <div className={styles.dialogRow}>
+              <Button variant="outline">
+                <SquareX />
+                Unassign Table
+              </Button>
+              <Button>
+                <CreditCard />
+                Take Payment
+              </Button>
+              <Button className="bg-green-600 text-white hover:bg-green-700">
+                <SquarePen />
+                Assign Order
+              </Button>
             </div>
           </>
         ) : (
