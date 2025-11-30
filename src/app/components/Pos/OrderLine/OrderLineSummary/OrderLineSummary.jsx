@@ -64,7 +64,6 @@ const OrderLineSummary = () => {
   const handlePlaceOrder = async () => {
     try {
       const token = localStorage.getItem("token");
-
       const enrichedOrder = {
         ...orderLine,
         restaurantId: restaurant,
@@ -76,7 +75,6 @@ const OrderLineSummary = () => {
         paymentMethod: paymentMethod,
         orderType: orderType,
       };
-
       const res = await fetch("/api/pos/create-order", {
         method: "POST",
         headers: {
@@ -89,7 +87,6 @@ const OrderLineSummary = () => {
       if (!res.ok) {
         throw new Error("Failed to place order");
       }
-
       const data = await res.json();
       setLoading(true);
       setTimeout(() => {
@@ -99,6 +96,22 @@ const OrderLineSummary = () => {
       }, 2000);
       console.log("Order saved:", enrichedOrder);
       console.log("Response from server:", data);
+      const tableRes = await fetch(
+        `/api/pos/update-table/${orderLine.tableId}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            orderId: data._id,
+          }),
+        }
+      );
+      if (!tableRes.ok) {
+        throw new Error("Failed to update table");
+      }
     } catch (error) {
       console.error("Error:", error);
     }
