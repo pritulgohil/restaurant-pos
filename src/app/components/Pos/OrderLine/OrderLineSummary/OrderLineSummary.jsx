@@ -59,6 +59,8 @@ const OrderLineSummary = () => {
     setOrderLine({});
   };
 
+  console.log("Order Line:", orderLine);
+
   const handlePlaceOrder = async () => {
     try {
       const token = localStorage.getItem("token");

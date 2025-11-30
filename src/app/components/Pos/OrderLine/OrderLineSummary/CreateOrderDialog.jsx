@@ -76,6 +76,8 @@ const CreateOrderDialog = () => {
     }
   }, [orderType, restaurant]);
 
+  console.log("Tables List:", table);
+
   // Validate
   const isFormValid =
     orderType === "Dine-in"
@@ -95,6 +97,7 @@ const CreateOrderDialog = () => {
         customerName,
         peopleCount:
           !peopleCount || parseInt(peopleCount, 10) === 0 ? "n/a" : peopleCount,
+        tableId: table ? table._id : null,
       });
 
       setIsDialogOpen(false);
