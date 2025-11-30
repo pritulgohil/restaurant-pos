@@ -2,6 +2,7 @@
   font-weight: 600;
   font-size: 22px;
   margin-bottom: 16px;
+  text-align: center;
 }
 
 .dialogRow {
@@ -11,6 +12,7 @@
 
 .customDialogRow {
   display: flex;
+  justify-content: space-between;
 }
 
 .rowField {
@@ -19,6 +21,8 @@
   gap: 6px;
   font-size: 14px;
   width: 150px;
+  justify-content: center;
+  /* background-color: red; */
 }
 
 .iconContainer {

@@ -24,6 +24,7 @@ import {
   CreditCard,
   Clock,
   Check,
+  ClockArrowDown,
 } from "lucide-react";
 import styles from "./AssignTable.module.css";
 import { Separator } from "@/components/ui/separator";
@@ -126,6 +127,18 @@ export default function AssignTable({
     }
   };
 
+  function getElapsedTime(timestamp) {
+    const now = new Date();
+    const updated = new Date(timestamp);
+    const diffMs = now - updated;
+
+    const minutes = Math.floor(diffMs / 60000);
+    const hours = Math.floor(minutes / 60);
+
+    if (hours > 0) return `${hours}h ${minutes % 60}m`;
+    return `${minutes}m`;
+  }
+
   return (
     <Dialog open={open} onOpenChange={handleDialogChange}>
       <DialogContent className="max-w-lg">
@@ -137,7 +150,7 @@ export default function AssignTable({
 
             <div className={styles.dialogRow}>
               <div className={styles.rowField}>
-                <Table size={16} />#{table._id.slice(-4)}
+                <Table size={16} />#{table._id.slice(-5)}
               </div>
               <div className={styles.rowField}>
                 <Armchair size={16} />
@@ -159,8 +172,8 @@ export default function AssignTable({
                 <UsersRound size={16} /> {table.peopleCount} People
               </div>
               <div className={styles.rowField}>
-                <ListOrdered size={16} />
-                {table.orderId || "No order assigned"}
+                <ListOrdered size={16} />#
+                {table.orderId.slice(-5) || "No order assigned"}
               </div>
             </div>
 
@@ -186,6 +199,13 @@ export default function AssignTable({
                       </div>
                     );
                   })()}
+              </div>
+              <div className={styles.rowField}>
+                <ClockArrowDown size={16} />
+                <span>
+                  {getElapsedTime(table.updatedAt?.$date || table.updatedAt)}{" "}
+                  ago
+                </span>
               </div>
               <div className={styles.rowField}>
                 <div className={styles.iconContainer}>
