@@ -24,11 +24,9 @@ import {
   CreditCard,
   Clock,
   Check,
-  Loader,
 } from "lucide-react";
 import styles from "./AssignTable.module.css";
 import { Separator } from "@/components/ui/separator";
-import { set } from "mongoose";
 
 export default function AssignTable({
   open,
@@ -53,6 +51,13 @@ export default function AssignTable({
 
   const handleAssign = async (e) => {
     e.preventDefault();
+
+    // Prevent submitting over occupancy
+    if (peopleCount > table.occupancy) {
+      alert(`People cannot exceed table occupancy (${table.occupancy})`);
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -73,24 +78,20 @@ export default function AssignTable({
       const data = await res.json();
 
       if (!res.ok) {
-        console.error("Error assigning table:", data);
         alert(data.error || "Failed to assign table");
         setLoading(false);
         return;
       }
 
-      // Refresh parent table list
       onTableUpdated && onTableUpdated();
 
-      // Reset fields
       setPeopleCount(0);
       setCustomerName("");
 
-      // Close dialog after a short delay (optional)
       setTimeout(() => {
         setLoading(false);
-        onOpenChange(false); // Close dialog
-      }, 3000); // reduce delay if needed
+        onOpenChange(false);
+      }, 2000);
     } catch (err) {
       console.error("Network error:", err);
       alert("Network error");
@@ -112,18 +113,16 @@ export default function AssignTable({
       });
 
       const data = await res.json();
-      if (!res.ok) {
-        return;
-      }
+      if (!res.ok) return;
+
       onTableUpdated && onTableUpdated();
+
       setTimeout(() => {
         setAssignLoading(false);
         onOpenChange(false);
-      }, 3000);
-      console.log("Updated Table:", data);
+      }, 2000);
     } catch (err) {
       console.error(err);
-    } finally {
     }
   };
 
@@ -133,8 +132,9 @@ export default function AssignTable({
         {table.isOccupied ? (
           <>
             <DialogHeader className={styles.dialogHeader}>
-              Table {table.tableNumber.toString().padStart(2, "0")}{" "}
+              Table {table.tableNumber.toString().padStart(2, "0")}
             </DialogHeader>
+
             <div className={styles.dialogRow}>
               <div className={styles.rowField}>
                 <Table size={16} />#{table._id.slice(-4)}
@@ -148,7 +148,9 @@ export default function AssignTable({
                 Occupied
               </div>
             </div>
+
             <Separator className="my-4" />
+
             <div className={styles.dialogRow}>
               <div className={styles.rowField}>
                 <CircleUser size={16} /> {table.customerName}
@@ -157,10 +159,11 @@ export default function AssignTable({
                 <UsersRound size={16} /> {table.peopleCount} People
               </div>
               <div className={styles.rowField}>
-                <ListOrdered size={16} />{" "}
+                <ListOrdered size={16} />
                 {table.currentOrder || "No order assigned"}
               </div>
             </div>
+
             <Separator className="my-4" />
             <div className={styles.customDialogRow}>
               <div className={styles.rowField}>
@@ -221,7 +224,7 @@ export default function AssignTable({
             </DialogHeader>
 
             <form className="space-y-8 mt-6" onSubmit={handleAssign}>
-              {/* TABLE NUMBER */}
+              {/* TABLE INFO */}
               <div className="grid gap-2">
                 <Label>Table Number</Label>
                 <Input value={table.tableNumber} readOnly disabled />
@@ -238,31 +241,52 @@ export default function AssignTable({
                 <Input
                   type="text"
                   placeholder="Enter customer name"
+                  value={customerName}
                   onChange={(e) => setCustomerName(e.target.value)}
                 />
               </div>
 
-              {/* PEOPLE COUNT */}
+              {/* PEOPLE COUNT — RESTRICTED */}
               <div className="grid gap-2">
-                <Label>People Count</Label>
+                <Label>People Count (max {table.occupancy})</Label>
                 <Input
                   type="number"
-                  placeholder="Enter number of people"
-                  onChange={(e) => setPeopleCount(e.target.value)}
                   min={1}
                   max={table.occupancy}
+                  value={peopleCount}
+                  placeholder="Enter number of people"
+                  onChange={(e) => {
+                    const val = parseInt(e.target.value, 10);
+
+                    // Prevent typing more than occupancy
+                    if (!val || val <= table.occupancy) {
+                      setPeopleCount(e.target.value);
+                    }
+                  }}
                 />
+
+                {/* ERROR MESSAGE */}
+                {peopleCount > table.occupancy && (
+                  <p className="text-sm text-red-500">
+                    People exceed table capacity ({table.occupancy})
+                  </p>
+                )}
               </div>
 
               <DialogFooter>
                 <Button
                   type="submit"
-                  disabled={loading || !customerName || !peopleCount}
+                  disabled={
+                    loading ||
+                    !customerName ||
+                    !peopleCount ||
+                    peopleCount > table.occupancy
+                  }
                 >
                   {loading ? (
                     <div className="flex items-center gap-2">
                       <LoaderCircle className="h-4 w-4 animate-spin" />
-                      <span>Assigning Table</span>
+                      Assigning...
                     </div>
                   ) : (
                     "Assign Table"
