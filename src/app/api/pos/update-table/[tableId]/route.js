@@ -31,22 +31,22 @@ export async function PATCH(req, { params }) {
 
     // --- Body ---
     const body = await req.json();
-    const { customerName, peopleCount } = body;
+    const { customerName, peopleCount, orderId } = body;
 
-    if (customerName === undefined || peopleCount === undefined) {
-      return NextResponse.json(
-        { error: "customerName and peopleCount are required" },
-        { status: 400 }
-      );
-    }
+    // if (customerName === undefined || peopleCount === undefined) {
+    //   return NextResponse.json(
+    //     { error: "customerName and peopleCount are required" },
+    //     { status: 400 }
+    //   );
+    // }
 
     // Ensure peopleCount is number
-    if (typeof peopleCount !== "number") {
-      return NextResponse.json(
-        { error: "peopleCount must be a number" },
-        { status: 400 }
-      );
-    }
+    // if (typeof peopleCount !== "number") {
+    //   return NextResponse.json(
+    //     { error: "peopleCount must be a number" },
+    //     { status: 400 }
+    //   );
+    // }
 
     // --- Update Table ---
     const updatedTable = await Table.findByIdAndUpdate(
@@ -55,6 +55,7 @@ export async function PATCH(req, { params }) {
         customerName,
         peopleCount,
         isOccupied: true,
+        orderId,
       },
       { new: true }
     );
