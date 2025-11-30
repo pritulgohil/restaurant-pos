@@ -34,6 +34,21 @@ const CreateOrderDialog = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [tablesList, setTablesList] = useState([]);
 
+  // Watch for table selection changes
+  useEffect(() => {
+    if (table) {
+      // If the table is occupied, prefill customerName and peopleCount
+      if (table.isOccupied) {
+        setCustomerName(table.customerName || "");
+        setPeopleCount(table.peopleCount ? table.peopleCount.toString() : "");
+      } else {
+        // Clear fields if table is unoccupied
+        setCustomerName("");
+        setPeopleCount("");
+      }
+    }
+  }, [table]);
+
   useEffect(() => {
     if (orderType === "Dine-in" && restaurant) {
       const fetchTables = async () => {
@@ -136,7 +151,7 @@ const CreateOrderDialog = () => {
                 <SelectContent>
                   {tablesList.map((t) => (
                     <SelectItem
-                      disabled={t.isOccupied}
+                      // disabled={t.isOccupied}
                       className={t.isOccupied && styles.occupiedTable}
                       key={t._id}
                       value={JSON.stringify(t)}

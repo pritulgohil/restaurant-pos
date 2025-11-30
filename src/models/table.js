@@ -15,6 +15,11 @@ const tableSchema = new mongoose.Schema(
       ref: "Restaurant",
       required: true,
     },
+    orderId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Order",
+      default: null,
+    },
     isOccupied: {
       type: Boolean,
       default: false,
