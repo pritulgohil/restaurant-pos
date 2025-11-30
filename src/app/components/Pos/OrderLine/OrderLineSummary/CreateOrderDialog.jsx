@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dialog,
   DialogTrigger,
@@ -18,17 +18,50 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { Plus, SquarePen, LoaderCircle } from "lucide-react";
+import { Plus, SquarePen, LoaderCircle, Check } from "lucide-react";
 import styles from "./CreateOrderDialog.module.css";
 import { useRestaurantContext } from "@/context/RestaurantContext";
 
 const CreateOrderDialog = () => {
-  const { orderLine, setOrderLine, orderType } = useRestaurantContext();
+  const { orderLine, setOrderLine, orderType, restaurant } =
+    useRestaurantContext();
   const [table, setTable] = useState("");
   const [customerName, setCustomerName] = useState("");
   const [peopleCount, setPeopleCount] = useState("");
   const [loading, setLoading] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [tablesList, setTablesList] = useState([]);
+
+  useEffect(() => {
+    if (orderType === "Dine-in" && restaurant) {
+      const fetchTables = async () => {
+        setTablesList([]); // reset before fetch
+        try {
+          const token = localStorage.getItem("token"); // get JWT token
+
+          const res = await fetch(`/api/pos/fetch-tables/${restaurant}`, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (!res.ok) {
+            console.error("Failed to fetch tables:", res.statusText);
+            return;
+          }
+
+          const data = await res.json();
+          setTablesList(Array.isArray(data.tables) ? data.tables : []);
+        } catch (err) {
+          console.error("Failed to fetch tables:", err);
+          setTablesList([]);
+        }
+      };
+
+      fetchTables();
+    }
+  }, [orderType, restaurant]);
 
   const isFormValid =
     orderType === "Dine-in"
@@ -93,9 +126,17 @@ const CreateOrderDialog = () => {
                   <SelectValue placeholder="Select table" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="1">Table 1</SelectItem>
-                  <SelectItem value="2">Table 2</SelectItem>
-                  <SelectItem value="3">Table 3</SelectItem>
+                  {tablesList.map((t) => (
+                    <SelectItem
+                      disabled={t.isOccupied}
+                      className={t.isOccupied && styles.occupiedTable}
+                      key={t._id}
+                      value={t.tableNumber.toString()}
+                    >
+                      Table {t.tableNumber.toString().padStart(2, "0")}
+                      {t.isOccupied ? " - Occupied" : ""}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
