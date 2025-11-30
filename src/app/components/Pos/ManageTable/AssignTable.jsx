@@ -160,7 +160,7 @@ export default function AssignTable({
               </div>
               <div className={styles.rowField}>
                 <ListOrdered size={16} />
-                {table.currentOrder || "No order assigned"}
+                {table.orderId || "No order assigned"}
               </div>
             </div>
 
