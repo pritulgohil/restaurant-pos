@@ -26,7 +26,6 @@ import {
   Check,
   ClockArrowDown,
   SquareCheck,
-  SquareArrowOutUpRight,
 } from "lucide-react";
 import styles from "./AssignTable.module.css";
 import { Separator } from "@/components/ui/separator";
@@ -251,7 +250,13 @@ export default function AssignTable({
                 Take Payment
               </Button>
               {!table.orderId ? (
-                <Button className="bg-green-600 text-white hover:bg-green-700">
+                <Button
+                  className="bg-green-600 text-white hover:bg-green-700"
+                  onClick={() => {
+                    const url = `${window.location.origin}/pos/order-line?customerName=${table.customerName}&peopleCount=${table.peopleCount}&tableId=${table._id}&tableNumber=${table.tableNumber}`;
+                    window.open(url, "_blank");
+                  }}
+                >
                   <SquarePen />
                   Assign Order
                 </Button>

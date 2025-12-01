@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import styles from "./OrderLineSummary.module.css";
 import {
   Trash2,
@@ -14,7 +15,6 @@ import { Button } from "@/components/ui/button";
 import { useRestaurantContext } from "@/context/RestaurantContext";
 import { Skeleton } from "@/components/ui/skeleton";
 import CreateOrderDialog from "./CreateOrderDialog";
-import { is } from "date-fns/locale";
 
 const OrderLineSummary = () => {
   const [paymentMethod, setPaymentMethod] = useState("cash");
@@ -27,6 +27,22 @@ const OrderLineSummary = () => {
     setOrderLine,
     restaurant,
   } = useRestaurantContext();
+
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    const customerName = searchParams.get("customerName") ?? undefined;
+    const peopleCount = searchParams.get("peopleCount");
+    const tableId = searchParams.get("tableId") ?? undefined;
+    const tableNumber = searchParams.get("tableNumber") ?? undefined;
+
+    setOrderLine((prev) => ({
+      ...prev,
+      ...(customerName && { customerName }),
+      ...(peopleCount && { peopleCount: Number(peopleCount) }),
+      ...(tableId && { tableId }),
+      ...(tableNumber && { table: tableNumber }),
+    }));
+  }, [searchParams]);
 
   const isOrderValid =
     orderLine &&
