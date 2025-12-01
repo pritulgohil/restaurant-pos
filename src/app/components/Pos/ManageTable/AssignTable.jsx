@@ -26,6 +26,7 @@ import {
   Check,
   ClockArrowDown,
   SquareCheck,
+  SquareArrowOutUpRight,
 } from "lucide-react";
 import styles from "./AssignTable.module.css";
 import { Separator } from "@/components/ui/separator";
@@ -175,7 +176,16 @@ export default function AssignTable({
               <div className={styles.rowField}>
                 {table.orderId ? (
                   <>
-                    <ListOrdered size={16} />#{table.orderId.slice(-6)}
+                    <Button
+                      variant="link"
+                      className="font-normal"
+                      onClick={() => {
+                        const url = `${window.location.origin}/pos/manage-orders?orderId=${table.orderId}`;
+                        window.open(url, "_blank");
+                      }}
+                    >
+                      <ListOrdered size={16} />#{table.orderId.slice(-6)}
+                    </Button>
                   </>
                 ) : (
                   <>
