@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { useRestaurantContext } from "@/context/RestaurantContext";
 import { Skeleton } from "@/components/ui/skeleton";
 import CreateOrderDialog from "./CreateOrderDialog";
+import { is } from "date-fns/locale";
 
 const OrderLineSummary = () => {
   const [paymentMethod, setPaymentMethod] = useState("cash");
@@ -106,6 +107,9 @@ const OrderLineSummary = () => {
           },
           body: JSON.stringify({
             orderId: data._id,
+            customerName: orderLine.customerName,
+            peopleCount: orderLine.peopleCount,
+            isOccupied: true,
           }),
         }
       );

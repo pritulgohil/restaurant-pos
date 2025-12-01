@@ -36,6 +36,7 @@ export async function PATCH(req, { params }) {
         customerName: "",
         peopleCount: 0,
         isOccupied: false,
+        orderId: null,
       },
       { new: true }
     );

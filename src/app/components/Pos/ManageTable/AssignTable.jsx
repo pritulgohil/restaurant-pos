@@ -25,6 +25,7 @@ import {
   Clock,
   Check,
   ClockArrowDown,
+  SquareCheck,
 } from "lucide-react";
 import styles from "./AssignTable.module.css";
 import { Separator } from "@/components/ui/separator";
@@ -150,7 +151,7 @@ export default function AssignTable({
 
             <div className={styles.dialogRow}>
               <div className={styles.rowField}>
-                <Table size={16} />#{table._id.slice(-5)}
+                <Table size={16} />#{table._id.slice(-6)}
               </div>
               <div className={styles.rowField}>
                 <Armchair size={16} />
@@ -172,8 +173,16 @@ export default function AssignTable({
                 <UsersRound size={16} /> {table.peopleCount} People
               </div>
               <div className={styles.rowField}>
-                <ListOrdered size={16} />#
-                {table.orderId.slice(-5) || "No order assigned"}
+                {table.orderId ? (
+                  <>
+                    <ListOrdered size={16} />#{table.orderId.slice(-6)}
+                  </>
+                ) : (
+                  <>
+                    <ListOrdered size={16} />
+                    No order assigned
+                  </>
+                )}
               </div>
             </div>
 
@@ -231,10 +240,17 @@ export default function AssignTable({
                 <CreditCard />
                 Take Payment
               </Button>
-              <Button className="bg-green-600 text-white hover:bg-green-700">
-                <SquarePen />
-                Assign Order
-              </Button>
+              {!table.orderId ? (
+                <Button className="bg-green-600 text-white hover:bg-green-700">
+                  <SquarePen />
+                  Assign Order
+                </Button>
+              ) : (
+                <Button className="bg-green-600 text-white hover:bg-green-700">
+                  <SquareCheck />
+                  Finish Order
+                </Button>
+              )}
             </div>
           </>
         ) : (
