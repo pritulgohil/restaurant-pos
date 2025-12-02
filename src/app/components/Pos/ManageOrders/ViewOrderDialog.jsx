@@ -133,7 +133,7 @@ export function ViewOrderDialog({
     <Dialog open={open} onOpenChange={handleDialogChange}>
       <DialogTrigger asChild>{children}</DialogTrigger>
 
-      <DialogContent>
+      <DialogContent className="max-w-lg h-[600px] overflow-y-auto">
         {/* HEADER */}
         <DialogHeader>
           <div className="flex flex-col items-center w-full">
