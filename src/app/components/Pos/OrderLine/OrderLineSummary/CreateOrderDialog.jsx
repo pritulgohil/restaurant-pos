@@ -158,10 +158,12 @@ const CreateOrderDialog = () => {
                       className={t.isOccupied && styles.occupiedTable}
                       key={t._id}
                       value={JSON.stringify(t)}
+                      disabled={t.orderId}
                     >
                       Table {t.tableNumber.toString().padStart(2, "0")} —{" "}
                       Capacity: {t.occupancy}
                       {t.isOccupied ? " (Occupied)" : ""}
+                      {t.orderId ? " - Order Assigned" : ""}
                     </SelectItem>
                   ))}
                 </SelectContent>

@@ -38,7 +38,7 @@ export async function POST(req) {
     const token = jwt.sign(
       { userId: existingUser._id, email: existingUser.email },
       JWT_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: "12h" }
     );
 
     return NextResponse.json(
