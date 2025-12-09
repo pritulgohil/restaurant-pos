@@ -33,6 +33,11 @@ const tableSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    paymentStatus: {
+      type: Boolean,
+      enum: [true, false],
+      default: false,
+    },
   },
   { timestamps: true }
 );

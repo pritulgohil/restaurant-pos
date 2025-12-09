@@ -229,7 +229,7 @@ export default function AssignTable({
                 <div className={styles.iconContainer}>
                   <Check size={16} strokeWidth={3} className="text-white" />
                 </div>
-                Unpaid
+                {table.paymentStatus ? "Paid" : "Unpaid"}
               </div>
             </div>
             <Separator className="my-4" />
