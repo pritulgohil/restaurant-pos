@@ -31,7 +31,7 @@ export async function PATCH(req, { params }) {
 
     // --- Body ---
     const body = await req.json();
-    const { customerName, peopleCount, orderId } = body;
+    const { customerName, peopleCount, orderId, paymentStatus } = body;
 
     // if (customerName === undefined || peopleCount === undefined) {
     //   return NextResponse.json(
@@ -56,6 +56,7 @@ export async function PATCH(req, { params }) {
         peopleCount,
         isOccupied: true,
         orderId,
+        paymentStatus,
       },
       { new: true }
     );

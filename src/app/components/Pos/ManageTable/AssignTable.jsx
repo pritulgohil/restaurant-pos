@@ -265,7 +265,10 @@ export default function AssignTable({
                   Assign Order
                 </Button>
               ) : (
-                <Button className="bg-green-600 text-white hover:bg-green-700">
+                <Button
+                  className="bg-green-600 text-white hover:bg-green-700"
+                  disabled={!table.paymentStatus}
+                >
                   <SquareCheck />
                   Finish Order
                 </Button>
