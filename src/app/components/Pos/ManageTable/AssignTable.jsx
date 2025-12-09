@@ -240,7 +240,11 @@ export default function AssignTable({
                   Unassign Table
                 </Button>
               ) : (
-                <Button variant="outline" onClick={handleUnassign}>
+                <Button
+                  variant="outline"
+                  onClick={handleUnassign}
+                  disabled={table.orderId}
+                >
                   <SquareX />
                   Unassign Table
                 </Button>
