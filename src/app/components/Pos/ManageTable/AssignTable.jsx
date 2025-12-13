@@ -42,6 +42,7 @@ export default function AssignTable({
   const [peopleCount, setPeopleCount] = useState(table.peopleCount || 0);
   const [loading, setLoading] = useState(false);
   const [assignLoading, setAssignLoading] = useState(false);
+  const [paymentAssignLoading, setPaymentAssignLoading] = useState(false);
 
   const handleDialogChange = (isOpen) => {
     if (!isOpen) {
@@ -131,7 +132,7 @@ export default function AssignTable({
   };
 
   const handlePayment = async () => {
-    setAssignLoading(true);
+    setPaymentAssignLoading(true);
     try {
       const token = localStorage.getItem("token");
 
@@ -152,8 +153,8 @@ export default function AssignTable({
       onTableUpdated && onTableUpdated();
 
       setTimeout(() => {
-        setAssignLoading(false);
-        onOpenChange(false);
+        setPaymentAssignLoading(false);
+        // onOpenChange(false);
       }, 2000);
     } catch (err) {
       console.error(err);
@@ -288,10 +289,20 @@ export default function AssignTable({
                   Unassign Table
                 </Button>
               )}
-              <Button onClick={handlePayment}>
-                <CreditCard />
-                Take Payment
-              </Button>
+              {paymentAssignLoading ? (
+                <Button disabled>
+                  <LoaderCircle className="animate-spin" />
+                  Proccessing...
+                </Button>
+              ) : (
+                <Button
+                  onClick={handlePayment}
+                  disabled={!table.orderId || table.paymentStatus}
+                >
+                  <CreditCard />
+                  Take Payment
+                </Button>
+              )}
               {!table.orderId ? (
                 <Button
                   className="bg-green-600 text-white hover:bg-green-700"
