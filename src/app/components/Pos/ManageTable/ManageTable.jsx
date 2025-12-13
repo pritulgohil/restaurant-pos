@@ -127,8 +127,10 @@ const ManageTable = () => {
                       </div>
 
                       <div className={styles.phoneNumber}>
-                        <ListOrdered size={16} color="gray" />#
-                        {table.orderId?.slice(-6) || "No order assigned"}
+                        <ListOrdered size={16} color="gray" />
+                        {table.orderId
+                          ? `#${table.orderId.slice(-6)}`
+                          : "No order assigned"}
                       </div>
                     </div>
                   </div>
