@@ -54,7 +54,6 @@ export default function AssignTable({
   const handleAssign = async (e) => {
     e.preventDefault();
 
-    // Prevent submitting over occupancy
     if (peopleCount > table.occupancy) {
       alert(`People cannot exceed table occupancy (${table.occupancy})`);
       return;
@@ -65,16 +64,19 @@ export default function AssignTable({
     try {
       const token = localStorage.getItem("token");
 
+      // 👇 Only send assignedAt if table was previously free
+      const payload = {
+        customerName,
+        peopleCount: Number(peopleCount),
+      };
+
       const res = await fetch(`/api/pos/update-table/${table._id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          customerName,
-          peopleCount: Number(peopleCount),
-        }),
+        body: JSON.stringify(payload),
       });
 
       const data = await res.json();
@@ -112,6 +114,36 @@ export default function AssignTable({
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
+      });
+
+      const data = await res.json();
+      if (!res.ok) return;
+
+      onTableUpdated && onTableUpdated();
+
+      setTimeout(() => {
+        setAssignLoading(false);
+        onOpenChange(false);
+      }, 2000);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handlePayment = async () => {
+    setAssignLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+
+      const res = await fetch(`/api/pos/update-table/${table._id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          paymentStatus: true,
+        }),
       });
 
       const data = await res.json();
@@ -201,8 +233,15 @@ export default function AssignTable({
                 <Clock size={16} />
                 {table.isOccupied &&
                   (() => {
+                    //Save new time in mongodb
+                    //Save new time in mongodb
+                    //Save new time in mongodb
+                    //Save new time in mongodb
+                    //Save new time in mongodb
+                    //Save new time in mongodb
+                    //Save new time in mongodb
                     const timeString = new Date(
-                      table.updatedAt?.$date || table.updatedAt
+                      table.assignedAt?.$date || table.assignedAt
                     ).toLocaleTimeString([], {
                       hour: "numeric",
                       minute: "2-digit",
@@ -221,7 +260,7 @@ export default function AssignTable({
               <div className={styles.rowField}>
                 <ClockArrowDown size={16} />
                 <span>
-                  {getElapsedTime(table.updatedAt?.$date || table.updatedAt)}{" "}
+                  {getElapsedTime(table.assignedAt?.$date || table.assignedAt)}{" "}
                   ago
                 </span>
               </div>
@@ -249,7 +288,7 @@ export default function AssignTable({
                   Unassign Table
                 </Button>
               )}
-              <Button>
+              <Button onClick={handlePayment}>
                 <CreditCard />
                 Take Payment
               </Button>

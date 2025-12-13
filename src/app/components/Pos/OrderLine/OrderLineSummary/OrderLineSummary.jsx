@@ -113,6 +113,13 @@ const OrderLineSummary = () => {
       }, 2000);
       console.log("Order saved:", enrichedOrder);
       console.log("Response from server:", data);
+      const payload = {
+        orderId: data._id,
+        customerName: orderLine.customerName,
+        peopleCount: orderLine.peopleCount,
+        isOccupied: true,
+      };
+
       const tableRes = await fetch(
         `/api/pos/update-table/${orderLine.tableId}`,
         {
@@ -121,14 +128,10 @@ const OrderLineSummary = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({
-            orderId: data._id,
-            customerName: orderLine.customerName,
-            peopleCount: orderLine.peopleCount,
-            isOccupied: true,
-          }),
+          body: JSON.stringify(payload),
         }
       );
+
       if (!tableRes.ok) {
         throw new Error("Failed to update table");
       }

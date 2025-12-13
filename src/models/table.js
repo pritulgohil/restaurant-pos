@@ -38,6 +38,10 @@ const tableSchema = new mongoose.Schema(
       enum: [true, false],
       default: false,
     },
+    assignedAt: {
+      type: Date,
+      default: null,
+    },
   },
   { timestamps: true }
 );
