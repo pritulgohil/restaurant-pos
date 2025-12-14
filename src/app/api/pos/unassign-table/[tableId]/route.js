@@ -37,6 +37,7 @@ export async function PATCH(req, { params }) {
         peopleCount: 0,
         isOccupied: false,
         orderId: null,
+        paymentStatus: false,
       },
       { new: true }
     );

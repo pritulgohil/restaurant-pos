@@ -41,7 +41,7 @@ export default function AssignTable({
   const [customerName, setCustomerName] = useState(table.customerName || "");
   const [peopleCount, setPeopleCount] = useState(table.peopleCount || 0);
   const [loading, setLoading] = useState(false);
-  const [assignLoading, setAssignLoading] = useState(false);
+  const [assignLoading, setAssignLoading] = useState(null);
   const [paymentAssignLoading, setPaymentAssignLoading] = useState(false);
 
   const handleDialogChange = (isOpen) => {
@@ -104,8 +104,9 @@ export default function AssignTable({
     }
   };
 
-  const handleUnassign = async () => {
-    setAssignLoading(true);
+  const handleUnassign = async (type) => {
+    setAssignLoading(type);
+
     try {
       const token = localStorage.getItem("token");
 
@@ -117,17 +118,17 @@ export default function AssignTable({
         },
       });
 
-      const data = await res.json();
       if (!res.ok) return;
 
-      onTableUpdated && onTableUpdated();
+      onTableUpdated?.();
 
       setTimeout(() => {
-        setAssignLoading(false);
+        setAssignLoading(null);
         onOpenChange(false);
       }, 2000);
     } catch (err) {
       console.error(err);
+      setAssignLoading(null);
     }
   };
 
@@ -266,7 +267,11 @@ export default function AssignTable({
                 </span>
               </div>
               <div className={styles.rowField}>
-                <div className={styles.iconContainer}>
+                <div
+                  className={`${styles.iconContainer} ${
+                    table.paymentStatus ? styles.iconContainerCheck : ""
+                  }`}
+                >
                   <Check size={16} strokeWidth={3} className="text-white" />
                 </div>
                 {table.paymentStatus ? "Paid" : "Unpaid"}
@@ -274,7 +279,7 @@ export default function AssignTable({
             </div>
             <Separator className="my-4" />
             <div className={styles.dialogRow}>
-              {assignLoading ? (
+              {assignLoading === "unassign" ? (
                 <Button variant="outline" disabled>
                   <LoaderCircle className="animate-spin" />
                   Unassign Table
@@ -282,11 +287,13 @@ export default function AssignTable({
               ) : (
                 <Button
                   variant="outline"
-                  onClick={handleUnassign}
-                  disabled={table.orderId}
+                  disabled={table.orderId || assignLoading === "unassign"}
+                  onClick={() => handleUnassign("unassign")}
                 >
-                  <SquareX />
-                  Unassign Table
+                  <>
+                    <SquareX />
+                    Unassign Table
+                  </>
                 </Button>
               )}
               {paymentAssignLoading ? (
@@ -317,10 +324,19 @@ export default function AssignTable({
               ) : (
                 <Button
                   className="bg-green-600 text-white hover:bg-green-700"
-                  disabled={!table.paymentStatus}
+                  disabled={!table.paymentStatus || assignLoading === "finish"}
+                  onClick={() => handleUnassign("finish")}
                 >
-                  <SquareCheck />
-                  Finish Order
+                  <>
+                    {assignLoading === "finish" ? (
+                      <LoaderCircle className="animate-spin" />
+                    ) : (
+                      <SquareCheck />
+                    )}
+                    {assignLoading === "finish"
+                      ? "Finishing up..."
+                      : "Finish Order"}
+                  </>
                 </Button>
               )}
             </div>
