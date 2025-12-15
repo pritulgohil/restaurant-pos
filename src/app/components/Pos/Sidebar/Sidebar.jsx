@@ -52,7 +52,7 @@ const Sidebar = () => {
                   ? styles.active
                   : styles.sidebarItem
               }`}
-              onClick={() => handleNavigation("/pos/manage-dishes")}
+              onClick={() => handleNavigation("/pos/dashboard")}
             >
               <LayoutDashboard className={styles.sidebarIcon} />
               Dashboard

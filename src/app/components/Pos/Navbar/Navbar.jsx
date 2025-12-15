@@ -100,7 +100,7 @@ const Navbar = () => {
             <div className={styles.name}>
               {user.firstname} {user.lastname}
             </div>
-            <div className={styles.role}>Admin</div>
+            <div className={styles.role}>Manager</div>
           </div>
         </div>
       </div>

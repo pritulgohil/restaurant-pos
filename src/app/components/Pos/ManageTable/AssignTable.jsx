@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -43,6 +43,13 @@ export default function AssignTable({
   const [loading, setLoading] = useState(false);
   const [assignLoading, setAssignLoading] = useState(null);
   const [paymentAssignLoading, setPaymentAssignLoading] = useState(false);
+  const [localPaymentStatus, setLocalPaymentStatus] = useState(
+    table.paymentStatus
+  );
+
+  useEffect(() => {
+    setLocalPaymentStatus(table.paymentStatus);
+  }, [table.paymentStatus]);
 
   const handleDialogChange = (isOpen) => {
     if (!isOpen) {
@@ -124,6 +131,7 @@ export default function AssignTable({
 
       setTimeout(() => {
         setAssignLoading(null);
+        setLocalPaymentStatus(false);
         onOpenChange(false);
       }, 2000);
     } catch (err) {
@@ -155,7 +163,7 @@ export default function AssignTable({
 
       setTimeout(() => {
         setPaymentAssignLoading(false);
-        // onOpenChange(false);
+        setLocalPaymentStatus(true);
       }, 2000);
     } catch (err) {
       console.error(err);
@@ -269,12 +277,12 @@ export default function AssignTable({
               <div className={styles.rowField}>
                 <div
                   className={`${styles.iconContainer} ${
-                    table.paymentStatus ? styles.iconContainerCheck : ""
+                    localPaymentStatus ? styles.iconContainerCheck : ""
                   }`}
                 >
                   <Check size={16} strokeWidth={3} className="text-white" />
                 </div>
-                {table.paymentStatus ? "Paid" : "Unpaid"}
+                {localPaymentStatus ? "Paid" : "Unpaid"}
               </div>
             </div>
             <Separator className="my-4" />
@@ -304,7 +312,7 @@ export default function AssignTable({
               ) : (
                 <Button
                   onClick={handlePayment}
-                  disabled={!table.orderId || table.paymentStatus}
+                  disabled={!table.orderId || localPaymentStatus}
                 >
                   <CreditCard />
                   Take Payment
@@ -324,7 +332,7 @@ export default function AssignTable({
               ) : (
                 <Button
                   className="bg-green-600 text-white hover:bg-green-700"
-                  disabled={!table.paymentStatus || assignLoading === "finish"}
+                  disabled={!localPaymentStatus || assignLoading === "finish"}
                   onClick={() => handleUnassign("finish")}
                 >
                   <>
