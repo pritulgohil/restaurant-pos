@@ -1,0 +1,54 @@
+.mainContainer {
+  padding: 24px;
+  width: 100%;
+}
+
+.header {
+  font-family: "Epilogue";
+  font-weight: 400;
+  font-size: 18px;
+}
+
+.welcomeUserContainer {
+  font-size: 34px;
+  font-weight: 600;
+  margin-top: 24px;
+}
+
+.overviewCardsContainer {
+  margin-top: 24px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.overviewCard {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 24px;
+  width: 24%;
+  border-radius: 8px;
+  border: 2px solid rgb(230, 230, 230);
+}
+
+.cardHeaderContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cardIcon {
+  background-color: rgb(240, 240, 240);
+  color: gray;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.cardHeader {
+  font-size: 14px;
+}
+
+.cardData {
+  font-size: 24px;
+  font-weight: 600;
+}

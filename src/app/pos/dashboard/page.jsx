@@ -1,7 +1,12 @@
 import React from "react";
+import DashboardTop from "@/app/components/Pos/Dashboard/DashboardTop";
 
 const page = () => {
-  return <div>page</div>;
+  return (
+    <>
+      <DashboardTop />
+    </>
+  );
 };
 
 export default page;
