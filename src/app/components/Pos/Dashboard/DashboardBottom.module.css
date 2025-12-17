@@ -1,0 +1,50 @@
+.mainContainer {
+  margin-top: 60px;
+  width: 49.5%;
+  border: 2px solid rgb(230, 230, 230);
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.sectionHeader {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.cardsContainer {
+  margin-top: 24px;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.card {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  border: 2px solid rgb(230, 230, 230);
+  border-radius: 8px;
+  width: 48%;
+  padding: 24px;
+}
+
+.cardIcon {
+  background-color: rgb(240, 240, 240);
+  color: gray;
+  padding: 2px;
+  border-radius: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+}
+
+.cardTitle {
+  font-size: 14px;
+}
+
+.cardData {
+  font-size: 24px;
+  font-weight: 600;
+}
