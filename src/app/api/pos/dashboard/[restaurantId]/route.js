@@ -155,6 +155,74 @@ export async function GET(req, { params }) {
         : 0;
 
     // ============================
+    // Last 20 days totals (per-day and overall)
+    // ============================
+    const days = 20;
+
+    // Start of the earliest day in local time
+    const startDateLocal = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate() - (days - 1),
+      0,
+      0,
+      0,
+      0
+    );
+
+    const startDateUTC = toUTC(startDateLocal);
+
+    // Use server timezone for consistent date strings (fallback to UTC)
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+
+    // Aggregate totals grouped by date (YYYY-MM-DD) in one query
+    const agg = await Order.aggregate([
+      {
+        $match: {
+          restaurantId: restaurantObjectId,
+          createdAt: { $gte: startDateUTC, $lte: todayEndUTC },
+        },
+      },
+      {
+        $group: {
+          _id: {
+            $dateToString: {
+              format: "%Y-%m-%d",
+              date: "$createdAt",
+              timezone: timeZone,
+            },
+          },
+          total: { $sum: { $ifNull: ["$totalPayable", 0] } },
+        },
+      },
+      { $project: { date: "$_id", total: 1, _id: 0 } },
+    ]);
+
+    const totalsMap = agg.reduce((m, d) => {
+      m[d.date] = d.total;
+      return m;
+    }, {});
+
+    const last20Days = [];
+    let last20Total = 0;
+
+    for (let i = 0; i < days; i++) {
+      const d = new Date(startDateLocal);
+      d.setDate(d.getDate() + i);
+
+      const dateStr = new Intl.DateTimeFormat("en-CA", {
+        timeZone,
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }).format(d); // YYYY-MM-DD
+
+      const total = totalsMap[dateStr] || 0;
+      last20Days.push({ date: dateStr, total });
+      last20Total += total;
+    }
+
+    // ============================
     // Final dashboard response
     // ============================
     const dashboardData = {
@@ -166,6 +234,11 @@ export async function GET(req, { params }) {
         yesterday: {
           count: yesterdayOrders.length,
           totalPayable: yesterdayTotal,
+        },
+        // Last 20 days per-day totals and overall total amount
+        last20Days: {
+          perDay: last20Days,
+          totalAmount: last20Total,
         },
       },
       summary: {

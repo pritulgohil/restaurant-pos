@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   BarChart,
   Bar,
@@ -12,20 +12,30 @@ import {
 import CustomTooltip from "@/app/components/Pos/Dashboard/CustomToolTip";
 import styles from "./DashboardChart.module.css";
 
-const DashboardChart = () => {
-  // Generate last 20 days dynamically
-  const salesData = Array.from({ length: 20 }, (_, i) => {
-    const date = new Date();
-    date.setDate(date.getDate() - i); // today - i days
+const DashboardChart = ({ data }) => {
+  const [salesData, setSalesData] = useState([]);
 
-    const options = { month: "short", day: "numeric" };
-    const formattedDate = date.toLocaleDateString("en-US", options); // e.g., "Dec 18"
+  useEffect(() => {
+    if (!data?.orders?.last20Days?.perDay?.length) return;
 
-    return {
-      name: formattedDate,
-      sales: Math.floor(Math.random() * 10000), // replace with actual sales later
-    };
-  }).reverse(); // reverse so oldest date is first
+    const chartData = data.orders.last20Days.perDay
+      .sort((a, b) => new Date(a.date) - new Date(b.date)) // oldest first
+      .map((item) => {
+        const dateObj = new Date(item.date);
+        const formattedDate = dateObj.toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          timeZone: "UTC",
+        });
+        return {
+          name: formattedDate,
+          sales: Number(item.total.toFixed(2)),
+        };
+      });
+
+    console.log("Chart Data:", chartData); // debug
+    setSalesData(chartData);
+  }, [data]);
 
   return (
     <div className="w-full mt-6 h-[320px]">
