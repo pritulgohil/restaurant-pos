@@ -222,6 +222,11 @@ export async function GET(req, { params }) {
       last20Total += total;
     }
 
+    const totalItemsSoldToday = todayOrders.reduce(
+      (sum, o) => sum + (Number(o.totalItems) || 0),
+      0
+    );
+
     // ============================
     // Final dashboard response
     // ============================
@@ -230,6 +235,7 @@ export async function GET(req, { params }) {
         today: {
           count: todayOrders.length,
           totalPayable: todayTotal,
+          totalItemsSold: totalItemsSoldToday,
         },
         yesterday: {
           count: yesterdayOrders.length,
@@ -269,106 +275,3 @@ export async function GET(req, { params }) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
-
-// import { NextResponse } from "next/server";
-// import dbConnect from "@/lib/dbConnect";
-// import Order from "@/models/order";
-// import jwt from "jsonwebtoken";
-// import mongoose from "mongoose";
-
-// const JWT_SECRET = process.env.JWT_SECRET;
-
-// export async function GET(req, { params }) {
-//   try {
-//     await dbConnect();
-
-//     // 🔐 Authorization
-//     const authHeader = req.headers.get("authorization");
-//     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-//       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-//     }
-
-//     const token = authHeader.split(" ")[1];
-//     try {
-//       jwt.verify(token, JWT_SECRET);
-//     } catch {
-//       return NextResponse.json(
-//         { error: "Invalid or expired token" },
-//         { status: 401 }
-//       );
-//     }
-
-//     // ✅ Validate & cast restaurantId
-//     const { restaurantId } = params;
-//     if (!restaurantId) {
-//       return NextResponse.json(
-//         { error: "Restaurant ID is required" },
-//         { status: 400 }
-//       );
-//     }
-
-//     const restaurantObjectId = new mongoose.Types.ObjectId(restaurantId);
-
-//     // ============================
-//     // Calculate last 15 days totals
-//     // ============================
-//     const today = new Date();
-//     const totals = [];
-
-//     for (let i = 0; i < 15; i++) {
-//       const day = new Date();
-//       day.setDate(today.getDate() - i);
-
-//       // Start and end of day in local time
-//       const startLocal = new Date(
-//         day.getFullYear(),
-//         day.getMonth(),
-//         day.getDate(),
-//         0,
-//         0,
-//         0,
-//         0
-//       );
-//       const endLocal = new Date(
-//         day.getFullYear(),
-//         day.getMonth(),
-//         day.getDate(),
-//         23,
-//         59,
-//         59,
-//         999
-//       );
-
-//       // Convert to UTC
-//       const startUTC = new Date(
-//         startLocal.getTime() - startLocal.getTimezoneOffset() * 60000
-//       );
-//       const endUTC = new Date(
-//         endLocal.getTime() - endLocal.getTimezoneOffset() * 60000
-//       );
-
-//       // Fetch orders
-//       const orders = await Order.find({
-//         restaurantId: restaurantObjectId,
-//         createdAt: { $gte: startUTC, $lte: endUTC },
-//       });
-
-//       // Sum totalPayable
-//       const total = orders.reduce((sum, o) => sum + (o.totalPayable || 0), 0);
-
-//       // Add to array
-//       totals.push({
-//         date: day.toISOString().split("T")[0], // YYYY-MM-DD
-//         total,
-//       });
-//     }
-
-//     // ============================
-//     // Response
-//     // ============================
-//     return NextResponse.json({ last15Days: totals }, { status: 200 });
-//   } catch (error) {
-//     console.error("Error fetching last 15 days totals:", error);
-//     return NextResponse.json({ error: error.message }, { status: 500 });
-//   }
-// }
