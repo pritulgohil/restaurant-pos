@@ -72,7 +72,7 @@ const Login = () => {
 
         // Navigate to /pos on successful login
         setTimeout(() => {
-          router.push("/pos");
+          router.push("/pos/dashboard");
         }, 2000);
       } else {
         setErrorMessage(true);

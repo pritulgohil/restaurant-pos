@@ -42,7 +42,7 @@ const DashboardTop = ({ data }) => {
             ) : (
               <>
                 <span className="text-red-600">
-                  {data.summary.percentageChange}%
+                  {data?.summary.percentageChange || 0}%
                 </span>
                 <span> vs yesterday</span>
                 <TrendingDown size={18} className="text-red-600" />
@@ -77,7 +77,10 @@ const DashboardTop = ({ data }) => {
             ) : (
               <>
                 <span className="text-red-600">
-                  {data.orders.today.count - data.orders.yesterday.count}
+                  -
+                  {data?.orders.today.count ||
+                    0 - data?.orders.yesterday.count ||
+                    0}
                 </span>
                 <span> vs yesterday</span>
                 <TrendingDown size={18} className="text-red-600" />
