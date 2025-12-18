@@ -32,7 +32,7 @@ export async function GET(req, { params }) {
     // ============================
     // Validate restaurantId
     // ============================
-    const { restaurantId } = params;
+    const { restaurantId } = await params;
     if (!restaurantId) {
       return NextResponse.json(
         { error: "Restaurant ID is required" },
