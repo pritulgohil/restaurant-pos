@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 import Order from "@/models/order";
+import Table from "@/models/table";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 
@@ -31,7 +32,7 @@ export async function GET(req, { params }) {
     // ============================
     // Validate restaurantId
     // ============================
-    const { restaurantId } = await params;
+    const { restaurantId } = params;
     if (!restaurantId) {
       return NextResponse.json(
         { error: "Restaurant ID is required" },
@@ -42,7 +43,7 @@ export async function GET(req, { params }) {
     const restaurantObjectId = new mongoose.Types.ObjectId(restaurantId);
 
     // ============================
-    // Dates: Today & Yesterday
+    // Dates: Today & Yesterday (LOCAL → UTC)
     // ============================
     const now = new Date();
 
@@ -69,6 +70,7 @@ export async function GET(req, { params }) {
     // Yesterday
     const yesterdayDate = new Date(now);
     yesterdayDate.setDate(yesterdayDate.getDate() - 1);
+
     const yesterdayStartLocal = new Date(
       yesterdayDate.getFullYear(),
       yesterdayDate.getMonth(),
@@ -88,21 +90,14 @@ export async function GET(req, { params }) {
       999
     );
 
-    // Convert to UTC
-    const todayStartUTC = new Date(
-      todayStartLocal.getTime() - todayStartLocal.getTimezoneOffset() * 60000
-    );
-    const todayEndUTC = new Date(
-      todayEndLocal.getTime() - todayEndLocal.getTimezoneOffset() * 60000
-    );
-    const yesterdayStartUTC = new Date(
-      yesterdayStartLocal.getTime() -
-        yesterdayStartLocal.getTimezoneOffset() * 60000
-    );
-    const yesterdayEndUTC = new Date(
-      yesterdayEndLocal.getTime() -
-        yesterdayEndLocal.getTimezoneOffset() * 60000
-    );
+    // Convert Local → UTC
+    const toUTC = (date) =>
+      new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+
+    const todayStartUTC = toUTC(todayStartLocal);
+    const todayEndUTC = toUTC(todayEndLocal);
+    const yesterdayStartUTC = toUTC(yesterdayStartLocal);
+    const yesterdayEndUTC = toUTC(yesterdayEndLocal);
 
     // ============================
     // Fetch orders
@@ -119,41 +114,82 @@ export async function GET(req, { params }) {
     ]);
 
     // ============================
-    // Compute totals
+    // Fetch tables (LIVE occupancy)
+    // ============================
+    const tables = await Table.find({
+      restaurantId: restaurantObjectId,
+    });
+
+    // ============================
+    // Helpers
     // ============================
     const computeTotal = (orders) =>
       orders.reduce((sum, o) => sum + (o.totalPayable || 0), 0);
 
+    // ============================
+    // Orders data
+    // ============================
+    const todayTotal = computeTotal(todayOrders);
+    const yesterdayTotal = computeTotal(yesterdayOrders);
+
+    // ============================
+    // Table occupancy calculations
+    // ============================
+    const totalTables = tables.length;
+
+    const occupiedTables = tables.filter((t) => t.isOccupied).length;
+
+    const totalCapacity = tables.reduce(
+      (sum, t) => sum + (t.occupancy || 0),
+      0
+    );
+
+    const currentPeople = tables.reduce(
+      (sum, t) => sum + (t.peopleCount || 0),
+      0
+    );
+
+    const occupancyPercentage =
+      totalCapacity > 0
+        ? Number(((currentPeople / totalCapacity) * 100).toFixed(2))
+        : 0;
+
+    // ============================
+    // Final dashboard response
+    // ============================
     const dashboardData = {
       orders: {
         today: {
           count: todayOrders.length,
-          totalPayable: computeTotal(todayOrders),
+          totalPayable: todayTotal,
         },
         yesterday: {
           count: yesterdayOrders.length,
-          totalPayable: computeTotal(yesterdayOrders),
+          totalPayable: yesterdayTotal,
         },
       },
       summary: {
-        percentageChange: (() => {
-          const todayTotal = computeTotal(todayOrders);
-          const yesterdayTotal = computeTotal(yesterdayOrders);
-          if (yesterdayTotal > 0)
-            return Number(
-              (((todayTotal - yesterdayTotal) / yesterdayTotal) * 100).toFixed(
-                2
+        percentageChange:
+          yesterdayTotal > 0
+            ? Number(
+                (
+                  ((todayTotal - yesterdayTotal) / yesterdayTotal) *
+                  100
+                ).toFixed(2)
               )
-            );
-          if (todayTotal > 0) return 100;
-          return 0;
-        })(),
+            : todayTotal > 0
+            ? 100
+            : 0,
+      },
+      tables: {
+        totalTables,
+        occupiedTables,
+        totalCapacity,
+        currentPeople,
+        occupancyPercentage,
       },
     };
 
-    // ============================
-    // Return organized response
-    // ============================
     return NextResponse.json(dashboardData, { status: 200 });
   } catch (error) {
     console.error("Error fetching dashboard totals:", error);

@@ -55,3 +55,30 @@
   align-items: center;
   gap: 6px;
 }
+
+.indicatorWrapper {
+  position: relative;
+  width: 8px;
+  height: 8px;
+}
+
+.dot {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  top: 1px;
+  left: 1px;
+  z-index: 2;
+}
+
+.ping {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border-width: 2px;
+  border-style: solid;
+  z-index: 1;
+  opacity: 1;
+}

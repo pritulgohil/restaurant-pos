@@ -10,6 +10,9 @@ import {
 } from "lucide-react";
 
 const DashboardTop = ({ data }) => {
+  const availableTables =
+    data?.tables?.totalTables - data?.tables?.occupiedTables || 0;
+  const occupancyPercentage = data?.tables?.occupancyPercentage || 0;
   return (
     <div className={styles.mainContainer}>
       <div className={styles.welcomeContainer}>
@@ -20,7 +23,7 @@ const DashboardTop = ({ data }) => {
       </div>
 
       <div className={styles.overviewCardsContainer}>
-        <div className={styles.overviewCard}>
+        <div className={`${styles.overviewCard} shadow-sm`}>
           <div className={styles.cardHeaderContainer}>
             <div className={styles.cardIcon}>
               <DollarSign />
@@ -28,7 +31,7 @@ const DashboardTop = ({ data }) => {
             <div className={styles.cardHeader}>Today's Sales</div>
           </div>
           <div className={styles.cardData}>
-            ${data?.orders.today.totalPayable || 0}
+            ${data?.orders.today.totalPayable?.toFixed(2) || "0.00"}
           </div>
           <div className={styles.comparison}>
             {data?.summary?.percentageChange >= 0 ? (
@@ -51,7 +54,7 @@ const DashboardTop = ({ data }) => {
           </div>
         </div>
 
-        <div className={styles.overviewCard}>
+        <div className={`${styles.overviewCard} shadow-sm`}>
           <div className={styles.cardHeaderContainer}>
             <div className={styles.cardIcon}>
               <List />
@@ -89,24 +92,72 @@ const DashboardTop = ({ data }) => {
           </div>
         </div>
 
-        <div className={styles.overviewCard}>
+        <div className={`${styles.overviewCard} shadow-sm`}>
           <div className={styles.cardHeaderContainer}>
             <div className={styles.cardIcon}>
               <Users />
             </div>
             <div className={styles.cardHeader}>Live Diners</div>
           </div>
-          <div className={styles.cardData}>34 Pax</div>
+          <div className={styles.cardData}>
+            {data?.tables?.currentPeople || 0} Pax
+          </div>
+          <div className={styles.comparison}>
+            <div className={styles.indicatorWrapper}>
+              {/* Outer ping ring */}
+              <span
+                className={`animate-ping ${styles.ping} ${
+                  occupancyPercentage <= 33
+                    ? "border-blue-500"
+                    : occupancyPercentage <= 66
+                    ? "border-amber-500"
+                    : "border-red-500"
+                }`}
+              ></span>
+              {/* Inner solid dot */}
+              <span
+                className={`${
+                  occupancyPercentage <= 33
+                    ? "bg-blue-500"
+                    : occupancyPercentage <= 66
+                    ? "bg-amber-500"
+                    : "bg-red-500"
+                } ${styles.dot}`}
+              ></span>
+            </div>
+            Currently at{" "}
+            <span
+              className={`${
+                occupancyPercentage <= 33
+                  ? "text-blue-500"
+                  : occupancyPercentage <= 66
+                  ? "text-amber-500"
+                  : "text-red-500"
+              }`}
+            >
+              {occupancyPercentage}%
+            </span>{" "}
+            capacity{" "}
+          </div>
         </div>
 
-        <div className={styles.overviewCard}>
+        <div className={`${styles.overviewCard} shadow-sm`}>
           <div className={styles.cardHeaderContainer}>
             <div className={styles.cardIcon}>
               <Armchair />
             </div>
             <div className={styles.cardHeader}>Open Tables</div>
           </div>
-          <div className={styles.cardData}>3/15</div>
+          <div className={styles.cardData}>
+            {data?.tables?.occupiedTables || 0}/{data?.tables?.totalTables || 0}
+          </div>
+          <div className={styles.comparison}>
+            {availableTables > 0
+              ? `${availableTables} table${
+                  availableTables > 1 ? "s" : ""
+                } available now`
+              : "No tables available"}
+          </div>
         </div>
       </div>
     </div>
