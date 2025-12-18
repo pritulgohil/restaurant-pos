@@ -1,5 +1,11 @@
 .mainContainer {
   margin-top: 60px;
+  display: flex;
+  gap: 16px;
+}
+
+.leftSideContainer,
+.rightSideContainer {
   width: 49.5%;
   border: 2px solid rgb(230, 230, 230);
   border-radius: 8px;

@@ -1,0 +1,33 @@
+.mainContainer {
+  background-color: white;
+  padding: 8px 12px;
+  width: 170px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-radius: 8px;
+}
+
+.text {
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.dataContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+}
+
+.iconLabel {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.dataIcon {
+  width: 8px;
+  height: 8px;
+}

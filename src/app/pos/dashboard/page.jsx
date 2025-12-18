@@ -9,7 +9,7 @@ const page = () => {
     <>
       <div className={styles.mainContainer}>
         <DashboardTop />
-        {/* <DashboardChart /> */}
+        <DashboardChart />
         <DashboardBottom />
       </div>
     </>
