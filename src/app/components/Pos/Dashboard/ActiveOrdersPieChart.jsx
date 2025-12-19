@@ -6,13 +6,16 @@ import { PieChart, Pie, Label, Tooltip } from "recharts";
 import PieChartToolTip from "@/app/components/Pos/Dashboard/PieChartToolTip";
 import { CardFooter } from "@/components/ui/card";
 
-const data = [
-  { name: "Queued", value: 12, fill: "#60a5fa" }, // blue-400
-  { name: "In Progress", value: 8, fill: "#2563eb" }, // blue-600
-];
+export default function ActiveOrdersPieChart({ dashboardData }) {
+  const queued = dashboardData?.orders?.status?.queued || 0;
+  const inProgress = dashboardData?.orders?.status?.inProgress || 0;
 
-export default function ActiveOrdersPieChart() {
-  const total = data.reduce((sum, item) => sum + item.value, 0);
+  const data = [
+    { name: "Queued", value: queued, fill: "#60a5fa" }, // blue-400
+    { name: "In Progress", value: inProgress, fill: "#2563eb" }, // blue-600
+  ];
+
+  const total = queued + inProgress;
 
   return (
     <div className="flex flex-col items-center">
@@ -50,7 +53,6 @@ export default function ActiveOrdersPieChart() {
         <Tooltip content={<PieChartToolTip />} />
       </PieChart>
 
-      {/* Footer preserved exactly */}
       <CardFooter className="flex-col gap-2 text-sm">
         <div className="flex items-center gap-2 font-medium leading-none">
           Live kitchen workload{" "}

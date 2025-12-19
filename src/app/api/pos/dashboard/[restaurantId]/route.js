@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 import Order from "@/models/order";
 import Table from "@/models/table";
+import Dish from "@/models/dish";
+import Category from "@/models/category";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 
@@ -47,7 +49,6 @@ export async function GET(req, { params }) {
     // ============================
     const now = new Date();
 
-    // Today
     const todayStartLocal = new Date(
       now.getFullYear(),
       now.getMonth(),
@@ -67,7 +68,6 @@ export async function GET(req, { params }) {
       999
     );
 
-    // Yesterday
     const yesterdayDate = new Date(now);
     yesterdayDate.setDate(yesterdayDate.getDate() - 1);
 
@@ -90,7 +90,6 @@ export async function GET(req, { params }) {
       999
     );
 
-    // Convert Local → UTC
     const toUTC = (date) =>
       new Date(date.getTime() - date.getTimezoneOffset() * 60000);
 
@@ -114,11 +113,36 @@ export async function GET(req, { params }) {
     ]);
 
     // ============================
-    // Fetch tables (LIVE occupancy)
+    // Order status counts (NEW)
     // ============================
-    const tables = await Table.find({
-      restaurantId: restaurantObjectId,
-    });
+    const [queuedOrders, inProgressOrders] = await Promise.all([
+      Order.countDocuments({
+        restaurantId: restaurantObjectId,
+        status: "Queued",
+      }),
+      Order.countDocuments({
+        restaurantId: restaurantObjectId,
+        status: "In Progress",
+      }),
+    ]);
+
+    // ============================
+    // Fetch tables
+    // ============================
+    const tables = await Table.find({ restaurantId: restaurantObjectId });
+
+    // ============================
+    // Menu counts
+    // ============================
+    const [totalMenuItems, outOfStockItems, totalCategories] =
+      await Promise.all([
+        Dish.countDocuments({ restaurantId: restaurantObjectId }),
+        Dish.countDocuments({
+          restaurantId: restaurantObjectId,
+          available: false,
+        }),
+        Category.countDocuments({ restaurantId: restaurantObjectId }),
+      ]);
 
     // ============================
     // Helpers
@@ -126,17 +150,18 @@ export async function GET(req, { params }) {
     const computeTotal = (orders) =>
       orders.reduce((sum, o) => sum + (o.totalPayable || 0), 0);
 
-    // ============================
-    // Orders data
-    // ============================
     const todayTotal = computeTotal(todayOrders);
     const yesterdayTotal = computeTotal(yesterdayOrders);
 
+    const totalItemsSoldToday = todayOrders.reduce(
+      (sum, o) => sum + (Number(o.totalItems) || 0),
+      0
+    );
+
     // ============================
-    // Table occupancy calculations
+    // Table occupancy
     // ============================
     const totalTables = tables.length;
-
     const occupiedTables = tables.filter((t) => t.isOccupied).length;
 
     const totalCapacity = tables.reduce(
@@ -155,11 +180,9 @@ export async function GET(req, { params }) {
         : 0;
 
     // ============================
-    // Last 20 days totals (per-day and overall)
+    // Last 20 days sales
     // ============================
     const days = 20;
-
-    // Start of the earliest day in local time
     const startDateLocal = new Date(
       now.getFullYear(),
       now.getMonth(),
@@ -169,13 +192,10 @@ export async function GET(req, { params }) {
       0,
       0
     );
-
     const startDateUTC = toUTC(startDateLocal);
 
-    // Use server timezone for consistent date strings (fallback to UTC)
     const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
 
-    // Aggregate totals grouped by date (YYYY-MM-DD) in one query
     const agg = await Order.aggregate([
       {
         $match: {
@@ -215,61 +235,65 @@ export async function GET(req, { params }) {
         year: "numeric",
         month: "2-digit",
         day: "2-digit",
-      }).format(d); // YYYY-MM-DD
+      }).format(d);
 
       const total = totalsMap[dateStr] || 0;
       last20Days.push({ date: dateStr, total });
       last20Total += total;
     }
 
-    const totalItemsSoldToday = todayOrders.reduce(
-      (sum, o) => sum + (Number(o.totalItems) || 0),
-      0
+    // ============================
+    // Final response
+    // ============================
+    return NextResponse.json(
+      {
+        orders: {
+          today: {
+            count: todayOrders.length,
+            totalPayable: todayTotal,
+            totalItemsSold: totalItemsSoldToday,
+          },
+          yesterday: {
+            count: yesterdayOrders.length,
+            totalPayable: yesterdayTotal,
+          },
+          status: {
+            queued: queuedOrders,
+            inProgress: inProgressOrders,
+          },
+          last20Days: {
+            perDay: last20Days,
+            totalAmount: last20Total,
+          },
+        },
+        summary: {
+          percentageChange:
+            yesterdayTotal > 0
+              ? Number(
+                  (
+                    ((todayTotal - yesterdayTotal) / yesterdayTotal) *
+                    100
+                  ).toFixed(2)
+                )
+              : todayTotal > 0
+              ? 100
+              : 0,
+        },
+        tables: {
+          totalTables,
+          occupiedTables,
+          totalCapacity,
+          currentPeople,
+          occupancyPercentage,
+        },
+        menu: {
+          totalMenuItems,
+          outOfStockItems,
+          totalCategories,
+        },
+      },
+      { status: 200 }
     );
-
-    // ============================
-    // Final dashboard response
-    // ============================
-    const dashboardData = {
-      orders: {
-        today: {
-          count: todayOrders.length,
-          totalPayable: todayTotal,
-          totalItemsSold: totalItemsSoldToday,
-        },
-        yesterday: {
-          count: yesterdayOrders.length,
-          totalPayable: yesterdayTotal,
-        },
-        // Last 20 days per-day totals and overall total amount
-        last20Days: {
-          perDay: last20Days,
-          totalAmount: last20Total,
-        },
-      },
-      summary: {
-        percentageChange:
-          yesterdayTotal > 0
-            ? Number(
-                (
-                  ((todayTotal - yesterdayTotal) / yesterdayTotal) *
-                  100
-                ).toFixed(2)
-              )
-            : todayTotal > 0
-            ? 100
-            : 0,
-      },
-      tables: {
-        totalTables,
-        occupiedTables,
-        totalCapacity,
-        currentPeople,
-        occupancyPercentage,
-      },
-    };
-
-    return NextResponse.json(dashboardData, { status: 200 });
   } catch (error) {
     console.error("Error fetching dashboard totals:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });

@@ -26,7 +26,9 @@ const DashboardBottom = ({ data }) => {
               </div>
               <div className={styles.cardDetails}>
                 <div className={styles.cardTitle}>Total Menu Items</div>
-                <div className={styles.cardData}>120</div>
+                <div className={styles.cardData}>
+                  {data?.menu?.totalMenuItems}
+                </div>
               </div>
             </div>
             <div className={styles.card}>
@@ -35,7 +37,9 @@ const DashboardBottom = ({ data }) => {
               </div>
               <div className={styles.cardDetails}>
                 <div className={styles.cardTitle}>Total Categories</div>
-                <div className={styles.cardData}>120</div>
+                <div className={styles.cardData}>
+                  {data?.menu?.totalCategories}
+                </div>
               </div>
             </div>
             <div className={styles.card}>
@@ -44,7 +48,9 @@ const DashboardBottom = ({ data }) => {
               </div>
               <div className={styles.cardDetails}>
                 <div className={styles.cardTitle}>Out of Stock Items</div>
-                <div className={styles.cardData}>120</div>
+                <div className={styles.cardData}>
+                  {data?.menu?.outOfStockItems}
+                </div>
               </div>
             </div>
           </div>
@@ -52,7 +58,7 @@ const DashboardBottom = ({ data }) => {
         <div className={styles.rightSideContainer}>
           <div className={styles.sectionHeader}>Active Orders</div>
           <div className={styles.pieChartContainer}>
-            <ActiveOrdersPieChart />
+            <ActiveOrdersPieChart dashboardData={data} />
           </div>
         </div>
       </div>
