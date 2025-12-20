@@ -161,6 +161,7 @@ const OrderLineSummary = () => {
                 className="w-full"
                 variant={orderType === "Takeaway" ? "default" : "outline"}
                 onClick={() => setOrderType("Takeaway")}
+                disabled={orderLine.table ? true : false}
               >
                 <ShoppingBag />
                 Takeaway
