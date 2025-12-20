@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { TrendingUp } from "lucide-react";
+import { TrendingDown, TrendingUp } from "lucide-react";
 import { PieChart, Pie, Label, Tooltip } from "recharts";
 import PieChartToolTip from "@/app/components/Pos/Dashboard/PieChartToolTip";
 import { CardFooter } from "@/components/ui/card";
@@ -56,7 +56,11 @@ export default function ActiveOrdersPieChart({ dashboardData }) {
       <CardFooter className="flex-col gap-2 text-sm">
         <div className="flex items-center gap-2 font-medium leading-none">
           Live kitchen workload{" "}
-          <TrendingUp className="h-4 w-4 text-green-600" />
+          {total > 5 ? (
+            <TrendingUp className="h-4 w-4 text-red-600" />
+          ) : (
+            <TrendingDown className="h-4 w-4 text-green-600" />
+          )}
         </div>
         <div className="leading-none text-muted-foreground">
           Queued vs In-Progress orders
