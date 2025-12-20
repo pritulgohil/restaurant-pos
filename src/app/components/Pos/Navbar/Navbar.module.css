@@ -41,9 +41,10 @@
 .avatarContainer img {
   width: 35px;
   height: 35px;
-  object-fit: cover;
-  object-position: top;
+  object-fit: contain;
+  /* object-position: top; */
   border-radius: 100%;
+  border: 1px solid gainsboro;
 }
 
 .userContainer {

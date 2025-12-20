@@ -46,6 +46,8 @@
 .cardData {
   font-size: 24px;
   font-weight: 600;
+  display: flex;
+  align-items: center;
 }
 
 .comparison {

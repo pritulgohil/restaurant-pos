@@ -8,6 +8,7 @@ import {
   TrendingUp,
   TrendingDown,
 } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const DashboardTop = ({ data }) => {
   const availableTables =
@@ -31,25 +32,38 @@ const DashboardTop = ({ data }) => {
             <div className={styles.cardHeader}>Today's Sales</div>
           </div>
           <div className={styles.cardData}>
-            ${data?.orders.today.totalPayable?.toFixed(2) || "0.00"}
-          </div>
-          <div className={styles.comparison}>
-            {data?.summary?.percentageChange >= 0 ? (
-              <>
-                <span className="text-green-600">
-                  +{data.summary.percentageChange}%
-                </span>
-                <span> vs yesterday</span>
-                <TrendingUp size={18} className="text-green-600" />
-              </>
+            {!data ? (
+              `$${Number(data?.orders?.today?.totalPayable || 0).toFixed(2)}`
             ) : (
-              <>
-                <span className="text-red-600">
-                  {data?.summary.percentageChange || 0}%
-                </span>
-                <span> vs yesterday</span>
-                <TrendingDown size={18} className="text-red-600" />
-              </>
+              <Skeleton className="w-full h-9 inline-block" />
+            )}
+          </div>
+
+          <div className={styles.comparison}>
+            {!data ? (
+              (() => {
+                const value = Number(data?.summary?.percentageChange || 0);
+                const isPositive = value >= 0;
+
+                return (
+                  <>
+                    <span
+                      className={isPositive ? "text-green-600" : "text-red-600"}
+                    >
+                      {isPositive ? "+" : ""}
+                      {value.toFixed(2)}%
+                    </span>
+                    <span> vs yesterday</span>
+                    {isPositive ? (
+                      <TrendingUp size={18} className="text-green-600" />
+                    ) : (
+                      <TrendingDown size={18} className="text-red-600" />
+                    )}
+                  </>
+                );
+              })()
+            ) : (
+              <Skeleton className="w-40 h-5 inline-block" />
             )}
           </div>
         </div>
@@ -64,30 +78,37 @@ const DashboardTop = ({ data }) => {
 
           {/* Today's total orders */}
           <div className={styles.cardData}>
-            {data?.orders?.today?.count || 0}
+            {!data ? (
+              data.orders?.today?.count ?? 0
+            ) : (
+              <Skeleton className="w-full h-9 inline-block" />
+            )}
           </div>
 
           {/* Comparison vs yesterday */}
           <div className={styles.comparison}>
-            {data?.orders?.today?.count >= data?.orders?.yesterday?.count ? (
-              <>
-                <span className="text-green-600">
-                  +{data.orders.today.count - data.orders.yesterday.count}
-                </span>
-                <span> vs yesterday</span>
-                <TrendingUp size={18} className="text-green-600" />
-              </>
+            {!data ? (
+              (() => {
+                const today = data.orders?.today?.count ?? 0;
+                const yesterday = data.orders?.yesterday?.count ?? 0;
+                const diff = today - yesterday;
+
+                return diff >= 0 ? (
+                  <>
+                    <span className="text-green-600">+{diff}</span>
+                    <span> vs yesterday</span>
+                    <TrendingUp size={18} className="text-green-600" />
+                  </>
+                ) : (
+                  <>
+                    <span className="text-red-600">{diff}</span>
+                    <span> vs yesterday</span>
+                    <TrendingDown size={18} className="text-red-600" />
+                  </>
+                );
+              })()
             ) : (
-              <>
-                <span className="text-red-600">
-                  -
-                  {data?.orders.today.count ||
-                    0 - data?.orders.yesterday.count ||
-                    0}
-                </span>
-                <span> vs yesterday</span>
-                <TrendingDown size={18} className="text-red-600" />
-              </>
+              <Skeleton className="w-40 h-5 inline-block" />
             )}
           </div>
         </div>
@@ -100,44 +121,56 @@ const DashboardTop = ({ data }) => {
             <div className={styles.cardHeader}>Live Diners</div>
           </div>
           <div className={styles.cardData}>
-            {data?.tables?.currentPeople || 0} Pax
+            {!data ? (
+              <>{data.tables?.currentPeople ?? 0} Pax</>
+            ) : (
+              <Skeleton className="w-full h-9 inline-block" />
+            )}
           </div>
+
           <div className={styles.comparison}>
-            <div className={styles.indicatorWrapper}>
-              {/* Outer ping ring */}
-              <span
-                className={`animate-ping ${styles.ping} ${
-                  occupancyPercentage <= 33
-                    ? "border-blue-500"
-                    : occupancyPercentage <= 66
-                    ? "border-amber-500"
-                    : "border-red-500"
-                }`}
-              ></span>
-              {/* Inner solid dot */}
-              <span
-                className={`${
-                  occupancyPercentage <= 33
-                    ? "bg-blue-500"
-                    : occupancyPercentage <= 66
-                    ? "bg-amber-500"
-                    : "bg-red-500"
-                } ${styles.dot}`}
-              ></span>
-            </div>
-            Currently at{" "}
-            <span
-              className={`${
-                occupancyPercentage <= 33
-                  ? "text-blue-500"
-                  : occupancyPercentage <= 66
-                  ? "text-amber-500"
-                  : "text-red-500"
-              }`}
-            >
-              {occupancyPercentage}%
-            </span>{" "}
-            capacity{" "}
+            {!data ? (
+              <>
+                <div className={styles.indicatorWrapper}>
+                  {/* Outer ping ring */}
+                  <span
+                    className={`animate-ping ${styles.ping} ${
+                      occupancyPercentage <= 33
+                        ? "border-blue-500"
+                        : occupancyPercentage <= 66
+                        ? "border-amber-500"
+                        : "border-red-500"
+                    }`}
+                  />
+
+                  {/* Inner solid dot */}
+                  <span
+                    className={`${styles.dot} ${
+                      occupancyPercentage <= 33
+                        ? "bg-blue-500"
+                        : occupancyPercentage <= 66
+                        ? "bg-amber-500"
+                        : "bg-red-500"
+                    }`}
+                  />
+                </div>
+                Currently at{" "}
+                <span
+                  className={
+                    occupancyPercentage <= 33
+                      ? "text-blue-500"
+                      : occupancyPercentage <= 66
+                      ? "text-amber-500"
+                      : "text-red-500"
+                  }
+                >
+                  {occupancyPercentage}%
+                </span>{" "}
+                capacity
+              </>
+            ) : (
+              <Skeleton className="w-48 h-5 inline-block" />
+            )}
           </div>
         </div>
 
@@ -149,14 +182,27 @@ const DashboardTop = ({ data }) => {
             <div className={styles.cardHeader}>Open Tables</div>
           </div>
           <div className={styles.cardData}>
-            {data?.tables?.occupiedTables || 0}/{data?.tables?.totalTables || 0}
+            {!data ? (
+              <>
+                {data?.tables?.occupiedTables || 0}/
+                {data?.tables?.totalTables || 0}
+              </>
+            ) : (
+              <Skeleton className="w-full h-9 inline-block" />
+            )}
           </div>
           <div className={styles.comparison}>
-            {availableTables > 0
-              ? `${availableTables} table${
+            {!data ? (
+              availableTables > 0 ? (
+                `${availableTables} table${
                   availableTables > 1 ? "s" : ""
                 } available now`
-              : "No tables available"}
+              ) : (
+                "No tables available"
+              )
+            ) : (
+              <Skeleton className="w-40 h-5 inline-block" />
+            )}
           </div>
         </div>
       </div>

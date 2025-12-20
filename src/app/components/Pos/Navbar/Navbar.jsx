@@ -94,7 +94,7 @@ const Navbar = () => {
         </div>
         <div className={styles.userContainer}>
           <div className={styles.avatarContainer}>
-            <img src="/user-avatar/chef.jpg" alt="" />
+            <img src="/user-avatar/male.png" alt="" />
           </div>
           <div className={styles.userName}>
             <div className={styles.name}>
