@@ -20,7 +20,13 @@ const DashboardTop = ({ data }) => {
         <div className={styles.header}>
           <h2>Dashboard</h2>
         </div>
-        <div className={styles.welcomeUserContainer}>Hi, Pritul!</div>
+        <div className={styles.welcomeUserContainer}>
+          {data ? (
+            `Hi, ${data.user?.name || "Pritul"}!`
+          ) : (
+            <Skeleton className="w-52 h-9 inline-block" />
+          )}
+        </div>
       </div>
 
       <div className={styles.overviewCardsContainer}>
