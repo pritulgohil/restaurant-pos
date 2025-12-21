@@ -59,7 +59,7 @@ const ManageTable = () => {
     return (
       table.customerName?.toLowerCase().includes(query) ||
       table.tableNumber?.toString().includes(query) ||
-      table.orderId?.toLowerCase().includes(query)
+      table.orderId?.slice(-6).toLowerCase().includes(query)
     );
   });
 
