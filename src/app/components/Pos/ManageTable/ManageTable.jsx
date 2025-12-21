@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import styles from "./ManageTable.module.css";
 import { Input } from "@/components/ui/input";
 import {
-  Plus,
   Armchair,
   CircleUser,
   ListOrdered,
@@ -22,6 +21,7 @@ const ManageTable = () => {
   const [tables, setTables] = useState([]);
   const [assignDialogOpen, setAssignDialogOpen] = useState(false);
   const [selectedTable, setSelectedTable] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   // ✅ Dialog state for both triggers
   const [addDialogOpen, setAddDialogOpen] = useState(false);
@@ -51,6 +51,18 @@ const ManageTable = () => {
     fetchTables();
   }, [restaurant]);
 
+  const filteredTables = tables.filter((table) => {
+    if (!searchQuery.trim()) return true;
+
+    const query = searchQuery.toLowerCase();
+
+    return (
+      table.customerName?.toLowerCase().includes(query) ||
+      table.tableNumber?.toString().includes(query) ||
+      table.orderId?.toLowerCase().includes(query)
+    );
+  });
+
   return (
     <div className={styles.mainContainer}>
       {/* LEFT SIDE */}
@@ -61,19 +73,15 @@ const ManageTable = () => {
               className="bg-white"
               type="email"
               placeholder="Search Customers"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
-          <div className={styles.filterButton}>
-            <Button variant="outline" size="icon">
-              <Plus />
-            </Button>
-          </div>
         </div>
-
         <div className={styles.customerContainer}>
           {tables.length > 0 ? (
             <div className={styles.customerCardContainer}>
-              {tables.map((table) => (
+              {filteredTables.map((table) => (
                 <div
                   key={table._id}
                   className={styles.customerCard}
@@ -189,7 +197,7 @@ const ManageTable = () => {
         <div className={styles.tableCanvasContainer}>
           {tables.length > 0 ? (
             <div className={styles.tableRow}>
-              {tables.map((table) => (
+              {filteredTables.map((table) => (
                 <TableRenderer
                   key={table.tableNumber}
                   table={table}
