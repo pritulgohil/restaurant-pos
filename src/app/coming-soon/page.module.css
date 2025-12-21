@@ -1,0 +1,58 @@
+.pageWrapper {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+.backgroundVideo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  z-index: -2;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: -1;
+}
+
+.mainContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: white;
+}
+
+.siteHeader {
+  font-family: "Epilogue";
+  font-weight: 600;
+  font-size: 300px;
+  line-height: 1;
+}
+
+.comingSoon {
+  font-size: 48px;
+  margin-top: 36px;
+  font-weight: 600;
+}
+
+.description {
+  font-size: 36px;
+  margin-top: 8px;
+  font-weight: 200;
+  color: white;
+}
+
+.backButton {
+  margin-top: 24px;
+}
