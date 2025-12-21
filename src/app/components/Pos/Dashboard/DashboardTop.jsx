@@ -38,7 +38,7 @@ const DashboardTop = ({ data }) => {
             <div className={styles.cardHeader}>Today's Sales</div>
           </div>
           <div className={styles.cardData}>
-            {!data ? (
+            {data ? (
               `$${Number(data?.orders?.today?.totalPayable || 0).toFixed(2)}`
             ) : (
               <Skeleton className="w-full h-9 inline-block" />
@@ -46,7 +46,7 @@ const DashboardTop = ({ data }) => {
           </div>
 
           <div className={styles.comparison}>
-            {!data ? (
+            {data ? (
               (() => {
                 const value = Number(data?.summary?.percentageChange || 0);
                 const isPositive = value >= 0;
@@ -84,7 +84,7 @@ const DashboardTop = ({ data }) => {
 
           {/* Today's total orders */}
           <div className={styles.cardData}>
-            {!data ? (
+            {data ? (
               data.orders?.today?.count ?? 0
             ) : (
               <Skeleton className="w-full h-9 inline-block" />
@@ -93,7 +93,7 @@ const DashboardTop = ({ data }) => {
 
           {/* Comparison vs yesterday */}
           <div className={styles.comparison}>
-            {!data ? (
+            {data ? (
               (() => {
                 const today = data.orders?.today?.count ?? 0;
                 const yesterday = data.orders?.yesterday?.count ?? 0;
@@ -127,7 +127,7 @@ const DashboardTop = ({ data }) => {
             <div className={styles.cardHeader}>Live Diners</div>
           </div>
           <div className={styles.cardData}>
-            {!data ? (
+            {data ? (
               <>{data.tables?.currentPeople ?? 0} Pax</>
             ) : (
               <Skeleton className="w-full h-9 inline-block" />
@@ -135,7 +135,7 @@ const DashboardTop = ({ data }) => {
           </div>
 
           <div className={styles.comparison}>
-            {!data ? (
+            {data ? (
               <>
                 <div className={styles.indicatorWrapper}>
                   {/* Outer ping ring */}
@@ -188,7 +188,7 @@ const DashboardTop = ({ data }) => {
             <div className={styles.cardHeader}>Open Tables</div>
           </div>
           <div className={styles.cardData}>
-            {!data ? (
+            {data ? (
               <>
                 {data?.tables?.occupiedTables || 0}/
                 {data?.tables?.totalTables || 0}
@@ -198,7 +198,7 @@ const DashboardTop = ({ data }) => {
             )}
           </div>
           <div className={styles.comparison}>
-            {!data ? (
+            {data ? (
               availableTables > 0 ? (
                 `${availableTables} table${
                   availableTables > 1 ? "s" : ""
