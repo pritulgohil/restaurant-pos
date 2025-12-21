@@ -12,6 +12,7 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Navbar = () => {
   const router = useRouter();
@@ -21,6 +22,7 @@ const Navbar = () => {
   const handleAddRestaurant = () => {
     router.push("/coming-soon");
   };
+  const userName = `${user.firstname} ${user.lastname}`;
 
   useEffect(() => {
     if (!loggedInUser) return;
@@ -69,7 +71,11 @@ const Navbar = () => {
                 <div
                   className={`${styles.role} flex items-center gap-1 cursor-pointer`}
                 >
-                  {restaurantName}
+                  {restaurantName ? (
+                    restaurantName
+                  ) : (
+                    <Skeleton className="w-8 h-3" />
+                  )}
                   <ChevronDown
                     className={`w-3 h-3 transition-transform duration-200 ${
                       isDropdownOpen ? "rotate-180" : "rotate-0"
@@ -105,7 +111,7 @@ const Navbar = () => {
           </div>
           <div className={styles.userName}>
             <div className={styles.name}>
-              {user.firstname} {user.lastname}
+              {userName ? userName : <Skeleton className="w-12 h-3" />}
             </div>
             <div className={styles.role}>Manager</div>
           </div>
