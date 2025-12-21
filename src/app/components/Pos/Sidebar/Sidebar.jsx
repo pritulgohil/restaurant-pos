@@ -112,17 +112,6 @@ const Sidebar = () => {
               <History className={styles.sidebarIcon} />
               Manage Orders
             </li>
-            <li
-              className={` ${
-                pathname === "/pos/customers"
-                  ? styles.active
-                  : styles.sidebarItem
-              }`}
-              onClick={() => handleNavigation("/pos/manage-dishes")}
-            >
-              <Users className={styles.sidebarIcon} />
-              Customers
-            </li>
           </ul>
         </div>
         <div className={styles.bottomSidebar}>
