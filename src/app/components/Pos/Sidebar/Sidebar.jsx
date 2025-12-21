@@ -120,7 +120,7 @@ const Sidebar = () => {
               <Settings className={styles.sidebarIcon} />
               Settings
             </li>
-            <li>
+            <li onClick={() => handleNavigation("/coming-soon")}>
               <Globe className={styles.sidebarIcon} />
               Help Center
             </li>
