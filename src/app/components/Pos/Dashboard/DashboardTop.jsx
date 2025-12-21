@@ -9,11 +9,13 @@ import {
   TrendingDown,
 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useAuthContext } from "@/context/AuthContext";
 
 const DashboardTop = ({ data }) => {
   const availableTables =
     data?.tables?.totalTables - data?.tables?.occupiedTables || 0;
   const occupancyPercentage = data?.tables?.occupancyPercentage || 0;
+  const { user } = useAuthContext();
   return (
     <div className={styles.mainContainer}>
       <div className={styles.welcomeContainer}>
@@ -22,7 +24,7 @@ const DashboardTop = ({ data }) => {
         </div>
         <div className={styles.welcomeUserContainer}>
           {data ? (
-            `Hi, ${data.user?.name || "Pritul"}!`
+            `Hi, ${user?.firstname}!`
           ) : (
             <Skeleton className="w-52 h-9 inline-block" />
           )}

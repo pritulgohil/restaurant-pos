@@ -13,8 +13,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
-  const [user, setUser] = useState({ firstname: "", lastname: "" });
-  const { loggedInUser } = useAuthContext();
+  // const [user, setUser] = useState({ firstname: "", lastname: "" });
+  const { loggedInUser, user, setUser } = useAuthContext();
   const { restaurantName } = useRestaurantContext();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
