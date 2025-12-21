@@ -11,12 +11,16 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
-  // const [user, setUser] = useState({ firstname: "", lastname: "" });
+  const router = useRouter();
   const { loggedInUser, user, setUser } = useAuthContext();
   const { restaurantName } = useRestaurantContext();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const handleAddRestaurant = () => {
+    router.push("/coming-soon");
+  };
 
   useEffect(() => {
     if (!loggedInUser) return;
@@ -82,7 +86,10 @@ const Navbar = () => {
                     </div>
                   </DropdownMenuItem>
                   <DropdownMenuItem className="border border-green-600 text-green-600 focus:text-green-700 hover:border-green-700 text-sm cursor-pointer">
-                    <div className={styles.menuItem}>
+                    <div
+                      className={styles.menuItem}
+                      onClick={handleAddRestaurant}
+                    >
                       <SquarePlus className="w-4" />
                       Add Restaurant
                     </div>

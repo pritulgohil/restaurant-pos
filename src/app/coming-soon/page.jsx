@@ -28,7 +28,7 @@ const page = () => {
               variant="ghost"
               size="lg"
               className="border border-2 flex items-center gap-2"
-              onClick={() => router.push("/dashboard")}
+              onClick={() => router.back()}
             >
               <ChevronLeft strokeWidth={3} />
               Back to Dashboard
