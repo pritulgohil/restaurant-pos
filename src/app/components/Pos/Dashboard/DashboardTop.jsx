@@ -187,7 +187,7 @@ const DashboardTop = ({ data }) => {
             <div className={styles.cardIcon}>
               <Armchair />
             </div>
-            <div className={styles.cardHeader}>Open Tables</div>
+            <div className={styles.cardHeader}>Occupied Tables</div>
           </div>
           <div className={styles.cardData}>
             {data ? (
