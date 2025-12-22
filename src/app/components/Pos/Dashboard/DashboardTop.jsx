@@ -7,6 +7,7 @@ import {
   Armchair,
   TrendingUp,
   TrendingDown,
+  Ban,
 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuthContext } from "@/context/AuthContext";
@@ -206,7 +207,10 @@ const DashboardTop = ({ data }) => {
                   availableTables > 1 ? "s" : ""
                 } available now`
               ) : (
-                "No tables available"
+                <>
+                  <div className={styles.stop}></div>
+                  No tables available
+                </>
               )
             ) : (
               <Skeleton className="w-40 h-5 inline-block" />
