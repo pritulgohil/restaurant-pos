@@ -14,14 +14,11 @@ const Page = () => {
   useEffect(() => {
     const fetchDashboard = async () => {
       try {
-        const res = await fetch(
-          `http://localhost:3000/api/pos/dashboard/${restaurant}`,
-          {
-            headers: {
-              Authorization: "Bearer " + localStorage.getItem("token"),
-            },
-          }
-        );
+        const res = await fetch(`/api/pos/dashboard/${restaurant}`, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        });
 
         if (!res.ok) {
           throw new Error(`Error: ${res.status}`);
