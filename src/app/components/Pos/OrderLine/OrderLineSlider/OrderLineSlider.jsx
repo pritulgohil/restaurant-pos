@@ -4,10 +4,9 @@ import { Button } from "@/components/ui/button";
 import { ChevronRightIcon, ChevronLeftIcon } from "lucide-react";
 import { useRestaurantContext } from "@/context/RestaurantContext";
 import TimeStamp from "@/app/components/Pos/OrderLine/OrderLineSlider/Timestamp";
-import { useRouter } from "next/navigation";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const OrderLineSlider = () => {
-  const router = useRouter();
   const cardContainerRef = useRef(null);
   const [isScrollStart, setIsScrollStart] = useState(true);
   const [isScrollEnd, setIsScrollEnd] = useState(false);
@@ -15,7 +14,6 @@ const OrderLineSlider = () => {
   const [selectedCapsule, setSelectedCapsule] = useState("All");
   const SCROLL_AMOUNT = 300;
 
-  // Scroll handlers
   const handleScrollRight = () => {
     cardContainerRef.current?.scrollBy({
       left: SCROLL_AMOUNT,
@@ -64,32 +62,36 @@ const OrderLineSlider = () => {
   const formatCount = (count) => Math.min(count, 10);
 
   const capsules = [
-    { label: "All", count: formatCount(orders.length) },
+    { label: "All", count: formatCount(orders ? orders.length : 0) },
     {
       label: "Dine-in",
       count: formatCount(
-        orders.filter((o) => o.orderType === "Dine-in").length
+        (orders || []).filter((o) => o.orderType === "Dine-in").length
       ),
       style: styles.dineIn,
       borderStyle: styles.dineInCapsule,
     },
     {
       label: "Queued",
-      count: formatCount(orders.filter((o) => o.status === "Queued").length),
+      count: formatCount(
+        (orders || []).filter((o) => o.status === "Queued").length
+      ),
       style: styles.waitlist,
       borderStyle: styles.waitlistCapsule,
     },
     {
       label: "Takeaway",
       count: formatCount(
-        orders.filter((o) => o.orderType === "Takeaway").length
+        (orders || []).filter((o) => o.orderType === "Takeaway").length
       ),
       style: styles.takeaway,
       borderStyle: styles.takeawayCapsule,
     },
     {
       label: "Served",
-      count: formatCount(orders.filter((o) => o.status === "Completed").length),
+      count: formatCount(
+        (orders || []).filter((o) => o.status === "Completed").length
+      ),
       style: styles.served,
       borderStyle: styles.servedCapsule,
     },
@@ -105,9 +107,10 @@ const OrderLineSlider = () => {
   };
 
   // Filter orders based on selected capsule
-  let filteredOrders = [...orders].sort(
+  let filteredOrders = [...(orders || [])].sort(
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
   );
+
   const filterInfo = capsuleFilterMap[selectedCapsule];
   if (filterInfo) {
     filteredOrders = filteredOrders.filter(
@@ -157,13 +160,29 @@ const OrderLineSlider = () => {
         )}
 
         <div className={styles.cardContainer} ref={cardContainerRef}>
-          {filteredOrders.length > 0 ? (
+          {orders === null ? (
+            [...Array(4)].map((_, index) => (
+              <div key={index} className={styles.skeletonCard}>
+                <div className={styles.cardTop}>
+                  <Skeleton className="w-24 h-3 mb-1" />
+                  <Skeleton className="w-16 h-3" />
+                </div>
+                <div className={styles.cardMiddle}>
+                  <Skeleton className="w-12 h-6" />
+                </div>
+                <div className={styles.cardBottom}>
+                  <Skeleton className="w-16 h-3" />
+                  <Skeleton className="w-10 h-3 mt-1" />
+                </div>
+              </div>
+            ))
+          ) : filteredOrders.length > 0 ? (
             filteredOrders.slice(0, 10).map((order) => (
               <div
                 key={order._id}
                 className={`${styles.card} 
-    ${order.status === "Queued" ? styles.waitListCard : ""} 
-    ${order.status === "In Progress" ? styles.inProgressCard : ""}`}
+          ${order.status === "Queued" ? styles.waitListCard : ""} 
+          ${order.status === "In Progress" ? styles.inProgressCard : ""}`}
                 onClick={() => {
                   const url = `${window.location.origin}/pos/manage-orders?orderId=${order._id}`;
                   window.open(url, "_blank");
@@ -192,8 +211,8 @@ const OrderLineSlider = () => {
                   </div>
                   <div
                     className={`${styles.statusPill}
-    ${order.status === "Queued" ? styles.waitlist : ""} 
-    ${order.status === "In Progress" ? styles.inProgressPill : ""}`}
+            ${order.status === "Queued" ? styles.waitlist : ""} 
+            ${order.status === "In Progress" ? styles.inProgressPill : ""}`}
                   >
                     {order.status}
                   </div>
@@ -205,7 +224,7 @@ const OrderLineSlider = () => {
           )}
         </div>
 
-        {!isScrollEnd && (
+        {!isScrollEnd && filteredOrders.length > 0 && (
           <div className={styles.rightButton}>
             <Button
               variant="secondary"

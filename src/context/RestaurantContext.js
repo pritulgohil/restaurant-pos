@@ -15,7 +15,7 @@ export const RestaurantProvider = ({ children }) => {
   const [dishCountbyCategory, setDishCountbyCategory] = useState(0);
   const [categoryName, setCategoryName] = useState("");
   const [orderLine, setOrderLine] = useState({});
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState(null);
   const [orderType, setOrderType] = useState("Dine-in");
   const [orderTrigger, setOrderTrigger] = useState(false);
 
@@ -152,6 +152,7 @@ export const RestaurantProvider = ({ children }) => {
   };
 
   const fetchAllOrders = async () => {
+    setOrders(null);
     const token = localStorage.getItem("token");
     try {
       const res = await fetch(`/api/pos/fetch-all-orders/${restaurant}`, {
