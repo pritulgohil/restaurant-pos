@@ -3,6 +3,7 @@ import styles from "./OrderLineMenu.module.css";
 import { ChevronLeft, ChevronRight, Minus, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRestaurantContext } from "@/context/RestaurantContext";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const OrderLineMenu = () => {
   const {
@@ -141,7 +142,21 @@ const OrderLineMenu = () => {
           </div>
         </div>
 
-        <div className={styles.categoriesCardContainer} ref={scrollRef}>
+        {categories === undefined || categories === null ? (
+          // 🔹 LOADING
+          <div className={styles.categoriesCardContainer} ref={scrollRef}>
+            {[...Array(5)].map((_, index) => (
+              <div key={index} className={styles.categoryCard}>
+                <Skeleton className={styles.categoryImageSkeleton} />
+                <div className={styles.categoryDetails}>
+                  <Skeleton className="w-16 h-3 mb-2" />
+                  <Skeleton className="w-10 h-3" />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : categories.length === 0 ? (
+          // 🔹 EMPTY (All Menu only)
           <div
             onClick={() => setOrderLineCategoryId(null)}
             className={`${styles.categoryCard} ${
@@ -154,24 +169,45 @@ const OrderLineMenu = () => {
               <div className={styles.categoryCount}>{totalDishCount} items</div>
             </div>
           </div>
-          {categories.map((category) => (
+        ) : (
+          // 🔹 DATA
+          <div className={styles.categoriesCardContainer} ref={scrollRef}>
             <div
-              key={category._id}
+              onClick={() => setOrderLineCategoryId(null)}
               className={`${styles.categoryCard} ${
-                orderLineCategoryId === category._id
-                  ? styles.activeCategoryCard
-                  : ""
+                orderLineCategoryId === null ? styles.activeCategoryCard : ""
               }`}
-              onClick={() => setOrderLineCategoryId(category._id)}
             >
-              <div className={styles.categoryImage}>{category.emoji}</div>
+              <div className={styles.categoryImage}>❤️</div>
               <div className={styles.categoryDetails}>
-                <div className={styles.categoryName}>{category.name}</div>
-                <div className={styles.categoryCount}>{category.dishCount}</div>
+                <div className={styles.categoryName}>All Menu</div>
+                <div className={styles.categoryCount}>
+                  {totalDishCount} items
+                </div>
               </div>
             </div>
-          ))}
-        </div>
+
+            {categories.map((category) => (
+              <div
+                key={category._id}
+                className={`${styles.categoryCard} ${
+                  orderLineCategoryId === category._id
+                    ? styles.activeCategoryCard
+                    : ""
+                }`}
+                onClick={() => setOrderLineCategoryId(category._id)}
+              >
+                <div className={styles.categoryImage}>{category.emoji}</div>
+                <div className={styles.categoryDetails}>
+                  <div className={styles.categoryName}>{category.name}</div>
+                  <div className={styles.categoryCount}>
+                    {category.dishCount}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <div className={styles.menuCardContainer}>

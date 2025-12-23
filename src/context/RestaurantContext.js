@@ -9,7 +9,7 @@ export const RestaurantProvider = ({ children }) => {
   const [restaurant, setRestaurant] = useState(null);
   const [categoryId, setCategoryId] = useState(null);
   const [orderLineCategoryId, setOrderLineCategoryId] = useState(null);
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState(null);
   const [dishes, setDishes] = useState([]);
   const [totalDishCount, setTotalDishCount] = useState(0);
   const [dishCountbyCategory, setDishCountbyCategory] = useState(0);
