@@ -49,7 +49,7 @@ export default function AssignTable({
 
   useEffect(() => {
     setLocalPaymentStatus(table.paymentStatus);
-  }, [table.paymentStatus]);
+  }, [table._id, table.paymentStatus]);
 
   const handleDialogChange = (isOpen) => {
     if (!isOpen) {
@@ -243,13 +243,6 @@ export default function AssignTable({
                 <Clock size={16} />
                 {table.isOccupied &&
                   (() => {
-                    //Save new time in mongodb
-                    //Save new time in mongodb
-                    //Save new time in mongodb
-                    //Save new time in mongodb
-                    //Save new time in mongodb
-                    //Save new time in mongodb
-                    //Save new time in mongodb
                     const timeString = new Date(
                       table.assignedAt?.$date || table.assignedAt
                     ).toLocaleTimeString([], {
