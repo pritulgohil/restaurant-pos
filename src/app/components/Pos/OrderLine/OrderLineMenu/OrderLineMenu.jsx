@@ -143,7 +143,6 @@ const OrderLineMenu = () => {
         </div>
 
         {categories === undefined || categories === null ? (
-          // 🔹 LOADING
           <div className={styles.categoriesCardContainer} ref={scrollRef}>
             {[...Array(5)].map((_, index) => (
               <div key={index} className={styles.categoryCard}>
@@ -156,7 +155,6 @@ const OrderLineMenu = () => {
             ))}
           </div>
         ) : categories.length === 0 ? (
-          // 🔹 EMPTY (All Menu only)
           <div
             onClick={() => setOrderLineCategoryId(null)}
             className={`${styles.categoryCard} ${
@@ -170,7 +168,6 @@ const OrderLineMenu = () => {
             </div>
           </div>
         ) : (
-          // 🔹 DATA
           <div className={styles.categoriesCardContainer} ref={scrollRef}>
             <div
               onClick={() => setOrderLineCategoryId(null)}
