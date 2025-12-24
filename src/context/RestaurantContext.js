@@ -19,6 +19,7 @@ export const RestaurantProvider = ({ children }) => {
   const [orderType, setOrderType] = useState("Dine-in");
   const [orderTrigger, setOrderTrigger] = useState(false);
   const [orderLineSliderLoader, setOrderLineSliderLoader] = useState(false);
+  const [orderLineCategoryLoader, setOrderLineCategoryLoader] = useState(false);
 
   // Load localStorage values on client only
   useEffect(() => {
@@ -56,6 +57,7 @@ export const RestaurantProvider = ({ children }) => {
   const fetchCategories = async () => {
     const token = localStorage.getItem("token");
     try {
+      setOrderLineCategoryLoader(true);
       const res = await fetch(`/api/pos/fetch-categories/${restaurant}`, {
         method: "GET",
         headers: {
@@ -69,6 +71,8 @@ export const RestaurantProvider = ({ children }) => {
       setTotalDishCount(data.totalDishCount);
     } catch (err) {
       console.error("Error fetching categories:", err);
+    } finally {
+      setOrderLineCategoryLoader(false);
     }
   };
 
@@ -219,6 +223,7 @@ export const RestaurantProvider = ({ children }) => {
         orderTrigger,
         setOrderTrigger,
         orderLineSliderLoader,
+        orderLineCategoryLoader,
       }}
     >
       {children}
