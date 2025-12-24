@@ -9,13 +9,13 @@ export const RestaurantProvider = ({ children }) => {
   const [restaurant, setRestaurant] = useState(null);
   const [categoryId, setCategoryId] = useState(null);
   const [orderLineCategoryId, setOrderLineCategoryId] = useState(null);
-  const [categories, setCategories] = useState(null);
+  const [categories, setCategories] = useState([]);
   const [dishes, setDishes] = useState([]);
   const [totalDishCount, setTotalDishCount] = useState(0);
   const [dishCountbyCategory, setDishCountbyCategory] = useState(0);
   const [categoryName, setCategoryName] = useState("");
   const [orderLine, setOrderLine] = useState({});
-  const [orders, setOrders] = useState(null);
+  const [orders, setOrders] = useState([]);
   const [orderType, setOrderType] = useState("Dine-in");
   const [orderTrigger, setOrderTrigger] = useState(false);
 
@@ -100,6 +100,7 @@ export const RestaurantProvider = ({ children }) => {
   };
 
   const fetchDishByCategory = async (categoryIdParam = categoryId) => {
+    setDishes([]);
     const token = localStorage.getItem("token");
     try {
       const res = await fetch(`/api/pos/fetch-dish/${categoryIdParam}`, {
@@ -127,6 +128,7 @@ export const RestaurantProvider = ({ children }) => {
   const orderLineFetchDishByCategory = async (
     categoryOrderIdParam = orderLineCategoryId
   ) => {
+    setDishes([]);
     const token = localStorage.getItem("token");
     try {
       const res = await fetch(`/api/pos/fetch-dish/${categoryOrderIdParam}`, {
@@ -152,7 +154,6 @@ export const RestaurantProvider = ({ children }) => {
   };
 
   const fetchAllOrders = async () => {
-    setOrders(null);
     const token = localStorage.getItem("token");
     try {
       const res = await fetch(`/api/pos/fetch-all-orders/${restaurant}`, {

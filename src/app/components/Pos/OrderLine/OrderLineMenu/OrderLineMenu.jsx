@@ -208,47 +208,66 @@ const OrderLineMenu = () => {
       </div>
 
       <div className={styles.menuCardContainer}>
-        {dishes.map((dish) => {
-          const quantity = orderLine.dishes?.[dish._id]?.quantity || 0;
-          const isSelected = quantity > 0;
-
-          return (
-            <div
-              key={dish._id}
-              className={`${styles.menuCard} ${
-                isSelected ? styles.activeDishCard : ""
-              }`}
-            >
-              <div className={styles.cardEmoji}>{dish.emoji}</div>
-              <div className={styles.menuCategory}>{dish.categoryName}</div>
-              <div className={styles.itemName}>{dish.name}</div>
+        {dishes === null ? (
+          // 🔹 LOADING → SKELETON
+          [...Array(10)].map((_, index) => (
+            <div key={index} className={styles.menuCard}>
+              <Skeleton className="h-14 w-14 mb-3 rounded-md" />
+              <Skeleton className="h-3 w-20 mb-2" />
+              <Skeleton className="h-4 w-28 mb-3" />
               <div className={styles.priceQuantityContainer}>
-                <div className={styles.price}>${dish.price.toFixed(2)}</div>
-                <div className={styles.quantity}>
-                  <div className={styles.minusContainer}>
-                    <Button
-                      onClick={() => decrementQuantity(dish._id)}
-                      className="w-4 h-4 rounded-full bg-gray-200 shadow-none text-black p-0 hover:bg-gray-300"
-                    >
-                      <Minus className="w-[10px] h-[10px]" />
-                    </Button>
-                  </div>
-                  <div className={styles.quantityText}>{quantity}</div>
-                  <div className={styles.minusContainer}>
-                    <Button
-                      onClick={() =>
-                        incrementQuantity(dish._id, dish.name, dish.price)
-                      }
-                      className="w-4 h-4 rounded-full bg-emerald-600 shadow-none text-white p-0 hover:bg-emerald-700"
-                    >
-                      <Plus className="w-[10px] h-[10px]" />
-                    </Button>
+                <Skeleton className="h-4 w-12" />
+                <Skeleton className="h-6 w-20" />
+              </div>
+            </div>
+          ))
+        ) : dishes.length === 0 ? (
+          // 🔹 EMPTY STATE
+          <div className={styles.emptyMenu}>No dishes available</div>
+        ) : (
+          // 🔹 DATA
+          dishes.map((dish) => {
+            const quantity = orderLine.dishes?.[dish._id]?.quantity || 0;
+            const isSelected = quantity > 0;
+
+            return (
+              <div
+                key={dish._id}
+                className={`${styles.menuCard} ${
+                  isSelected ? styles.activeDishCard : ""
+                }`}
+              >
+                <div className={styles.cardEmoji}>{dish.emoji}</div>
+                <div className={styles.menuCategory}>{dish.categoryName}</div>
+                <div className={styles.itemName}>{dish.name}</div>
+                <div className={styles.priceQuantityContainer}>
+                  <div className={styles.price}>${dish.price.toFixed(2)}</div>
+                  <div className={styles.quantity}>
+                    <div className={styles.minusContainer}>
+                      <Button
+                        onClick={() => decrementQuantity(dish._id)}
+                        className="w-4 h-4 rounded-full bg-gray-200 shadow-none text-black p-0 hover:bg-gray-300"
+                      >
+                        <Minus className="w-[10px] h-[10px]" />
+                      </Button>
+                    </div>
+                    <div className={styles.quantityText}>{quantity}</div>
+                    <div className={styles.minusContainer}>
+                      <Button
+                        onClick={() =>
+                          incrementQuantity(dish._id, dish.name, dish.price)
+                        }
+                        className="w-4 h-4 rounded-full bg-emerald-600 shadow-none text-white p-0 hover:bg-emerald-700"
+                      >
+                        <Plus className="w-[10px] h-[10px]" />
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })
+        )}
       </div>
     </div>
   );

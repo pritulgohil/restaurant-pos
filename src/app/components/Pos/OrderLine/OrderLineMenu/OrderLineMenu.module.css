@@ -73,10 +73,12 @@
   flex-wrap: wrap;
   flex: 1;
   min-height: 0;
+  align-content: flex-start;
 }
 
 .menuCard {
-  width: 19.1%;
+  /* width: 19.1%; */
+  width: calc(20% - 10px);
   height: 180px;
   border: 1px solid gainsboro;
   padding: 12px;

@@ -5,12 +5,13 @@ import { ChevronRightIcon, ChevronLeftIcon } from "lucide-react";
 import { useRestaurantContext } from "@/context/RestaurantContext";
 import TimeStamp from "@/app/components/Pos/OrderLine/OrderLineSlider/Timestamp";
 import { Skeleton } from "@/components/ui/skeleton";
+import { set } from "mongoose";
 
 const OrderLineSlider = () => {
   const cardContainerRef = useRef(null);
   const [isScrollStart, setIsScrollStart] = useState(true);
   const [isScrollEnd, setIsScrollEnd] = useState(false);
-  const { orders, fetchAllOrders } = useRestaurantContext();
+  const { orders, fetchAllOrders, setOrders } = useRestaurantContext();
   const [selectedCapsule, setSelectedCapsule] = useState("All");
   const SCROLL_AMOUNT = 300;
 
