@@ -15,6 +15,7 @@ import AddTableDialog from "./AddTableDialog"; // Adjust path if needed
 import { useRestaurantContext } from "@/context/RestaurantContext";
 import TableRenderer from "./TableRenderer"; // Adjust path if needed
 import AssignTable from "./AssignTable";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const ManageTable = () => {
   const { restaurant } = useRestaurantContext();
@@ -22,13 +23,14 @@ const ManageTable = () => {
   const [assignDialogOpen, setAssignDialogOpen] = useState(false);
   const [selectedTable, setSelectedTable] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [tableLoader, setTableLoader] = useState(false);
 
-  // ✅ Dialog state for both triggers
   const [addDialogOpen, setAddDialogOpen] = useState(false);
 
   const fetchTables = async () => {
     if (!restaurant) return;
     try {
+      setTableLoader(true);
       const token = localStorage.getItem("token");
       const res = await fetch(`/api/pos/fetch-tables/${restaurant}`, {
         method: "GET",
@@ -44,6 +46,8 @@ const ManageTable = () => {
       }
     } catch (err) {
       console.error("Network error:", err);
+    } finally {
+      setTableLoader(false);
     }
   };
 
@@ -79,7 +83,33 @@ const ManageTable = () => {
           </div>
         </div>
         <div className={styles.customerContainer}>
-          {tables.length > 0 ? (
+          {tableLoader ? (
+            <div className="space-y-3">
+              {Array.from({ length: 4 }).map((_, idx) => (
+                <div
+                  key={idx}
+                  className="p-4 border rounded-md flex justify-between animate-pulse bg-white"
+                >
+                  <div className="flex gap-4 items-center">
+                    {/* Time Card */}
+                    <Skeleton className="w-16 h-20 rounded-md" />
+
+                    {/* Customer Details */}
+                    <div className="flex flex-col space-y-2">
+                      <Skeleton className="w-32 h-4 rounded" />
+                      <Skeleton className="w-24 h-3 rounded" />
+                      <Skeleton className="w-20 h-3 rounded" />
+                    </div>
+                  </div>
+
+                  {/* Payment Status */}
+                  <div className="flex items-center">
+                    <Skeleton className="w-14 h-4" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : tables.length > 0 ? (
             <div className={styles.customerCardContainer}>
               {filteredTables.map((table) => (
                 <div
@@ -195,7 +225,51 @@ const ManageTable = () => {
         </div>
 
         <div className={styles.tableCanvasContainer}>
-          {tables.length > 0 ? (
+          {tableLoader ? (
+            // Render skeleton or loader while loading
+            <div className="flex flex-wrap gap-24">
+              {Array.from({ length: 8 }).map((_, idx) => (
+                <div
+                  key={idx}
+                  className="flex flex-col items-center gap-3 animate-pulse cursor-pointer"
+                >
+                  {/* TOP ROW */}
+                  <div className="flex gap-2">
+                    <Skeleton className="w-4 h-4 rounded-full" />
+                    <Skeleton className="w-4 h-4 rounded-full" />
+                    <Skeleton className="w-4 h-4 rounded-full" />
+                    <Skeleton className="w-4 h-4 rounded-full" />
+                  </div>
+
+                  {/* MIDDLE ROW */}
+                  <div className="flex items-center gap-2">
+                    {/* LEFT CHAIRS */}
+                    <div className="flex flex-col gap-2">
+                      <Skeleton className="w-4 h-4 rounded-full" />
+                      <Skeleton className="w-4 h-4 rounded-full" />
+                    </div>
+
+                    {/* TABLE CARD */}
+                    <Skeleton className="w-36 h-20 rounded-md" />
+
+                    {/* RIGHT CHAIRS */}
+                    <div className="flex flex-col gap-2">
+                      <Skeleton className="w-4 h-4 rounded-full" />
+                      <Skeleton className="w-4 h-4 rounded-full" />
+                    </div>
+                  </div>
+
+                  {/* BOTTOM ROW */}
+                  <div className="flex gap-2">
+                    <Skeleton className="w-4 h-4 rounded-full" />
+                    <Skeleton className="w-4 h-4 rounded-full" />
+                    <Skeleton className="w-4 h-4 rounded-full" />
+                    <Skeleton className="w-4 h-4 rounded-full" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : tables.length > 0 ? (
             <div className={styles.tableRow}>
               {filteredTables.map((table) => (
                 <TableRenderer
