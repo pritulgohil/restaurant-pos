@@ -218,8 +218,8 @@ const OrderLineMenu = () => {
               <Skeleton className="h-3 w-20 mb-2" />
               <Skeleton className="h-4 w-28 mb-3" />
               <div className={styles.priceQuantityContainer}>
-                <Skeleton className="h-4 w-12" />
-                <Skeleton className="h-6 w-20" />
+                <Skeleton className="h-5 w-12" />
+                <Skeleton className="h-5 w-16" />
               </div>
             </div>
           ))

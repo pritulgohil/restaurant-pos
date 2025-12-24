@@ -143,6 +143,7 @@ export const RestaurantProvider = ({ children }) => {
     setDishes([]);
     const token = localStorage.getItem("token");
     try {
+      setOrderLineDishLoader(true);
       const res = await fetch(`/api/pos/fetch-dish/${categoryOrderIdParam}`, {
         method: "GET",
         headers: {
@@ -162,6 +163,8 @@ export const RestaurantProvider = ({ children }) => {
       setDishCountbyCategory(data.dishes.length);
     } catch (err) {
       console.error("Error fetching dishes:", err);
+    } finally {
+      setOrderLineDishLoader(false);
     }
   };
 
