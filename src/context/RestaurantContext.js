@@ -18,6 +18,9 @@ export const RestaurantProvider = ({ children }) => {
   const [orders, setOrders] = useState([]);
   const [orderType, setOrderType] = useState("Dine-in");
   const [orderTrigger, setOrderTrigger] = useState(false);
+  const [orderLineSliderLoader, setOrderLineSliderLoader] = useState(false);
+  const [orderLineCategoryLoader, setOrderLineCategoryLoader] = useState(false);
+  const [orderLineDishLoader, setOrderLineDishLoader] = useState(false);
 
   // Load localStorage values on client only
   useEffect(() => {
@@ -55,6 +58,7 @@ export const RestaurantProvider = ({ children }) => {
   const fetchCategories = async () => {
     const token = localStorage.getItem("token");
     try {
+      setOrderLineCategoryLoader(true);
       const res = await fetch(`/api/pos/fetch-categories/${restaurant}`, {
         method: "GET",
         headers: {
@@ -68,12 +72,15 @@ export const RestaurantProvider = ({ children }) => {
       setTotalDishCount(data.totalDishCount);
     } catch (err) {
       console.error("Error fetching categories:", err);
+    } finally {
+      setOrderLineCategoryLoader(false);
     }
   };
 
   const fetchAllDishes = async () => {
     const token = localStorage.getItem("token");
     try {
+      setOrderLineDishLoader(true);
       const res = await fetch(`/api/pos/fetch-all-dishes/${restaurant}`, {
         method: "GET",
         headers: {
@@ -96,6 +103,8 @@ export const RestaurantProvider = ({ children }) => {
       }
     } catch (err) {
       console.error("Error fetching dishes:", err);
+    } finally {
+      setOrderLineDishLoader(false);
     }
   };
 
@@ -103,6 +112,7 @@ export const RestaurantProvider = ({ children }) => {
     setDishes([]);
     const token = localStorage.getItem("token");
     try {
+      setOrderLineDishLoader(true);
       const res = await fetch(`/api/pos/fetch-dish/${categoryIdParam}`, {
         method: "GET",
         headers: {
@@ -122,6 +132,8 @@ export const RestaurantProvider = ({ children }) => {
       setDishCountbyCategory(data.dishes.length);
     } catch (err) {
       console.error("Error fetching dishes:", err);
+    } finally {
+      setOrderLineDishLoader(false);
     }
   };
 
@@ -131,6 +143,7 @@ export const RestaurantProvider = ({ children }) => {
     setDishes([]);
     const token = localStorage.getItem("token");
     try {
+      setOrderLineDishLoader(true);
       const res = await fetch(`/api/pos/fetch-dish/${categoryOrderIdParam}`, {
         method: "GET",
         headers: {
@@ -150,12 +163,15 @@ export const RestaurantProvider = ({ children }) => {
       setDishCountbyCategory(data.dishes.length);
     } catch (err) {
       console.error("Error fetching dishes:", err);
+    } finally {
+      setOrderLineDishLoader(false);
     }
   };
 
   const fetchAllOrders = async () => {
     const token = localStorage.getItem("token");
     try {
+      setOrderLineSliderLoader(true);
       const res = await fetch(`/api/pos/fetch-all-orders/${restaurant}`, {
         method: "GET",
         headers: {
@@ -178,6 +194,8 @@ export const RestaurantProvider = ({ children }) => {
       }
     } catch (err) {
       console.error("Error fetching orders:", err);
+    } finally {
+      setOrderLineSliderLoader(false);
     }
   };
 
@@ -214,6 +232,9 @@ export const RestaurantProvider = ({ children }) => {
         setOrders,
         orderTrigger,
         setOrderTrigger,
+        orderLineSliderLoader,
+        orderLineCategoryLoader,
+        orderLineDishLoader,
       }}
     >
       {children}

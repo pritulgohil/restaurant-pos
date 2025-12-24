@@ -17,6 +17,8 @@ const OrderLineMenu = () => {
     orderLineFetchDishByCategory,
     orderLine,
     setOrderLine,
+    orderLineCategoryLoader,
+    orderLineDishLoader,
   } = useRestaurantContext();
 
   const scrollRef = useRef(null);
@@ -142,7 +144,7 @@ const OrderLineMenu = () => {
           </div>
         </div>
 
-        {categories === undefined || categories === null ? (
+        {orderLineCategoryLoader ? (
           <div className={styles.categoriesCardContainer} ref={scrollRef}>
             {[...Array(5)].map((_, index) => (
               <div key={index} className={styles.categoryCard}>
@@ -208,7 +210,7 @@ const OrderLineMenu = () => {
       </div>
 
       <div className={styles.menuCardContainer}>
-        {dishes === null ? (
+        {orderLineDishLoader ? (
           // 🔹 LOADING → SKELETON
           [...Array(10)].map((_, index) => (
             <div key={index} className={styles.menuCard}>
@@ -216,8 +218,8 @@ const OrderLineMenu = () => {
               <Skeleton className="h-3 w-20 mb-2" />
               <Skeleton className="h-4 w-28 mb-3" />
               <div className={styles.priceQuantityContainer}>
-                <Skeleton className="h-4 w-12" />
-                <Skeleton className="h-6 w-20" />
+                <Skeleton className="h-5 w-12" />
+                <Skeleton className="h-5 w-16" />
               </div>
             </div>
           ))
