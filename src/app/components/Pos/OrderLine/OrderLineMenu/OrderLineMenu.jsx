@@ -18,6 +18,7 @@ const OrderLineMenu = () => {
     orderLine,
     setOrderLine,
     orderLineCategoryLoader,
+    orderLineDishLoader,
   } = useRestaurantContext();
 
   const scrollRef = useRef(null);
@@ -209,7 +210,7 @@ const OrderLineMenu = () => {
       </div>
 
       <div className={styles.menuCardContainer}>
-        {dishes === null ? (
+        {orderLineDishLoader ? (
           // 🔹 LOADING → SKELETON
           [...Array(10)].map((_, index) => (
             <div key={index} className={styles.menuCard}>
