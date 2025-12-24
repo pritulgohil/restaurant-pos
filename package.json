@@ -25,6 +25,7 @@
     "clsx": "^2.1.1",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.479.0",
+    "luxon": "^3.7.2",
     "mongodb": "^7.0.0",
     "mongoose": "^8.12.1",
     "next": "^15.3.8",
