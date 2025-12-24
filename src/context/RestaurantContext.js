@@ -18,6 +18,7 @@ export const RestaurantProvider = ({ children }) => {
   const [orders, setOrders] = useState([]);
   const [orderType, setOrderType] = useState("Dine-in");
   const [orderTrigger, setOrderTrigger] = useState(false);
+  const [orderLineSliderLoader, setOrderLineSliderLoader] = useState(false);
 
   // Load localStorage values on client only
   useEffect(() => {
@@ -156,6 +157,7 @@ export const RestaurantProvider = ({ children }) => {
   const fetchAllOrders = async () => {
     const token = localStorage.getItem("token");
     try {
+      setOrderLineSliderLoader(true);
       const res = await fetch(`/api/pos/fetch-all-orders/${restaurant}`, {
         method: "GET",
         headers: {
@@ -178,6 +180,8 @@ export const RestaurantProvider = ({ children }) => {
       }
     } catch (err) {
       console.error("Error fetching orders:", err);
+    } finally {
+      setOrderLineSliderLoader(false);
     }
   };
 
@@ -214,6 +218,7 @@ export const RestaurantProvider = ({ children }) => {
         setOrders,
         orderTrigger,
         setOrderTrigger,
+        orderLineSliderLoader,
       }}
     >
       {children}
