@@ -36,7 +36,7 @@ export async function GET(req, { params }) {
     // ============================
     // Validate restaurantId
     // ============================
-    const { restaurantId } = params;
+    const { restaurantId } = await params;
     if (!restaurantId) {
       return NextResponse.json(
         { error: "Restaurant ID is required" },
@@ -184,11 +184,6 @@ export async function GET(req, { params }) {
       last20Days.push({ date: dateStr, total });
       last20Total += total;
     }
-
-    console.log(
-      "Last 20 days dates:",
-      last20Days.map((d) => d.date)
-    );
 
     // ============================
     // Response
