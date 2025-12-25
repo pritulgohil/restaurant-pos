@@ -39,6 +39,7 @@ import {
 } from "@/components/ui/popover";
 import { format } from "date-fns";
 import { Search, Filter, CalendarDays } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const ManageOrders = () => {
   const { orders, setOrders, restaurant } = useRestaurantContext();
@@ -50,6 +51,7 @@ const ManageOrders = () => {
   const [filteredOrders, setFilteredOrders] = useState([]);
   const [statusFilter, setStatusFilter] = useState("all");
   const [dateFilter, setDateFilter] = useState(null);
+  const [tableOrdersLoader, setTableOrdersLoader] = useState(false);
 
   const ordersPerPage = 10;
 
@@ -70,6 +72,7 @@ const ManageOrders = () => {
 
   const fetchOrders = async () => {
     try {
+      setTableOrdersLoader(true);
       const token = localStorage.getItem("token");
       const response = await fetch(`/api/pos/fetch-all-orders/${restaurant}`, {
         method: "GET",
@@ -88,6 +91,8 @@ const ManageOrders = () => {
       setFilteredOrders(data.orders || []);
     } catch (error) {
       console.error("Error fetching orders:", error);
+    } finally {
+      setTableOrdersLoader(false);
     }
   };
 
@@ -272,7 +277,35 @@ const ManageOrders = () => {
         </TableHeader>
 
         <TableBody>
-          {currentOrders && currentOrders.length > 0 ? (
+          {tableOrdersLoader ? (
+            // 🔹 Loading state (Skeleton)
+            Array.from({ length: 8 }).map((_, index) => (
+              <TableRow key={index}>
+                <TableCell>
+                  <Skeleton className="h-4 w-16" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-32" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-12" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-24" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-20" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-24" />
+                </TableCell>
+                <TableCell className="text-right">
+                  <Skeleton className="h-4 w-20 ml-auto" />
+                </TableCell>
+              </TableRow>
+            ))
+          ) : currentOrders && currentOrders.length > 0 ? (
+            // 🔹 Data state
             currentOrders.map((order) => (
               <ViewOrderDialog
                 key={order._id || order.orderId}
@@ -321,8 +354,12 @@ const ManageOrders = () => {
               </ViewOrderDialog>
             ))
           ) : (
+            // 🔹 Empty state
             <TableRow>
-              <TableCell colSpan={7} className="text-center">
+              <TableCell
+                colSpan={7}
+                className="text-center text-muted-foreground"
+              >
                 No orders found.
               </TableCell>
             </TableRow>
