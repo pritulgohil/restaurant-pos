@@ -188,7 +188,9 @@ export default function AssignTable({
         {table.isOccupied ? (
           <>
             <DialogHeader className={styles.dialogHeader}>
-              Table {table.tableNumber.toString().padStart(2, "0")}
+              <DialogTitle>
+                Table {table.tableNumber.toString().padStart(2, "0")}
+              </DialogTitle>
             </DialogHeader>
 
             <div className={styles.dialogRow}>
