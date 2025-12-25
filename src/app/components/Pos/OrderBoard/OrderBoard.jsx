@@ -17,10 +17,16 @@ import {
 import { Button } from "@/components/ui/button";
 import { useRestaurantContext } from "@/context/RestaurantContext";
 import TimeStamp from "@/app/components/Pos/OrderLine/OrderLineSlider/Timestamp";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const OrderBoard = () => {
-  const { orders, fetchAllOrders, orderTrigger, setOrderTrigger } =
-    useRestaurantContext();
+  const {
+    orders,
+    fetchAllOrders,
+    orderTrigger,
+    setOrderTrigger,
+    orderLineSliderLoader,
+  } = useRestaurantContext();
 
   const [loadingOrders, setLoadingOrders] = useState(new Set());
   const [filterStatus, setFilterStatus] = useState("All");
@@ -32,10 +38,7 @@ export const OrderBoard = () => {
   const handleStatusUpdate = async (order) => {
     try {
       let newStatus;
-
-      // Add order to loading set
       setLoadingOrders((prev) => new Set(prev).add(order._id));
-
       if (order.status === "Queued") {
         newStatus = "In Progress";
       } else if (order.status === "In Progress") {
@@ -48,7 +51,6 @@ export const OrderBoard = () => {
         });
         return;
       }
-
       const token = localStorage.getItem("token");
       const res = await fetch(`/api/pos/update-order-status/${order._id}`, {
         method: "PATCH",
@@ -58,12 +60,8 @@ export const OrderBoard = () => {
         },
         body: JSON.stringify({ status: newStatus }),
       });
-
       if (!res.ok) throw new Error("Failed to update order status");
-
       await res.json();
-
-      // Keep loader visible for 2s, then remove and refresh orders
       setTimeout(() => {
         setLoadingOrders((prev) => {
           const newSet = new Set(prev);
@@ -88,7 +86,6 @@ export const OrderBoard = () => {
       ? orders
       : orders.filter((o) => o.status === filterStatus);
 
-  // Sort and limit orders
   const statusPriority = { Queued: 1, "In Progress": 2, Completed: 3 };
   const sortedOrders = [...filteredOrders].sort(
     (a, b) => statusPriority[a.status] - statusPriority[b.status]
@@ -106,7 +103,6 @@ export const OrderBoard = () => {
 
   return (
     <div className={styles.mainContainer}>
-      {/* Order summary cards */}
       <div className={styles.cardCapsuleContainer}>
         <div
           className={`${styles.cardCapsule} ${
@@ -118,12 +114,10 @@ export const OrderBoard = () => {
           <div
             className={`${styles.capsuleIconContainer} ${styles.allIconContainer}`}
           >
-            {orders.filter(
-              (o) => o.status !== "Completed" // include all non-completed
-            ).length +
+            {orders.filter((o) => o.status !== "Completed").length +
               Math.min(
-                orders.filter((o) => o.status === "Completed").length, // completed ones
-                5 // cap at 5
+                orders.filter((o) => o.status === "Completed").length,
+                5
               )}
           </div>
         </div>
@@ -172,7 +166,41 @@ export const OrderBoard = () => {
       </div>
 
       <div className={styles.orderCardContainer}>
-        {finalOrders.length > 0 ? (
+        {orderLineSliderLoader ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
+            {Array.from({ length: 8 }).map((_, idx) => (
+              <div
+                key={idx}
+                className="p-4 border rounded-xl animate-pulse space-y-4 w-full"
+              >
+                <div className="flex justify-between items-center">
+                  <Skeleton className="h-5 w-1/2 rounded" />
+                  <Skeleton className="h-5 w-1/4 rounded" />
+                </div>
+                <div className="flex items-center gap-2">
+                  <Skeleton className="h-4 w-4 rounded-full" />
+                  <Skeleton className="h-4 w-3/4 rounded" />
+                </div>
+                <div className="flex justify-between items-center">
+                  <Skeleton className="h-4 w-1/3 rounded" />
+                  <Skeleton className="h-4 w-1/4 rounded" />
+                </div>
+                <div className="space-y-2">
+                  {[1, 2, 3].map((_, idx) => (
+                    <div
+                      key={idx}
+                      className="flex justify-between items-center"
+                    >
+                      <Skeleton className="h-4 w-3/4 rounded" />
+                      <Skeleton className="h-4 w-1/6 rounded" />
+                    </div>
+                  ))}
+                </div>
+                <Skeleton className="h-10 w-full rounded" />
+              </div>
+            ))}
+          </div>
+        ) : finalOrders.length > 0 ? (
           finalOrders.map((order) => (
             <div
               key={order._id}
