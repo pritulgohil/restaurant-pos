@@ -26,6 +26,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Dishes = () => {
   const [listView, setListView] = useState(false);
@@ -45,7 +46,7 @@ const Dishes = () => {
     fetchAllDishes,
     fetchDishByCategory,
     dishCountbyCategory,
-    setCategoryId,
+    orderLineDishLoader,
   } = useRestaurantContext();
 
   const handleListView = () => setListView(true);
@@ -101,6 +102,7 @@ const Dishes = () => {
   return (
     <>
       <div className={styles.mainContainer}>
+        {/* Header */}
         <div className={styles.headerContainer}>
           <div className={styles.leftSide}>
             <div className={styles.componentHeader}>
@@ -130,7 +132,10 @@ const Dishes = () => {
             </AddDishDialog>
           </div>
         </div>
+
+        {/* Component Body */}
         <div className={styles.componentBody}>
+          {/* Category header */}
           <div className={styles.componentHeaderContainer}>
             <div className={styles.leftSide}>
               <div className={styles.componentHeader}>
@@ -158,6 +163,7 @@ const Dishes = () => {
                 </div>
               )}
             </div>
+
             <div className={styles.rightSide}>
               <div className={styles.sliderContainer}>
                 <Button
@@ -182,7 +188,9 @@ const Dishes = () => {
             </div>
           </div>
 
+          {/* Dishes Container */}
           <div className={styles.dishesContainer}>
+            {/* Add New Dish Card */}
             <AddDishDialog
               onDishAdded={fetchAllDishes}
               fetchByCategory={fetchDishByCategory}
@@ -205,87 +213,147 @@ const Dishes = () => {
               </DialogTrigger>
             </AddDishDialog>
 
-            {filteredDishes.map((dish, index) => (
-              <div
-                key={index}
-                className={`${
-                  listView
-                    ? styles.addDishCardContainerList
-                    : styles.addDishCardContainer
-                } ${styles.solidBorder}`}
-              >
-                <div
-                  className={`${
-                    listView
-                      ? styles.editIconContainerList
-                      : styles.editIconContainer
-                  }`}
-                >
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        className={styles.dropdownButton}
-                      >
-                        <ChevronDown
-                          className={`${
-                            listView ? styles.editIconList : styles.editIcon
-                          }`}
-                        />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={() => handleEdit(dish)}>
-                        <SquarePen />
-                        Edit
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        className="text-red-500"
-                        onClick={() => handleDelete(dish)}
-                      >
-                        <Trash2 />
-                        Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </div>
-                <div
-                  className={`${
-                    listView ? styles.dishLeftSideList : styles.dishLeftSide
-                  }`}
-                >
-                  <div className={styles.dishImage}>{dish.emoji}</div>
-                  <div className={styles.dishDetails}>
-                    <div className={styles.dishCategory}>
-                      {dish.categoryName}
-                    </div>
-                    <div
-                      className={
-                        listView ? styles.dishNameList : styles.dishName
-                      }
-                    >
-                      {dish.name}
-                    </div>
-                  </div>
-                </div>
-                <div className={styles.dishRightSide}>
+            {/* IF/ELSE Skeleton vs Loaded Dishes */}
+            {orderLineDishLoader
+              ? // Skeleton cards
+                Array.from({ length: 8 }).map((_, idx) => (
                   <div
-                    className={
-                      listView ? styles.dishPriceList : styles.dishPrice
-                    }
+                    key={idx}
+                    className={`${
+                      listView
+                        ? styles.addDishCardContainerList
+                        : styles.addDishCardContainer
+                    } ${styles.skeletonBorder}`}
                   >
-                    ${dish.price.toFixed(2)}
+                    {/* Dropdown/Edit skeleton */}
+                    <div
+                      className={`${
+                        listView
+                          ? styles.editIconContainerList
+                          : styles.editIconContainer
+                      } `}
+                    >
+                      <Skeleton className="h-8 w-8 rounded" />
+                    </div>
+
+                    {/* Left side: icon + details */}
+                    <div
+                      className={`${
+                        listView ? styles.dishLeftSideList : styles.dishLeftSide
+                      } flex items-start gap-4 w-full`}
+                    >
+                      <Skeleton
+                        className={`${
+                          listView
+                            ? "h-12 w-12 rounded-full"
+                            : "h-12 w-12 rounded"
+                        }`}
+                      />
+                      <div className="flex flex-col gap-2 w-full">
+                        <Skeleton className="h-4 w-32 rounded" />
+                        <Skeleton className="h-3 w-20 rounded" />
+                      </div>
+                    </div>
+
+                    {/* Right side: price */}
+                    <div className="flex items-center justify-end mt-auto mr-12">
+                      <Skeleton
+                        className={`${
+                          listView ? "h-4 w-12 rounded" : "h-4 w-16 rounded"
+                        }`}
+                      />
+                    </div>
                   </div>
-                </div>
-                {!dish.available && (
-                  <div className={styles.notAvailableLabel}></div>
-                )}
-              </div>
-            ))}
+                ))
+              : // Loaded dish cards
+                filteredDishes.map((dish, index) => (
+                  <div
+                    key={index}
+                    className={`${
+                      listView
+                        ? styles.addDishCardContainerList
+                        : styles.addDishCardContainer
+                    } ${styles.solidBorder}`}
+                  >
+                    {/* Dropdown menu */}
+                    <div
+                      className={`${
+                        listView
+                          ? styles.editIconContainerList
+                          : styles.editIconContainer
+                      }`}
+                    >
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className={styles.dropdownButton}
+                          >
+                            <ChevronDown
+                              className={`${
+                                listView ? styles.editIconList : styles.editIcon
+                              }`}
+                            />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem onClick={() => handleEdit(dish)}>
+                            <SquarePen />
+                            Edit
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            className="text-red-500"
+                            onClick={() => handleDelete(dish)}
+                          >
+                            <Trash2 />
+                            Delete
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
+
+                    {/* Dish details */}
+                    <div
+                      className={`${
+                        listView ? styles.dishLeftSideList : styles.dishLeftSide
+                      }`}
+                    >
+                      <div className={styles.dishImage}>{dish.emoji}</div>
+                      <div className={styles.dishDetails}>
+                        <div className={styles.dishCategory}>
+                          {dish.categoryName}
+                        </div>
+                        <div
+                          className={
+                            listView ? styles.dishNameList : styles.dishName
+                          }
+                        >
+                          {dish.name}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className={styles.dishRightSide}>
+                      <div
+                        className={
+                          listView ? styles.dishPriceList : styles.dishPrice
+                        }
+                      >
+                        ${dish.price.toFixed(2)}
+                      </div>
+                    </div>
+
+                    {!dish.available && (
+                      <div className={styles.notAvailableLabel}></div>
+                    )}
+                  </div>
+                ))}
           </div>
         </div>
       </div>
+
+      {/* Delete Dialog */}
       <DeleteDialog
         open={deleteDialogOpen}
         onOpenChange={setDeleteDialogOpen}
@@ -294,6 +362,8 @@ const Dishes = () => {
         fetchAllDishes={fetchAllDishes}
         fetchDishByCategory={fetchDishByCategory}
       />
+
+      {/* Edit Dish Dialog */}
       {editDishData && (
         <EditDishDialog
           open={editDialogOpen}
