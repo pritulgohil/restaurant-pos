@@ -54,6 +54,8 @@ const AddDishDialog = ({ children, onDishAdded, fetchByCategory }) => {
   //State that saves categories
   const { categories } = useRestaurantContext();
 
+  const { fetchCategories } = useRestaurantContext();
+
   //State to save category from the dropdown
   const [separateCategoryId, setSeparateCategoryId] = useState(null);
 
@@ -95,15 +97,16 @@ const AddDishDialog = ({ children, onDishAdded, fetchByCategory }) => {
       setEmoji("");
       setPrice("");
       setAvailable(false);
-      if (categoryId === null) {
-        onDishAdded?.();
-      } else {
-        fetchByCategory?.();
-      }
 
       setTimeout(() => {
         setLoading(false);
         setIsOpen(false);
+        fetchCategories();
+        if (categoryId === null) {
+          onDishAdded?.();
+        } else {
+          fetchByCategory?.();
+        }
       }, 2000);
     } catch (err) {
       console.error("Error adding category:", err);

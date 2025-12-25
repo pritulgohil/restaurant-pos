@@ -131,6 +131,10 @@
   border: 1px solid black;
 }
 
+.skeletonBorder {
+  border: 1px solid gainsboro;
+}
+
 .addDishCardContainerList {
   width: 48.9%;
   height: 70px;
