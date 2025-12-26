@@ -1,0 +1,147 @@
+/* Bell Icon container */
+.bellIconContainer {
+  padding: 8px;
+  border: 1px solid rgb(225, 225, 225);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.bellIconContainer:hover {
+  background-color: rgb(245, 245, 245);
+}
+
+.bellIcon {
+  width: 16px;
+  height: 16px;
+  color: gray;
+  stroke-width: 2px;
+}
+
+/* Dropdown content */
+.dropdownContent {
+  width: 370px;
+  height: 465px;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Sticky header */
+.dropdownHeader {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: white;
+  padding: 8px 12px;
+}
+
+/* Scrollable notifications area */
+.notificationsContainer {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+.notificationsContainer::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* Sticky footer */
+.dropdownFooter {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  background-color: white;
+  padding: 8px 0;
+}
+
+/* Individual notification */
+.notificationItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 8px 12px;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* Notification inner layout */
+.notification {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+/* Icon with optional indicator */
+.notificationIcon {
+  position: relative;
+  background-color: rgb(235, 235, 235);
+  padding: 8px;
+  height: 40px;
+  width: 40px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Small dot indicator for unread */
+.notificationIndicator {
+  position: absolute;
+  top: -2px;
+  right: -2px; /* adjust for top-right corner */
+  width: 8px;
+  height: 8px;
+  background-color: #3b82f6; /* Tailwind blue-500 */
+  border-radius: 50%;
+}
+
+/* Notification text layout */
+.notificationDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+.notificationTitle {
+  color: #374151; /* Tailwind gray-700 */
+  font-size: 0.95rem;
+}
+
+.notificationDescription {
+  font-size: 0.875rem;
+  color: #6b7280; /* Tailwind gray-500 */
+}
+
+.notificationTime {
+  font-size: 0.75rem;
+  color: #9ca3af; /* Tailwind gray-400 */
+}
+
+/* Footer mark-all */
+.dropdownFooter .dropdownMenuItem {
+  text-align: center;
+  font-size: 0.875rem;
+  color: #6b7280;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+
+.titleContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}

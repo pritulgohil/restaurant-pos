@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
+import NotificationDropdown from "@/app/components/Pos/Navbar/NotificationDropdown/NotificationDropdown";
 
 const Navbar = () => {
   const router = useRouter();
@@ -60,9 +61,7 @@ const Navbar = () => {
         <h1>Plates Up</h1>
       </div>
       <div className={styles.adminContainer}>
-        <div className={styles.bellIconContainer}>
-          <Bell className={styles.bellIcon} />
-        </div>
+        <NotificationDropdown />
         <div className={styles.restaurantContainer}>
           <div className={styles.userName}>
             <div className={styles.name}>Managing</div>

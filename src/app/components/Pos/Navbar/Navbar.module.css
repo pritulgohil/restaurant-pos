@@ -14,19 +14,6 @@
   font-weight: 600;
 }
 
-.bellIconContainer {
-  padding: 8px;
-  border: 1px solid rgb(225, 225, 225);
-  border-radius: 100%;
-}
-
-.bellIcon {
-  width: 16px;
-  height: 16px;
-  color: gray;
-  stroke-width: 2px;
-}
-
 .adminContainer {
   display: flex;
   align-items: center;
