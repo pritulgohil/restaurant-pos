@@ -28,7 +28,6 @@ const Page = () => {
         setDashboardData(data);
       } catch (err) {
         console.error("Failed to fetch dashboard:", err);
-        setError(err.message);
       } finally {
       }
     };

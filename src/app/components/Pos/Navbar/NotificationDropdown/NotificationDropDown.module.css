@@ -1,0 +1,144 @@
+.bellIconContainer {
+  padding: 8px;
+  border: 1px solid rgb(225, 225, 225);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.bellIconContainer:hover {
+  background-color: rgb(245, 245, 245);
+}
+
+.bellIcon {
+  width: 16px;
+  height: 16px;
+  color: gray;
+  stroke-width: 2px;
+}
+
+.dropdownContent {
+  width: 370px;
+  height: 430px;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dropdownHeader {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: white;
+  padding: 8px 12px;
+}
+
+.notificationsContainer {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.notificationsContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.dropdownFooter {
+  z-index: 10;
+  background-color: white;
+  padding: 8px 0;
+}
+
+.notificationItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 8px 12px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.notification {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.notificationIcon {
+  position: relative;
+  background-color: rgb(235, 235, 235);
+  padding: 8px;
+  height: 40px;
+  width: 40px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.skeletonNotificationIcon {
+  position: relative;
+  padding: 8px;
+  height: 40px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.notificationIndicator {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 8px;
+  height: 8px;
+  background-color: #3b82f6;
+  border-radius: 50%;
+}
+
+.notificationDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+.notificationTitle {
+  color: #374151;
+  font-size: 0.95rem;
+}
+
+.notificationDescription {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.notificationTime {
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+.dropdownFooter .dropdownMenuItem {
+  text-align: center;
+  font-size: 0.875rem;
+  color: #6b7280;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+
+.titleContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
