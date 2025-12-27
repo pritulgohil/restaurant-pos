@@ -98,7 +98,7 @@
 .notificationIndicator {
   position: absolute;
   top: -2px;
-  right: -2px;
+  right: 2px;
   width: 8px;
   height: 8px;
   background-color: #3b82f6;
