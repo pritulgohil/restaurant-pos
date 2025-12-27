@@ -1,4 +1,3 @@
-/* Bell Icon container */
 .bellIconContainer {
   padding: 8px;
   border: 1px solid rgb(225, 225, 225);
@@ -21,10 +20,9 @@
   stroke-width: 2px;
 }
 
-/* Dropdown content */
 .dropdownContent {
   width: 370px;
-  height: 465px;
+  height: 430px;
   display: flex;
   flex-direction: column;
   background-color: white;
@@ -32,7 +30,6 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Sticky header */
 .dropdownHeader {
   position: sticky;
   top: 0;
@@ -41,31 +38,26 @@
   padding: 8px 12px;
 }
 
-/* Scrollable notifications area */
 .notificationsContainer {
   flex: 1;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 4px;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE 10+ */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .notificationsContainer::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
+  display: none;
 }
 
-/* Sticky footer */
 .dropdownFooter {
-  position: sticky;
-  bottom: 0;
   z-index: 10;
   background-color: white;
   padding: 8px 0;
 }
 
-/* Individual notification */
 .notificationItem {
   display: flex;
   align-items: flex-start;
@@ -75,14 +67,12 @@
   width: 100%;
 }
 
-/* Notification inner layout */
 .notification {
   display: flex;
   gap: 12px;
   width: 100%;
 }
 
-/* Icon with optional indicator */
 .notificationIcon {
   position: relative;
   background-color: rgb(235, 235, 235);
@@ -95,18 +85,26 @@
   align-items: center;
 }
 
-/* Small dot indicator for unread */
+.skeletonNotificationIcon {
+  position: relative;
+  padding: 8px;
+  height: 40px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .notificationIndicator {
   position: absolute;
   top: -2px;
-  right: -2px; /* adjust for top-right corner */
+  right: -2px;
   width: 8px;
   height: 8px;
-  background-color: #3b82f6; /* Tailwind blue-500 */
+  background-color: #3b82f6;
   border-radius: 50%;
 }
 
-/* Notification text layout */
 .notificationDetails {
   display: flex;
   flex-direction: column;
@@ -115,21 +113,20 @@
 }
 
 .notificationTitle {
-  color: #374151; /* Tailwind gray-700 */
+  color: #374151;
   font-size: 0.95rem;
 }
 
 .notificationDescription {
   font-size: 0.875rem;
-  color: #6b7280; /* Tailwind gray-500 */
+  color: #6b7280;
 }
 
 .notificationTime {
   font-size: 0.75rem;
-  color: #9ca3af; /* Tailwind gray-400 */
+  color: #9ca3af;
 }
 
-/* Footer mark-all */
 .dropdownFooter .dropdownMenuItem {
   text-align: center;
   font-size: 0.875rem;

@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { useRestaurantContext } from "@/context/RestaurantContext";
 import { Skeleton } from "@/components/ui/skeleton";
 import CreateOrderDialog from "./CreateOrderDialog";
+import { useNotification } from "@/context/NotificationContext";
 
 const OrderLineSummary = () => {
   const [paymentMethod, setPaymentMethod] = useState("cash");
@@ -27,6 +28,7 @@ const OrderLineSummary = () => {
     setOrderLine,
     restaurant,
   } = useRestaurantContext();
+  const { sendNotification, fetchNotifications } = useNotification();
 
   const searchParams = useSearchParams();
   useEffect(() => {
@@ -53,26 +55,21 @@ const OrderLineSummary = () => {
       ? !!orderLine.table && !!orderLine.peopleCount
       : true);
 
-  // Calculate subtotal
   const subtotal = Object.values(orderLine?.dishes || {}).reduce(
     (acc, dish) => acc + dish.price * dish.quantity,
     0
   );
 
-  // Calculate tax at 13%
   const tax = subtotal * 0.13;
 
-  // Calculate total payable
   const totalPayable = subtotal + tax;
 
-  // Calculate total number of ordered items
   const totalItems = Object.values(orderLine?.dishes || {}).reduce(
     (total, dish) => total + dish.quantity,
     0
   );
 
   const handleDeleteOrderLine = () => {
-    // Your delete logic here
     setOrderLine({});
   };
 
@@ -80,7 +77,7 @@ const OrderLineSummary = () => {
 
   const handlePlaceOrder = async () => {
     try {
-      const token = localStorage.getItem("token");
+      setLoading(true);
       const enrichedOrder = {
         ...orderLine,
         restaurantId: restaurant,
@@ -92,6 +89,8 @@ const OrderLineSummary = () => {
         paymentMethod: paymentMethod,
         orderType: orderType,
       };
+
+      const token = localStorage.getItem("token");
       const res = await fetch("/api/pos/create-order", {
         method: "POST",
         headers: {
@@ -104,38 +103,51 @@ const OrderLineSummary = () => {
       if (!res.ok) {
         throw new Error("Failed to place order");
       }
+
       const data = await res.json();
-      setLoading(true);
+
       setTimeout(() => {
         setLoading(false);
         setOrderLine({});
         fetchAllOrders();
+        fetchNotifications({ restaurantId: restaurant, reset: true });
       }, 2000);
+
       console.log("Order saved:", enrichedOrder);
       console.log("Response from server:", data);
-      const payload = {
-        orderId: data._id,
-        customerName: orderLine.customerName,
-        peopleCount: orderLine.peopleCount,
-        isOccupied: true,
-      };
 
-      const tableRes = await fetch(
-        `/api/pos/update-table/${orderLine.tableId}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(payload),
+      if (orderLine.tableId) {
+        const tablePayload = {
+          orderId: data._id,
+          customerName: orderLine.customerName,
+          peopleCount: orderLine.peopleCount,
+          isOccupied: true,
+        };
+
+        const tableRes = await fetch(
+          `/api/pos/update-table/${orderLine.tableId}`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(tablePayload),
+          }
+        );
+
+        if (!tableRes.ok) {
+          throw new Error("Failed to update table");
         }
-      );
-
-      if (!tableRes.ok) {
-        throw new Error("Failed to update table");
       }
+
+      await sendNotification({
+        notificationSender: "Order Line",
+        orderId: data._id,
+        restaurantId: restaurant,
+      });
     } catch (error) {
+      setLoading(false);
       console.error("Error:", error);
     }
   };
@@ -175,7 +187,6 @@ const OrderLineSummary = () => {
               <div className={styles.topContainer}>
                 {orderType === "Dine-in" ? (
                   <div className={styles.tableNumber}>
-                    {/* Table number goes here */}
                     {orderLine.table ? (
                       `Table No #0${orderLine.table}`
                     ) : (
@@ -184,7 +195,6 @@ const OrderLineSummary = () => {
                   </div>
                 ) : (
                   <div className={styles.tableNumber}>
-                    {/* Table number goes here */}
                     {orderLine.customerName ? (
                       orderLine.customerName
                     ) : (
@@ -207,7 +217,6 @@ const OrderLineSummary = () => {
               {orderType === "Dine-in" && (
                 <div className={styles.bottomContainer}>
                   <div className={styles.orderId}>
-                    {/* Name goes here */}
                     {orderLine.customerName ? (
                       orderLine.customerName
                     ) : (
@@ -215,7 +224,6 @@ const OrderLineSummary = () => {
                     )}
                   </div>
                   <div className={styles.peopleContainer}>
-                    {/* People goes here */}
                     {orderLine.peopleCount ? (
                       `${orderLine.peopleCount} People`
                     ) : (
