@@ -31,12 +31,40 @@ export default function NotificationDropdown() {
     useNotification();
 
   const [open, setOpen] = useState(false);
+  const [deletingId, setDeletingId] = useState(null);
 
   useEffect(() => {
     if (open && restaurant) {
       fetchNotifications({ restaurantId: restaurant, reset: true });
     }
   }, [open, restaurant]);
+
+  // ✅ DELETE NOTIFICATION WITH 3s LOADER
+  const handleDeleteNotification = async (e, notificationId) => {
+    e.stopPropagation();
+    setDeletingId(notificationId);
+
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) throw new Error("Not authenticated");
+
+      await fetch(`/api/notification/delete-notification/${notificationId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // 🔥 Force loader to stay for 3 seconds
+      setTimeout(() => {
+        fetchNotifications({ restaurantId: restaurant, reset: true });
+        setDeletingId(null);
+      }, 3000);
+    } catch (error) {
+      console.error("Delete notification error:", error);
+      setDeletingId(null);
+    }
+  };
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
@@ -90,10 +118,12 @@ export default function NotificationDropdown() {
           ) : (
             notifications.map((n) => {
               const isUnread = !n.notificationRead;
+
               return (
                 <DropdownMenuItem
                   key={n._id}
                   className={styles.notificationItem}
+                  disabled={deletingId === n._id}
                 >
                   <div className={styles.notificationIcon}>
                     {n.notificationSender === "Order Line" && (
@@ -119,12 +149,19 @@ export default function NotificationDropdown() {
                       >
                         {n.notificationSender}
                       </div>
+
                       <Button
                         variant="ghost"
                         size="sm"
                         className="p-2 h-4 w-4 hover:bg-gray-200"
+                        onClick={(e) => handleDeleteNotification(e, n._id)}
+                        disabled={deletingId === n._id}
                       >
-                        <X strokeWidth={1} />
+                        {deletingId === n._id ? (
+                          <LoaderCircle className="animate-spin h-4 w-4" />
+                        ) : (
+                          <X strokeWidth={1} />
+                        )}
                       </Button>
                     </div>
 
