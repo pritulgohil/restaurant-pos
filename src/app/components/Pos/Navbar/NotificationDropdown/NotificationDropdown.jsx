@@ -17,6 +17,7 @@ import {
   LayoutDashboard,
   LoaderCircle,
   X,
+  Check,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNotification } from "@/context/NotificationContext";
@@ -149,20 +150,34 @@ export default function NotificationDropdown() {
                       >
                         {n.notificationSender}
                       </div>
-
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="p-2 h-4 w-4 hover:bg-gray-200"
-                        onClick={(e) => handleDeleteNotification(e, n._id)}
-                        disabled={deletingId === n._id}
-                      >
-                        {deletingId === n._id ? (
-                          <LoaderCircle className="animate-spin h-4 w-4" />
-                        ) : (
-                          <X strokeWidth={1} />
-                        )}
-                      </Button>
+                      <div className={styles.buttonContainer}>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="p-2 h-4 w-4 hover:bg-gray-200"
+                          onClick={(e) => handleDeleteNotification(e, n._id)}
+                          disabled={deletingId === n._id}
+                        >
+                          {deletingId === n._id ? (
+                            <LoaderCircle className="animate-spin h-4 w-4" />
+                          ) : (
+                            <X strokeWidth={1} />
+                          )}
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="p-2 h-4 w-4 hover:bg-gray-200"
+                          onClick={(e) => handleDeleteNotification(e, n._id)}
+                          disabled={deletingId === n._id}
+                        >
+                          {deletingId === n._id ? (
+                            <LoaderCircle className="animate-spin h-4 w-4" />
+                          ) : (
+                            <Check strokeWidth={1} />
+                          )}
+                        </Button>
+                      </div>
                     </div>
 
                     <div
