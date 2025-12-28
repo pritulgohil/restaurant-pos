@@ -6,10 +6,12 @@ import DashboardChart from "@/app/components/Pos/Dashboard/DashboardChart";
 import DashboardBottom from "@/app/components/Pos/Dashboard/DashboardBottom";
 import styles from "./page.module.css";
 import { useRestaurantContext } from "@/context/RestaurantContext";
+import { useNotification } from "@/context/NotificationContext";
 
 const Page = () => {
   const [dashboardData, setDashboardData] = useState(null);
   const { restaurant } = useRestaurantContext();
+  const { fetchNotifications } = useNotification();
 
   useEffect(() => {
     const fetchDashboard = async () => {
@@ -26,6 +28,7 @@ const Page = () => {
 
         const data = await res.json();
         setDashboardData(data);
+        fetchNotifications({ restaurantId: restaurant, reset: true });
       } catch (err) {
         console.error("Failed to fetch dashboard:", err);
       } finally {
