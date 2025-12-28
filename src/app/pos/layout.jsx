@@ -13,7 +13,6 @@ const Page = ({ children }) => {
   }, []);
   const { loggedInUser } = useAuthContext();
   const router = useRouter();
-
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {

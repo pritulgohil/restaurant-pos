@@ -26,6 +26,7 @@ const Page = () => {
 
         const data = await res.json();
         setDashboardData(data);
+        // fetchNotifications({ restaurantId: restaurant, reset: true });
       } catch (err) {
         console.error("Failed to fetch dashboard:", err);
       } finally {

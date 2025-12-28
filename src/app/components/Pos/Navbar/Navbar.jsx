@@ -14,16 +14,18 @@ import {
 import { useRouter } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
 import NotificationDropdown from "@/app/components/Pos/Navbar/NotificationDropdown/NotificationDropdown";
+import { useNotification } from "@/context/NotificationContext";
 
 const Navbar = () => {
   const router = useRouter();
   const { loggedInUser, user, setUser } = useAuthContext();
-  const { restaurantName } = useRestaurantContext();
+  const { restaurantName, restaurant } = useRestaurantContext();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const handleAddRestaurant = () => {
     router.push("/coming-soon");
   };
   const userName = `${user.firstname} ${user.lastname}`;
+  const { fetchNotifications } = useNotification();
 
   useEffect(() => {
     if (!loggedInUser) return;
@@ -53,6 +55,7 @@ const Navbar = () => {
     };
 
     fetchUser();
+    fetchNotifications({ restaurantId: restaurant, reset: true });
   }, [loggedInUser]);
 
   return (
