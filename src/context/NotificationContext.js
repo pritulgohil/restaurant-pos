@@ -9,6 +9,11 @@ export function NotificationProvider({ children }) {
   const [orderId, setOrderId] = useState(null);
 
   const [notifications, setNotifications] = useState([]);
+  const [pagination, setPagination] = useState({
+    total: 0,
+    hasMore: true,
+    page: 1,
+  });
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [notificationLength, setNotificationLength] = useState(0);
@@ -59,6 +64,11 @@ export function NotificationProvider({ children }) {
       setLoading(true);
       setError(null);
 
+      if (reset) {
+        setNotifications([]); // 👈 CRITICAL LINE
+        setPage(1);
+      }
+
       const currentPage = reset ? 1 : page;
 
       const res = await fetch(
@@ -79,6 +89,12 @@ export function NotificationProvider({ children }) {
       setNotifications((prev) =>
         reset ? data.notifications : [...prev, ...data.notifications]
       );
+
+      setPagination({
+        total: data.pagination.total,
+        hasMore: data.pagination.hasMore,
+        page: currentPage + 1,
+      });
 
       setHasMore(data.pagination.hasMore);
       setPage(currentPage + 1);
@@ -107,6 +123,7 @@ export function NotificationProvider({ children }) {
     sendNotification,
     fetchNotifications,
     resetNotifications,
+    pagination,
   };
 
   return (

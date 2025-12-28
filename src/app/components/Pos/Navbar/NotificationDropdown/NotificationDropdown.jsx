@@ -17,7 +17,7 @@ import {
   LayoutDashboard,
   LoaderCircle,
   X,
-  Check,
+  Eye,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNotification } from "@/context/NotificationContext";
@@ -28,11 +28,16 @@ import styles from "./NotificationDropDown.module.css";
 
 export default function NotificationDropdown() {
   const { restaurant } = useRestaurantContext();
-  const { notifications, fetchNotifications, loading, hasMore } =
+  const { notifications, fetchNotifications, loading, hasMore, pagination } =
     useNotification();
 
   const [open, setOpen] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
+  const [readingId, setReadingId] = useState(null);
+  const [markAllLoading, setMarkAllLoading] = useState(false);
+  const totalNotifications = pagination.total;
+  const isInitialLoading = loading && notifications.length === 0;
+  const isPaginating = loading && notifications.length > 0;
 
   useEffect(() => {
     if (open && restaurant) {
@@ -40,7 +45,6 @@ export default function NotificationDropdown() {
     }
   }, [open, restaurant]);
 
-  // ✅ DELETE NOTIFICATION WITH 3s LOADER
   const handleDeleteNotification = async (e, notificationId) => {
     e.stopPropagation();
     setDeletingId(notificationId);
@@ -56,14 +60,63 @@ export default function NotificationDropdown() {
         },
       });
 
-      // 🔥 Force loader to stay for 3 seconds
       setTimeout(() => {
         fetchNotifications({ restaurantId: restaurant, reset: true });
         setDeletingId(null);
-      }, 3000);
+      }, 2000);
     } catch (error) {
       console.error("Delete notification error:", error);
       setDeletingId(null);
+    }
+  };
+
+  const handleMarkAsRead = async (e, notificationId) => {
+    e.stopPropagation();
+    setReadingId(notificationId);
+
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) throw new Error("Not authenticated");
+
+      await fetch(`/api/notification/read-notification`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ notificationId }),
+      });
+      setTimeout(() => {
+        fetchNotifications({ restaurantId: restaurant, reset: true });
+        setReadingId(null);
+      }, 1000);
+    } catch (error) {
+      console.error("Mark as read error:", error);
+    }
+  };
+
+  // ✅ MARK ALL AS READ
+  const handleMarkAllAsRead = async () => {
+    setMarkAllLoading(true);
+
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) throw new Error("Not authenticated");
+
+      await fetch(`/api/notification/read-notification`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ restaurantId: restaurant }),
+      });
+      setTimeout(() => {
+        fetchNotifications({ restaurantId: restaurant, reset: true });
+        setMarkAllLoading(false);
+      }, 2000);
+    } catch (error) {
+      console.error("Mark all as read error:", error);
     }
   };
 
@@ -81,7 +134,7 @@ export default function NotificationDropdown() {
       <DropdownMenuContent align="end" className={styles.dropdownContent}>
         <div className={styles.dropdownHeader}>
           <DropdownMenuLabel className="font-medium">
-            Notifications ({notifications.length})
+            Notifications ({totalNotifications})
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
         </div>
@@ -99,7 +152,7 @@ export default function NotificationDropdown() {
             }
           }}
         >
-          {loading ? (
+          {isInitialLoading ? (
             Array.from({ length: 4 }).map((_, index) => (
               <DropdownMenuItem key={index} className={styles.notificationItem}>
                 <div className={styles.skeletonNotificationIcon}>
@@ -164,19 +217,21 @@ export default function NotificationDropdown() {
                             <X strokeWidth={1} />
                           )}
                         </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="p-2 h-4 w-4 hover:bg-gray-200"
-                          onClick={(e) => handleDeleteNotification(e, n._id)}
-                          disabled={deletingId === n._id}
-                        >
-                          {deletingId === n._id ? (
-                            <LoaderCircle className="animate-spin h-4 w-4" />
-                          ) : (
-                            <Check strokeWidth={1} />
-                          )}
-                        </Button>
+                        {isUnread && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="p-2 h-4 w-4 hover:bg-gray-200"
+                            onClick={(e) => handleMarkAsRead(e, n._id)}
+                            disabled={readingId === n._id}
+                          >
+                            {readingId === n._id ? (
+                              <LoaderCircle className="animate-spin h-4 w-4" />
+                            ) : (
+                              <Eye strokeWidth={1} />
+                            )}
+                          </Button>
+                        )}
                       </div>
                     </div>
 
@@ -204,7 +259,7 @@ export default function NotificationDropdown() {
             })
           )}
 
-          {loading && notifications.length > 0 && (
+          {isPaginating && (
             <DropdownMenuItem disabled>
               <LoaderCircle className="text-gray-500 animate-spin mx-auto" />
             </DropdownMenuItem>
@@ -214,9 +269,23 @@ export default function NotificationDropdown() {
         {notifications.length > 0 && (
           <div className={styles.dropdownFooter}>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-sm flex items-center justify-center text-muted-foreground">
-              <Button variant="ghost" size="sm" className="p-2 h-4 w-4">
-                <CheckCheck className="mr-1" /> Mark all as read
+            <DropdownMenuItem
+              className="text-sm flex items-center justify-center text-muted-foreground"
+              onSelect={(e) => e.preventDefault()} // 👈 THIS LINE
+            >
+              <Button
+                variant="ghost"
+                size="sm"
+                className="p-2 h-4 w-4"
+                onClick={handleMarkAllAsRead}
+                disabled={markAllLoading}
+              >
+                {markAllLoading ? (
+                  <LoaderCircle className="animate-spin mr-1" />
+                ) : (
+                  <CheckCheck className="mr-1" />
+                )}
+                Mark all as read
               </Button>
             </DropdownMenuItem>
           </div>
