@@ -27,7 +27,12 @@ export async function POST(req) {
     }
 
     const body = await req.json();
-    const { notificationSender, orderId, restaurantId } = body;
+    const {
+      notificationSender,
+      orderId,
+      restaurantId,
+      notificationDescription,
+    } = body;
 
     if (!notificationSender || !orderId || !restaurantId) {
       return NextResponse.json(
@@ -39,9 +44,7 @@ export async function POST(req) {
     const newNotification = new Notification({
       notificationSender,
       orderId,
-      notificationDescription: `Order #${orderId.slice(
-        -6
-      )} has been added to queue`,
+      notificationDescription,
       notificationRead: false,
       restaurantId,
     });

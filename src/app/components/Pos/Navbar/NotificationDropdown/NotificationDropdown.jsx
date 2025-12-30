@@ -65,7 +65,7 @@ export default function NotificationDropdown() {
       setTimeout(() => {
         fetchNotifications({ restaurantId: restaurant, reset: true });
         setDeletingId(null);
-      }, 2000);
+      }, 500);
     } catch (error) {
       console.error("Delete notification error:", error);
       setDeletingId(null);
