@@ -38,6 +38,8 @@ export default function NotificationDropdown() {
   const totalNotifications = pagination.total;
   const isInitialLoading = loading && notifications.length === 0;
   const isPaginating = loading && notifications.length > 0;
+  const allNotificationsRead =
+    notifications.length > 0 && notifications.every((n) => n.notificationRead);
 
   useEffect(() => {
     if (open && restaurant) {
@@ -63,7 +65,7 @@ export default function NotificationDropdown() {
       setTimeout(() => {
         fetchNotifications({ restaurantId: restaurant, reset: true });
         setDeletingId(null);
-      }, 2000);
+      }, 500);
     } catch (error) {
       console.error("Delete notification error:", error);
       setDeletingId(null);
@@ -278,7 +280,7 @@ export default function NotificationDropdown() {
                 size="sm"
                 className="p-2 h-4 w-4"
                 onClick={handleMarkAllAsRead}
-                disabled={markAllLoading}
+                disabled={markAllLoading || allNotificationsRead}
               >
                 {markAllLoading ? (
                   <LoaderCircle className="animate-spin mr-1" />

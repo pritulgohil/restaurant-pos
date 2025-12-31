@@ -11,7 +11,6 @@ const NotificationSchema = new mongoose.Schema(
     orderId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Order",
-      required: true,
     },
 
     restaurantId: {
@@ -35,5 +34,5 @@ const NotificationSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.models.Notification ||
+export default mongoose.models?.Notification ||
   mongoose.model("Notification", NotificationSchema);

@@ -72,7 +72,6 @@ export default function AssignTable({
     try {
       const token = localStorage.getItem("token");
 
-      // 👇 Only send assignedAt if table was previously free
       const payload = {
         customerName,
         peopleCount: Number(peopleCount),

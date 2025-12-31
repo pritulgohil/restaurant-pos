@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { useRestaurantContext } from "@/context/RestaurantContext";
 import TimeStamp from "@/app/components/Pos/OrderLine/OrderLineSlider/Timestamp";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useNotification } from "@/context/NotificationContext";
 
 export const OrderBoard = () => {
   const {
@@ -26,7 +27,9 @@ export const OrderBoard = () => {
     orderTrigger,
     setOrderTrigger,
     orderLineSliderLoader,
+    restaurant,
   } = useRestaurantContext();
+  const { sendNotification, fetchNotifications } = useNotification();
 
   const [loadingOrders, setLoadingOrders] = useState(new Set());
   const [filterStatus, setFilterStatus] = useState("All");
@@ -70,6 +73,26 @@ export const OrderBoard = () => {
         });
         setOrderTrigger((prev) => !prev);
       }, 2000);
+      {
+        newStatus === "In Progress"
+          ? await sendNotification({
+              notificationSender: "Order Board",
+              orderId: order._id,
+              restaurantId: restaurant,
+              notificationDescription: `Order #${order._id.slice(
+                -6
+              )} is now being prepared.`,
+            })
+          : await sendNotification({
+              notificationSender: "Order Board",
+              orderId: order._id,
+              restaurantId: restaurant,
+              notificationDescription: `Order #${order._id.slice(
+                -6
+              )} is now ready to be served.`,
+            });
+      }
+      await fetchNotifications({ restaurantId: restaurant, reset: true });
     } catch (err) {
       console.error("Error updating order status:", err);
       setLoadingOrders((prev) => {

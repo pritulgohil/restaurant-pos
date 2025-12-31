@@ -27,9 +27,14 @@ export async function POST(req) {
     }
 
     const body = await req.json();
-    const { notificationSender, orderId, restaurantId } = body;
+    const {
+      notificationSender,
+      orderId,
+      restaurantId,
+      notificationDescription,
+    } = body;
 
-    if (!notificationSender || !orderId || !restaurantId) {
+    if (!notificationSender || !restaurantId) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }
@@ -39,9 +44,7 @@ export async function POST(req) {
     const newNotification = new Notification({
       notificationSender,
       orderId,
-      notificationDescription: `Order #${orderId.slice(
-        -6
-      )} has been added to queue`,
+      notificationDescription,
       notificationRead: false,
       restaurantId,
     });

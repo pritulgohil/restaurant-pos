@@ -7,16 +7,16 @@ import {
   Armchair,
   TrendingUp,
   TrendingDown,
-  Ban,
 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuthContext } from "@/context/AuthContext";
 
 const DashboardTop = ({ data }) => {
+  const { user } = useAuthContext();
   const availableTables =
     data?.tables?.totalTables - data?.tables?.occupiedTables || 0;
   const occupancyPercentage = data?.tables?.occupancyPercentage || 0;
-  const { user } = useAuthContext();
+
   return (
     <div className={styles.mainContainer}>
       <div className={styles.welcomeContainer}>
@@ -85,7 +85,6 @@ const DashboardTop = ({ data }) => {
             <div className={styles.cardHeader}>Total Orders</div>
           </div>
 
-          {/* Today's total orders */}
           <div className={styles.cardData}>
             {data ? (
               data.orders?.today?.count ?? 0
@@ -94,7 +93,6 @@ const DashboardTop = ({ data }) => {
             )}
           </div>
 
-          {/* Comparison vs yesterday */}
           <div className={styles.comparison}>
             {data ? (
               (() => {
@@ -141,7 +139,6 @@ const DashboardTop = ({ data }) => {
             {data ? (
               <>
                 <div className={styles.indicatorWrapper}>
-                  {/* Outer ping ring */}
                   <span
                     className={`animate-ping ${styles.ping} ${
                       occupancyPercentage <= 33
@@ -151,8 +148,6 @@ const DashboardTop = ({ data }) => {
                         : "border-red-500"
                     }`}
                   />
-
-                  {/* Inner solid dot */}
                   <span
                     className={`${styles.dot} ${
                       occupancyPercentage <= 33

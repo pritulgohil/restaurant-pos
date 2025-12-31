@@ -11,21 +11,36 @@ import {
   SquarePlus,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import AddTableDialog from "./AddTableDialog"; // Adjust path if needed
+import AddTableDialog from "./AddTableDialog";
 import { useRestaurantContext } from "@/context/RestaurantContext";
-import TableRenderer from "./TableRenderer"; // Adjust path if needed
+import TableRenderer from "./TableRenderer";
 import AssignTable from "./AssignTable";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useNotification } from "@/context/NotificationContext";
+import useOccupancyNotification from "@/hooks/useOccupancyNotification";
 
 const ManageTable = () => {
-  const { restaurant } = useRestaurantContext();
+  const { restaurant, occupancyPercentage, setOccupancyPercentage } =
+    useRestaurantContext();
   const [tables, setTables] = useState([]);
   const [assignDialogOpen, setAssignDialogOpen] = useState(false);
   const [selectedTable, setSelectedTable] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [tableLoader, setTableLoader] = useState(false);
-
+  const { sendNotification, fetchNotifications } = useNotification();
   const [addDialogOpen, setAddDialogOpen] = useState(false);
+
+  const calculateOccupancyPercentage = (tables) => {
+    if (!tables || tables.length === 0) return 0;
+
+    const totalSeats = tables.reduce((sum, table) => sum + table.occupancy, 0);
+    const totalPeople = tables.reduce(
+      (sum, table) => sum + table.peopleCount,
+      0
+    );
+
+    return Math.round((totalPeople / totalSeats) * 100);
+  };
 
   const fetchTables = async () => {
     if (!restaurant) return;
@@ -52,8 +67,26 @@ const ManageTable = () => {
   };
 
   useEffect(() => {
+    if (tables.length === 0) return;
+
+    const occupancy = calculateOccupancyPercentage(tables);
+
+    setOccupancyPercentage((prev) => {
+      if (prev === occupancy) return prev;
+      return occupancy;
+    });
+  }, [tables]);
+
+  useEffect(() => {
     fetchTables();
-  }, [restaurant]);
+  }, []);
+
+  useOccupancyNotification({
+    restaurant,
+    occupancyPercentage,
+    sendNotification,
+    fetchNotifications,
+  });
 
   const filteredTables = tables.filter((table) => {
     if (!searchQuery.trim()) return true;

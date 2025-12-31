@@ -16,6 +16,7 @@ import { useRestaurantContext } from "@/context/RestaurantContext";
 import { Skeleton } from "@/components/ui/skeleton";
 import CreateOrderDialog from "./CreateOrderDialog";
 import { useNotification } from "@/context/NotificationContext";
+import notification from "@/models/notification";
 
 const OrderLineSummary = () => {
   const [paymentMethod, setPaymentMethod] = useState("cash");
@@ -145,6 +146,9 @@ const OrderLineSummary = () => {
         notificationSender: "Order Line",
         orderId: data._id,
         restaurantId: restaurant,
+        notificationDescription: `New order #${data._id.slice(
+          -6
+        )} has been placed.`,
       });
     } catch (error) {
       setLoading(false);

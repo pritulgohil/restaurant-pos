@@ -16,7 +16,6 @@ export function NotificationProvider({ children }) {
   });
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  const [notificationLength, setNotificationLength] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -24,6 +23,7 @@ export function NotificationProvider({ children }) {
     notificationSender,
     orderId,
     restaurantId,
+    notificationDescription,
   }) => {
     const token = localStorage.getItem("token");
     if (!token) throw new Error("User is not authenticated");
@@ -38,7 +38,12 @@ export function NotificationProvider({ children }) {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ notificationSender, orderId, restaurantId }),
+        body: JSON.stringify({
+          notificationSender,
+          orderId,
+          restaurantId,
+          notificationDescription,
+        }),
       });
 
       const data = await res.json();
@@ -65,7 +70,7 @@ export function NotificationProvider({ children }) {
       setError(null);
 
       if (reset) {
-        setNotifications([]); // 👈 CRITICAL LINE
+        setNotifications([]);
         setPage(1);
       }
 
