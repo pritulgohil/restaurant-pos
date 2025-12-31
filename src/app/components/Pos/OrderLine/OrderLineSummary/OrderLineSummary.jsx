@@ -16,7 +16,7 @@ import { useRestaurantContext } from "@/context/RestaurantContext";
 import { Skeleton } from "@/components/ui/skeleton";
 import CreateOrderDialog from "./CreateOrderDialog";
 import { useNotification } from "@/context/NotificationContext";
-import notification from "@/models/notification";
+import { toast } from "sonner";
 
 const OrderLineSummary = () => {
   const [paymentMethod, setPaymentMethod] = useState("cash");
@@ -112,6 +112,7 @@ const OrderLineSummary = () => {
         setOrderLine({});
         fetchAllOrders();
         fetchNotifications({ restaurantId: restaurant, reset: true });
+        toast(`Order #${data._id.slice(-6)} placed successfully!`);
       }, 2000);
 
       console.log("Order saved:", enrichedOrder);

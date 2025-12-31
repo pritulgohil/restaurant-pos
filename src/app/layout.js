@@ -5,6 +5,7 @@ import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 import { RestaurantProvider } from "@/context/RestaurantContext";
 import { NotificationProvider } from "@/context/NotificationContext";
+import { Toaster } from "@/components/ui/sonner";
 
 const epilogue = Epilogue({
   subsets: ["latin"],
@@ -29,7 +30,10 @@ export default function RootLayout({ children }) {
       <body className={`${epilogue.className} ${dmSans.className}`}>
         <AuthProvider>
           <NotificationProvider>
-            <RestaurantProvider>{children}</RestaurantProvider>
+            <RestaurantProvider>
+              <Toaster position="top-center" richColors />
+              {children}
+            </RestaurantProvider>
           </NotificationProvider>
         </AuthProvider>
       </body>
