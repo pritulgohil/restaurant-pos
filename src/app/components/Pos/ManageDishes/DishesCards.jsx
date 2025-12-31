@@ -102,7 +102,6 @@ const Dishes = () => {
   return (
     <>
       <div className={styles.mainContainer}>
-        {/* Header */}
         <div className={styles.headerContainer}>
           <div className={styles.leftSide}>
             <div className={styles.componentHeader}>
@@ -133,9 +132,7 @@ const Dishes = () => {
           </div>
         </div>
 
-        {/* Component Body */}
         <div className={styles.componentBody}>
-          {/* Category header */}
           <div className={styles.componentHeaderContainer}>
             <div className={styles.leftSide}>
               <div className={styles.componentHeader}>
@@ -188,7 +185,6 @@ const Dishes = () => {
             </div>
           </div>
 
-          {/* Dishes Container */}
           <div className={styles.dishesContainer}>
             {/* Add New Dish Card */}
             <AddDishDialog
@@ -213,10 +209,8 @@ const Dishes = () => {
               </DialogTrigger>
             </AddDishDialog>
 
-            {/* IF/ELSE Skeleton vs Loaded Dishes */}
             {orderLineDishLoader
-              ? // Skeleton cards
-                Array.from({ length: 8 }).map((_, idx) => (
+              ? Array.from({ length: 8 }).map((_, idx) => (
                   <div
                     key={idx}
                     className={`${
@@ -225,7 +219,6 @@ const Dishes = () => {
                         : styles.addDishCardContainer
                     } ${styles.skeletonBorder}`}
                   >
-                    {/* Dropdown/Edit skeleton */}
                     <div
                       className={`${
                         listView
@@ -236,7 +229,6 @@ const Dishes = () => {
                       <Skeleton className="h-8 w-8 rounded" />
                     </div>
 
-                    {/* Left side: icon + details */}
                     <div
                       className={`${
                         listView ? styles.dishLeftSideList : styles.dishLeftSide
@@ -255,7 +247,6 @@ const Dishes = () => {
                       </div>
                     </div>
 
-                    {/* Right side: price */}
                     <div className="flex items-center justify-end mt-auto mr-12">
                       <Skeleton
                         className={`${
@@ -265,8 +256,7 @@ const Dishes = () => {
                     </div>
                   </div>
                 ))
-              : // Loaded dish cards
-                filteredDishes.map((dish, index) => (
+              : filteredDishes.map((dish, index) => (
                   <div
                     key={index}
                     className={`${
@@ -275,7 +265,6 @@ const Dishes = () => {
                         : styles.addDishCardContainer
                     } ${styles.solidBorder}`}
                   >
-                    {/* Dropdown menu */}
                     <div
                       className={`${
                         listView
@@ -313,7 +302,6 @@ const Dishes = () => {
                       </DropdownMenu>
                     </div>
 
-                    {/* Dish details */}
                     <div
                       className={`${
                         listView ? styles.dishLeftSideList : styles.dishLeftSide
@@ -353,7 +341,6 @@ const Dishes = () => {
         </div>
       </div>
 
-      {/* Delete Dialog */}
       <DeleteDialog
         open={deleteDialogOpen}
         onOpenChange={setDeleteDialogOpen}
@@ -363,7 +350,6 @@ const Dishes = () => {
         fetchDishByCategory={fetchDishByCategory}
       />
 
-      {/* Edit Dish Dialog */}
       {editDishData && (
         <EditDishDialog
           open={editDialogOpen}

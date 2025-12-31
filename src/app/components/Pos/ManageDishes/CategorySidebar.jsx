@@ -7,7 +7,6 @@ import { useRestaurantContext } from "@/context/RestaurantContext";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const CategorySidebar = () => {
-  //State for restaurantId
   const {
     categoryId,
     setCategoryId,
@@ -18,16 +17,10 @@ const CategorySidebar = () => {
     orderLineCategoryLoader,
   } = useRestaurantContext();
 
-  //State for total dish count
-
   // Setting null on clicking All Dishes category
   const handleAllDishesClick = () => {
     setCategoryId(null);
   };
-
-  // useEffect(() => {
-  //   fetchCategories();
-  // }, [dishes]);
 
   useEffect(() => {
     fetchCategories();
@@ -41,7 +34,6 @@ const CategorySidebar = () => {
         </div>
         <div className={styles.cardsContainer}>
           {orderLineCategoryLoader ? (
-            // Loading skeleton
             <div className="space-y-2">
               {Array.from({ length: 6 }).map((_, idx) => (
                 <div key={idx} className="p-4 border rounded-md">
@@ -53,9 +45,7 @@ const CategorySidebar = () => {
               ))}
             </div>
           ) : (
-            // Loaded categories
             <>
-              {/* All Dishes card */}
               <div
                 className={`${styles.cardContainer} ${
                   categoryId === null ? styles.selectedCard : ""
@@ -81,7 +71,6 @@ const CategorySidebar = () => {
                 </div>
               </div>
 
-              {/* Category cards */}
               {categories.map((category) => (
                 <div
                   key={category._id || `temp-${Date.now()}`}

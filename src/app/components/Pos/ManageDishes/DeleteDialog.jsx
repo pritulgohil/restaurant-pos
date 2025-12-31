@@ -18,7 +18,7 @@ export default function DeleteDialog({
   fetchAllDishes,
   fetchDishByCategory,
 }) {
-  const { categoryId } = useRestaurantContext();
+  const { categoryId, fetchCategories } = useRestaurantContext();
 
   const onConfirm = async () => {
     const token = localStorage.getItem("token");
@@ -44,6 +44,7 @@ export default function DeleteDialog({
       } else {
         fetchDishByCategory();
       }
+      fetchCategories();
     } catch (error) {
       console.error("Error deleting dish:", error);
     }
