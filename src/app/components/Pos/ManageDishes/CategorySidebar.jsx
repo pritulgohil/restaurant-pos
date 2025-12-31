@@ -12,7 +12,6 @@ const CategorySidebar = () => {
     setCategoryId,
     categories,
     totalDishCount,
-    dishes,
     fetchCategories,
     orderLineCategoryLoader,
   } = useRestaurantContext();
