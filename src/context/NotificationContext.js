@@ -16,7 +16,6 @@ export function NotificationProvider({ children }) {
   });
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  const [notificationLength, setNotificationLength] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -71,7 +70,7 @@ export function NotificationProvider({ children }) {
       setError(null);
 
       if (reset) {
-        setNotifications([]); // 👈 CRITICAL LINE
+        setNotifications([]);
         setPage(1);
       }
 

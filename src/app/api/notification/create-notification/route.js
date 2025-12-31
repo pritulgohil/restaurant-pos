@@ -34,7 +34,7 @@ export async function POST(req) {
       notificationDescription,
     } = body;
 
-    if (!notificationSender || !orderId || !restaurantId) {
+    if (!notificationSender || !restaurantId) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }
