@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Trash2, LoaderCircle } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 function DeleteOrderDialog({ orderId, onDelete }) {
   const [isDeleting, setIsDeleting] = useState(false);
@@ -41,6 +42,7 @@ function DeleteOrderDialog({ orderId, onDelete }) {
         if (onDelete) {
           onDelete(orderId);
         }
+        toast.success(`Order #${orderId.slice(-6)} deleted successfully!`);
       }, 2000);
     } catch (error) {
       console.error("Error deleting order:", error);

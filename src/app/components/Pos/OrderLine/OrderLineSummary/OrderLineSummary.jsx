@@ -112,7 +112,7 @@ const OrderLineSummary = () => {
         setOrderLine({});
         fetchAllOrders();
         fetchNotifications({ restaurantId: restaurant, reset: true });
-        toast(`Order #${data._id.slice(-6)} placed successfully!`);
+        toast.success(`Order #${data._id.slice(-6)} placed successfully!`);
       }, 2000);
 
       console.log("Order saved:", enrichedOrder);
