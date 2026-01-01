@@ -116,7 +116,14 @@ const Sidebar = () => {
         </div>
         <div className={styles.bottomSidebar}>
           <ul>
-            <li>
+            <li
+              className={` ${
+                pathname === "/pos/settings/user"
+                  ? styles.active
+                  : styles.sidebarItem
+              }`}
+              onClick={() => handleNavigation("/pos/settings/user")}
+            >
               <Settings className={styles.sidebarIcon} />
               Settings
             </li>
