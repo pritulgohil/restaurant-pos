@@ -1,8 +1,6 @@
 import React from "react";
 import styles from "./UserSettings.module.css";
-import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { Pen } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -16,12 +14,10 @@ const UserSettings = () => {
         <div className={styles.settingsContainer}>
           <div className={styles.settingsGroup}>
             <div className={styles.settingGroupTitle}>Personal Information</div>
-            {/* <Separator className="my-4" /> */}
             <div className={styles.settingsGroupFields}>
               <div className={styles.profileImage}>
                 <img src="/user-avatar/male.png" alt="" />
-                <Button variant="outline" size="sm">
-                  <Pen />
+                <Button variant="outline" size="sm" disabled>
                   Edit Picture
                 </Button>
               </div>
@@ -67,6 +63,53 @@ const UserSettings = () => {
                     />
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+          <div className={styles.settingsGroup}>
+            <div className={styles.settingGroupTitle}>Change Password</div>
+            <div className={styles.settingsGroupFields}>
+              <div className={styles.userDetails}>
+                <div className={styles.settingsField}>
+                  <div className={styles.fieldLabel}>
+                    <Label htmlFor="email">Old Password</Label>
+                  </div>
+                  <div className={styles.fieldValue}>
+                    <Input
+                      type="password"
+                      id="oldpassword"
+                      placeholder="Old Password"
+                    />
+                  </div>
+                </div>
+                <div className={styles.settingsField}>
+                  <div className={styles.fieldLabel}>
+                    <Label htmlFor="email">New Password</Label>
+                  </div>
+                  <div className={styles.fieldValue}>
+                    <Input
+                      type="password"
+                      id="newpassword"
+                      placeholder="New Password"
+                      className={styles.inputField}
+                    />
+                  </div>
+                </div>
+                <div className={styles.settingsField}>
+                  <div className={styles.fieldLabel}>
+                    <Label htmlFor="email">New Password Again</Label>
+                  </div>
+                  <div className={styles.fieldValue}>
+                    <Input
+                      type="password"
+                      id="newpasswordagain"
+                      placeholder="New Password Again"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className={styles.updatePasswordButton}>
+                <Button variant="outline">Update Password</Button>
               </div>
             </div>
           </div>
