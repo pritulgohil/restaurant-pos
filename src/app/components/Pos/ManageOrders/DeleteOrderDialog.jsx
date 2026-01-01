@@ -42,7 +42,7 @@ function DeleteOrderDialog({ orderId, onDelete }) {
         if (onDelete) {
           onDelete(orderId);
         }
-        toast.success(`Order #${orderId.slice(-6)} deleted successfully!`);
+        toast.success(`Order #${orderId.slice(-6)} deleted successfully.`);
       }, 2000);
     } catch (error) {
       console.error("Error deleting order:", error);
