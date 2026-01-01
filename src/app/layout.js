@@ -31,7 +31,7 @@ export default function RootLayout({ children }) {
         <AuthProvider>
           <NotificationProvider>
             <RestaurantProvider>
-              <Toaster position="top-center" richColors />
+              <Toaster position="top-center" />
               {children}
             </RestaurantProvider>
           </NotificationProvider>
