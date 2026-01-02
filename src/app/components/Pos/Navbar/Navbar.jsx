@@ -48,6 +48,7 @@ const Navbar = () => {
         setUser({
           firstname: data.firstname,
           lastname: data.lastname,
+          email: data.email,
         });
       } catch (err) {
         console.error("Error fetching user:", err);

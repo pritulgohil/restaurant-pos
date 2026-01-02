@@ -6,7 +6,7 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [loggedInUser, setLoggedInUser] = useState(null);
-  const [user, setUser] = useState({ firstname: "", lastname: "" });
+  const [user, setUser] = useState({ firstname: "", lastname: "", email: "" });
 
   useEffect(() => {
     const storedUser = localStorage.getItem("loggedInUser");

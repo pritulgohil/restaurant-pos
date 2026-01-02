@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styles from "./UserSettings.module.css";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,51 +8,7 @@ import { Label } from "@/components/ui/label";
 import { useAuthContext } from "@/context/AuthContext";
 
 const UserSettings = () => {
-  const [user, setUser] = useState({
-    firstname: "",
-    lastname: "",
-    email: "",
-  });
-  const [loading, setLoading] = useState(true);
-  const { loggedInUser } = useAuthContext();
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const token = localStorage.getItem("token");
-
-        if (!token || !loggedInUser) {
-          console.error("No token or userId found");
-          return;
-        }
-
-        const res = await fetch(`/api/pos/fetch-user/${loggedInUser}`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (!res.ok) {
-          throw new Error("Failed to fetch user");
-        }
-
-        const data = await res.json();
-
-        setUser({
-          firstname: data.firstname,
-          lastname: data.lastname,
-          email: data.email,
-        });
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUser();
-  }, []);
+  const { user } = useAuthContext();
 
   return (
     <>
