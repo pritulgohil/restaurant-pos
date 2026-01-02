@@ -64,6 +64,9 @@ const UserSettings = () => {
                   </div>
                 </div>
               </div>
+              <div className={styles.updatePasswordButton}>
+                <Button variant="outline">Update Details</Button>
+              </div>
             </div>
           </div>
           <div className={styles.settingsGroup}>
