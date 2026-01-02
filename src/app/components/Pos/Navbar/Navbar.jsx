@@ -18,7 +18,7 @@ import { useNotification } from "@/context/NotificationContext";
 
 const Navbar = () => {
   const router = useRouter();
-  const { loggedInUser, user, setUser } = useAuthContext();
+  const { loggedInUser, user, setUser, refreshUser } = useAuthContext();
   const { restaurantName, restaurant } = useRestaurantContext();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const handleAddRestaurant = () => {
@@ -30,32 +30,7 @@ const Navbar = () => {
   useEffect(() => {
     if (!loggedInUser) return;
 
-    const fetchUser = async () => {
-      const token = localStorage.getItem("token");
-      try {
-        const res = await fetch(`/api/pos/fetch-user/${loggedInUser}`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
-        if (!res.ok) {
-          throw new Error("Failed to fetch user data");
-        }
-        const data = await res.json();
-        console.log("Fetched user data:", data);
-        setUser({
-          firstname: data.firstname,
-          lastname: data.lastname,
-          email: data.email,
-        });
-      } catch (err) {
-        console.error("Error fetching user:", err);
-      }
-    };
-
-    fetchUser();
+    refreshUser();
     fetchNotifications({ restaurantId: restaurant, reset: true });
   }, [loggedInUser]);
 

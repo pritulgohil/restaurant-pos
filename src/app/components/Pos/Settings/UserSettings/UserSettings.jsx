@@ -1,14 +1,67 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./UserSettings.module.css";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuthContext } from "@/context/AuthContext";
+import { LoaderCircle } from "lucide-react";
+import { toast } from "sonner";
 
 const UserSettings = () => {
-  const { user } = useAuthContext();
+  const { user, loggedInUser, refreshUser } = useAuthContext();
+  const [updateUsername, setUpdateUsername] = useState({
+    firstname: user.firstname,
+    lastname: user.lastname,
+  });
+  const [detailsLoader, setDetailsLoader] = useState(false);
+  useEffect(() => {
+    setUpdateUsername({
+      firstname: user.firstname,
+      lastname: user.lastname,
+    });
+  }, [user]);
+
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    setUpdateUsername((prevState) => ({
+      ...prevState,
+      [id]: value,
+    }));
+  };
+  const updateUserDetails = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      setDetailsLoader(true);
+      // First API Call: Update the user's firstname and lastname
+      const userUpdateResponse = await fetch(
+        `/api/auth/signup/${loggedInUser}`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updateUsername),
+        }
+      );
+
+      const userUpdateResult = await userUpdateResponse.json();
+      setTimeout(() => {
+        setDetailsLoader(false);
+        toast.success("User details updated successfully.");
+        refreshUser();
+      }, 2000);
+
+      if (!userUpdateResponse.ok) {
+        console.error("User update error:", userUpdateResult.error);
+        return; // If updating the user fails, exit the function
+      }
+    } catch (error) {
+      console.error("An error occurred while updating user details:", error);
+    }
+  };
 
   return (
     <>
@@ -48,10 +101,10 @@ const UserSettings = () => {
                   <div className={styles.fieldValue}>
                     <Input
                       type="text"
-                      id="firstName"
+                      id="firstname"
                       placeholder="First Name"
-                      defaultValue={user.firstname}
-                      className={styles.inputField}
+                      value={updateUsername.firstname}
+                      onChange={handleInputChange}
                     />
                   </div>
                 </div>
@@ -62,15 +115,25 @@ const UserSettings = () => {
                   <div className={styles.fieldValue}>
                     <Input
                       type="text"
-                      id="lastName"
+                      id="lastname"
                       placeholder="Last Name"
-                      defaultValue={user.lastname}
+                      value={updateUsername.lastname}
+                      onChange={handleInputChange}
                     />
                   </div>
                 </div>
               </div>
               <div className={styles.updatePasswordButton}>
-                <Button variant="outline">Update Details</Button>
+                {detailsLoader ? (
+                  <Button variant="outline" disabled>
+                    <LoaderCircle className="animate-spin" />
+                    Updating...
+                  </Button>
+                ) : (
+                  <Button variant="outline" onClick={updateUserDetails}>
+                    Update Details
+                  </Button>
+                )}
               </div>
             </div>
           </div>

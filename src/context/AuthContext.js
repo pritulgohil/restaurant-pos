@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useState, useContext, useEffect } from "react";
+import { fetchUser } from "@/services/UserService";
 
 const AuthContext = createContext();
 
@@ -18,9 +19,25 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
+  const refreshUser = async () => {
+    if (!loggedInUser) return;
+    const token = localStorage.getItem("token");
+    try {
+      const data = await fetchUser(loggedInUser, token);
+      setUser({
+        firstname: data.firstname,
+        lastname: data.lastname,
+        email: data.email,
+      });
+      return data;
+    } catch (err) {
+      console.error("Error fetching user:", err);
+    }
+  };
+
   return (
     <AuthContext.Provider
-      value={{ loggedInUser, setLoggedInUser, user, setUser }}
+      value={{ loggedInUser, setLoggedInUser, user, setUser, refreshUser }}
     >
       {children}
     </AuthContext.Provider>
