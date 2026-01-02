@@ -1,10 +1,13 @@
+"use client";
 import React from "react";
 import styles from "./RestaurantSettings.module.css";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useRestaurantContext } from "@/context/RestaurantContext";
 
 const RestaurantSettings = () => {
+  const { restaurantName, restaurantCuisine } = useRestaurantContext();
   return (
     <>
       <div className={styles.mainContainer}>
@@ -26,7 +29,7 @@ const RestaurantSettings = () => {
                       id="restaurantname"
                       placeholder="Restaurant Name"
                       className={styles.inputField}
-                      value="Kelsey's"
+                      defaultValue={restaurantName}
                     />
                   </div>
                 </div>
@@ -39,7 +42,7 @@ const RestaurantSettings = () => {
                       type="text"
                       id="cuisinetype"
                       placeholder="Cuisine Type"
-                      value="Canadian"
+                      defaultValue={restaurantCuisine}
                     />
                   </div>
                 </div>

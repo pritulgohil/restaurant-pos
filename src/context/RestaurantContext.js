@@ -7,6 +7,7 @@ const RestaurantContext = createContext();
 export const RestaurantProvider = ({ children }) => {
   const [restaurantName, setRestaurantName] = useState("");
   const [restaurant, setRestaurant] = useState(null);
+  const [restaurantCuisine, setRestaurantCuisine] = useState("");
   const [categoryId, setCategoryId] = useState(null);
   const [orderLineCategoryId, setOrderLineCategoryId] = useState(null);
   const [categories, setCategories] = useState([]);
@@ -238,6 +239,8 @@ export const RestaurantProvider = ({ children }) => {
         orderLineDishLoader,
         occupancyPercentage,
         setOccupancyPercentage,
+        restaurantCuisine,
+        setRestaurantCuisine,
       }}
     >
       {children}

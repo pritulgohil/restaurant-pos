@@ -47,7 +47,7 @@ export async function GET(req, { params }) {
     }
 
     return NextResponse.json(
-      { firstname: user.firstname, lastname: user.lastname },
+      { firstname: user.firstname, lastname: user.lastname, email: user.email },
       { status: 200 }
     );
   } catch (error) {
