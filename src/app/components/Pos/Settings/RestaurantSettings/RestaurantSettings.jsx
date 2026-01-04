@@ -1,13 +1,46 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import styles from "./RestaurantSettings.module.css";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRestaurantContext } from "@/context/RestaurantContext";
+import { useAuthContext } from "@/context/AuthContext";
+import { LoaderCircle } from "lucide-react";
 
 const RestaurantSettings = () => {
-  const { restaurantName, restaurantCuisine } = useRestaurantContext();
+  const {
+    restaurantName,
+    restaurantCuisine,
+    updateRestaurant,
+    restaurant,
+    fetchRestaurant,
+  } = useRestaurantContext();
+  const { loggedInUser } = useAuthContext();
+  const [restaurantDetails, setRestaurantDetails] = useState({
+    restaurantName: restaurantName,
+    cuisineType: restaurantCuisine,
+  });
+  const [loading, setLoading] = useState(false);
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+
+    setRestaurantDetails((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
+  };
+  const handleUpdateDetails = async () => {
+    setLoading(true);
+    await updateRestaurant({
+      restaurantId: restaurant,
+      payload: restaurantDetails,
+    });
+    setTimeout(() => {
+      setLoading(false);
+      fetchRestaurant(loggedInUser);
+    }, 2000);
+  };
   return (
     <>
       <div className={styles.mainContainer}>
@@ -26,10 +59,11 @@ const RestaurantSettings = () => {
                   <div className={styles.fieldValue}>
                     <Input
                       type="text"
-                      id="restaurantname"
+                      id="restaurantName"
                       placeholder="Restaurant Name"
                       className={styles.inputField}
-                      defaultValue={restaurantName}
+                      value={restaurantDetails.restaurantName}
+                      onChange={handleInputChange}
                     />
                   </div>
                 </div>
@@ -40,15 +74,25 @@ const RestaurantSettings = () => {
                   <div className={styles.fieldValue}>
                     <Input
                       type="text"
-                      id="cuisinetype"
+                      id="cuisineType"
                       placeholder="Cuisine Type"
-                      defaultValue={restaurantCuisine}
+                      value={restaurantDetails.cuisineType}
+                      onChange={handleInputChange}
                     />
                   </div>
                 </div>
               </div>
               <div className={styles.updatePasswordButton}>
-                <Button variant="outline">Update Details</Button>
+                {loading ? (
+                  <Button variant="outline" disabled>
+                    <LoaderCircle className="animate-spin" />
+                    Updating...
+                  </Button>
+                ) : (
+                  <Button variant="outline" onClick={handleUpdateDetails}>
+                    Update Details
+                  </Button>
+                )}
               </div>
             </div>
           </div>
