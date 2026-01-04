@@ -1,0 +1,57 @@
+.mainContainer {
+  padding: 24px;
+  width: 100%;
+}
+
+.settingsTitle {
+  font-size: 18px;
+  font-family: "Epilogue", sans-serif;
+}
+
+.settingsGroup {
+  border: 1px solid gainsboro;
+  border-radius: 8px;
+  width: 100%;
+  margin-top: 24px;
+}
+
+.profileImage {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.profileImage img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: contain;
+  border: 1px solid gainsboro;
+  cursor: pointer;
+}
+
+.settingsGroupFields {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.userDetails {
+  display: flex;
+  gap: 16px;
+}
+
+.settingsField {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.settingGroupTitle {
+  background-color: rgb(245, 245, 245);
+  padding: 16px;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}

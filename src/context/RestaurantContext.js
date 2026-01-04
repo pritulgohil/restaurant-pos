@@ -1,12 +1,14 @@
 "use client";
 
 import { createContext, useState, useContext, useEffect } from "react";
-
+import { updateRestaurantAPI } from "@/services/RestaurantService";
+import { fetchRestaurantAPI } from "@/services/RestaurantService";
 const RestaurantContext = createContext();
 
 export const RestaurantProvider = ({ children }) => {
   const [restaurantName, setRestaurantName] = useState("");
   const [restaurant, setRestaurant] = useState(null);
+  const [restaurantCuisine, setRestaurantCuisine] = useState("");
   const [categoryId, setCategoryId] = useState(null);
   const [orderLineCategoryId, setOrderLineCategoryId] = useState(null);
   const [categories, setCategories] = useState([]);
@@ -28,9 +30,11 @@ export const RestaurantProvider = ({ children }) => {
     if (typeof window !== "undefined") {
       const storedName = localStorage.getItem("restaurantName");
       const storedRestaurant = localStorage.getItem("restaurant");
+      const storedCuisine = localStorage.getItem("restaurantCuisine");
 
       if (storedName) setRestaurantName(JSON.parse(storedName));
       if (storedRestaurant) setRestaurant(JSON.parse(storedRestaurant));
+      if (storedCuisine) setRestaurantCuisine(JSON.parse(storedCuisine));
     }
   }, []);
 
@@ -55,6 +59,20 @@ export const RestaurantProvider = ({ children }) => {
       }
     }
   }, [restaurant]);
+
+  // Sync restaurantCuisine to localStorage
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (restaurantCuisine) {
+        localStorage.setItem(
+          "restaurantCuisine",
+          JSON.stringify(restaurantCuisine)
+        );
+      } else {
+        localStorage.removeItem("restaurantCuisine");
+      }
+    }
+  }, [restaurantCuisine]);
 
   const fetchCategories = async () => {
     const token = localStorage.getItem("token");
@@ -200,6 +218,39 @@ export const RestaurantProvider = ({ children }) => {
     }
   };
 
+  const updateRestaurant = async ({ restaurantId, payload }) => {
+    const token = localStorage.getItem("token");
+
+    try {
+      const data = await updateRestaurantAPI({
+        restaurantId,
+        token,
+        payload,
+      });
+
+      return data;
+    } catch (err) {
+      console.error("Error updating restaurant:", err);
+      throw err;
+    }
+  };
+
+  const fetchRestaurant = async (loginId) => {
+    const token = localStorage.getItem("token");
+    try {
+      const data = await fetchRestaurantAPI({ loginId, token });
+      if (Array.isArray(data) && data.length > 0) {
+        setRestaurant(data[0]._id);
+        setRestaurantName(data[0].restaurantName);
+        setRestaurantCuisine(data[0].cuisineType);
+      } else {
+        console.warn("No restaurant found or data is not an array");
+      }
+    } catch (err) {
+      console.error("Error fetching restaurant:", err);
+    }
+  };
+
   return (
     <RestaurantContext.Provider
       value={{
@@ -238,6 +289,10 @@ export const RestaurantProvider = ({ children }) => {
         orderLineDishLoader,
         occupancyPercentage,
         setOccupancyPercentage,
+        restaurantCuisine,
+        setRestaurantCuisine,
+        updateRestaurant,
+        fetchRestaurant,
       }}
     >
       {children}

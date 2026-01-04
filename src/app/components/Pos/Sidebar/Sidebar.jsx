@@ -5,7 +5,6 @@ import { LayoutDashboard, ClipboardList } from "lucide-react";
 import { ArrowRightLeft } from "lucide-react";
 import { TableCellsMerge } from "lucide-react";
 import { Soup } from "lucide-react";
-import { Users } from "lucide-react";
 import { Settings } from "lucide-react";
 import { Globe } from "lucide-react";
 import { LogOut } from "lucide-react";
@@ -116,7 +115,14 @@ const Sidebar = () => {
         </div>
         <div className={styles.bottomSidebar}>
           <ul>
-            <li>
+            <li
+              className={
+                pathname.startsWith("/pos/settings")
+                  ? styles.active
+                  : styles.sidebarItem
+              }
+              onClick={() => handleNavigation("/pos/settings/user")}
+            >
               <Settings className={styles.sidebarIcon} />
               Settings
             </li>

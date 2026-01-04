@@ -1,0 +1,38 @@
+.mainContainer {
+  width: 350px;
+  height: 100vh;
+  background-color: rgb(245, 245, 245);
+  padding: 24px;
+}
+
+.settingsTitleContainer {
+  font-family: "Epilogue", sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+}
+
+.subSettingsContainer {
+  margin-top: 24px;
+  font-size: 14px;
+}
+
+.subSettingsContainer ul {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.subSettingsContainer ul li {
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  border: 1px solid gainsboro;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.activeSettings {
+  background-color: black;
+  color: white;
+}
