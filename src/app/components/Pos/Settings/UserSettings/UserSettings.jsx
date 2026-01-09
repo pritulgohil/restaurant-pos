@@ -15,6 +15,11 @@ const UserSettings = () => {
     firstname: user.firstname,
     lastname: user.lastname,
   });
+  const [updatePassword, setUpdatePassword] = useState({
+    oldPassword: "",
+    newPassword: "",
+    newPasswordAgain: "",
+  });
   const [detailsLoader, setDetailsLoader] = useState(false);
   useEffect(() => {
     setUpdateUsername({
@@ -22,6 +27,14 @@ const UserSettings = () => {
       lastname: user.lastname,
     });
   }, [user]);
+
+  const handlePasswordChange = (e) => {
+    const { id, value } = e.target;
+    setUpdatePassword((prevState) => ({
+      ...prevState,
+      [id]: value,
+    }));
+  };
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -60,6 +73,42 @@ const UserSettings = () => {
       }
     } catch (error) {
       console.error("An error occurred while updating user details:", error);
+    }
+  };
+
+  const updateUserPassword = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const passwordUpdateResponse = await fetch(
+        `/api/auth/change-password/${loggedInUser}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            currentPassword: updatePassword.oldPassword,
+            newPassword: updatePassword.newPassword,
+            confirmNewPassword: updatePassword.newPasswordAgain,
+          }),
+        }
+      );
+
+      const passwordUpdateResult = await passwordUpdateResponse.json();
+      if (passwordUpdateResponse.ok) {
+        toast.success("Password updated successfully.");
+        setUpdatePassword({
+          oldPassword: "",
+          newPassword: "",
+          newPasswordAgain: "",
+        });
+      } else {
+        console.error("Password update error:", passwordUpdateResult.error);
+        toast.error(passwordUpdateResult.error || "Failed to update password.");
+      }
+    } catch (error) {
+      console.error("An error occurred while updating password:", error);
     }
   };
 
@@ -148,8 +197,9 @@ const UserSettings = () => {
                   <div className={styles.fieldValue}>
                     <Input
                       type="password"
-                      id="oldpassword"
+                      id="oldPassword"
                       placeholder="Old Password"
+                      onChange={handlePasswordChange}
                     />
                   </div>
                 </div>
@@ -160,9 +210,10 @@ const UserSettings = () => {
                   <div className={styles.fieldValue}>
                     <Input
                       type="password"
-                      id="newpassword"
+                      id="newPassword"
                       placeholder="New Password"
                       className={styles.inputField}
+                      onChange={handlePasswordChange}
                     />
                   </div>
                 </div>
@@ -173,14 +224,17 @@ const UserSettings = () => {
                   <div className={styles.fieldValue}>
                     <Input
                       type="password"
-                      id="newpasswordagain"
+                      id="newPasswordAgain"
                       placeholder="New Password Again"
+                      onChange={handlePasswordChange}
                     />
                   </div>
                 </div>
               </div>
               <div className={styles.updatePasswordButton}>
-                <Button variant="outline">Update Password</Button>
+                <Button variant="outline" onClick={updateUserPassword}>
+                  Update Password
+                </Button>
               </div>
             </div>
           </div>
