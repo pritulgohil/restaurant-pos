@@ -83,10 +83,7 @@ const UserSettings = () => {
         `/api/auth/change-password/${loggedInUser}`,
         {
           method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
+          credentials: "include",
           body: JSON.stringify({
             currentPassword: updatePassword.oldPassword,
             newPassword: updatePassword.newPassword,
