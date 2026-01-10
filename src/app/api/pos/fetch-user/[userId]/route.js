@@ -21,7 +21,6 @@ export async function GET(req, { params }) {
 
     const { userId } = await params;
 
-    // Validate ObjectId format
     if (!mongoose.Types.ObjectId.isValid(userId)) {
       return NextResponse.json(
         { error: "Invalid user ID format" },
