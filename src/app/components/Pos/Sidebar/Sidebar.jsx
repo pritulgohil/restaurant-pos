@@ -23,17 +23,28 @@ const Sidebar = () => {
   const { setCategoryId, setCategories, setDishes, setRestaurant } =
     useRestaurantContext();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     setLogoutState(true);
-    setTimeout(() => {
-      localStorage.removeItem("loggedInUser");
-      setLoggedInUser(null);
-      setDishes([]);
-      setCategories([]);
-      setCategoryId(null);
-      setRestaurant(null);
-      router.push("/login");
-    }, 2000);
+
+    try {
+      await fetch("/api/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+
+      // Clear client-side state
+      setTimeout(() => {
+        localStorage.removeItem("loggedInUser");
+        setLoggedInUser(null);
+        setDishes([]);
+        setCategories([]);
+        setCategoryId(null);
+        setRestaurant(null);
+        router.push("/login");
+      }, 2000);
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
   };
 
   const handleNavigation = (path) => {
