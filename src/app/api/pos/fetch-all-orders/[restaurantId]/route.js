@@ -1,10 +1,7 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 import Order from "@/models/order";
-import jwt from "jsonwebtoken";
 import { verifyAuth } from "@/lib/verifyAuth";
-
-const JWT_SECRET = process.env.JWT_SECRET;
 
 export async function GET(req, { params }) {
   try {
