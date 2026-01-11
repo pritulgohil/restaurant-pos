@@ -32,13 +32,9 @@ export default function AddTableDialog({ open, onOpenChange, onTableAdded }) {
     setErrorMsg("");
 
     try {
-      const token = localStorage.getItem("token");
       const res = await fetch("/api/pos/create-table", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        credentials: "include",
         body: JSON.stringify({
           tableNumber: Number(tableNumber),
           occupancy: Number(occupancy),

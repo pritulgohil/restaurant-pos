@@ -21,14 +21,10 @@ function DeleteOrderDialog({ orderId, onDelete }) {
   const handleDelete = async () => {
     setIsDeleting(true);
 
-    const token = localStorage.getItem("token");
-
     try {
       const response = await fetch(`/api/pos/delete-order/${orderId}`, {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        credentials: "include",
       });
 
       if (!response.ok) {

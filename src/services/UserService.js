@@ -1,4 +1,4 @@
-export const fetchUser = async (userId, token) => {
+export const fetchUser = async (userId) => {
   const res = await fetch(`/api/pos/fetch-user/${userId}`, {
     method: "GET",
     credentials: "include",

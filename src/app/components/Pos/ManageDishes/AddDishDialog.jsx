@@ -68,15 +68,11 @@ const AddDishDialog = ({ children, onDishAdded, fetchByCategory }) => {
       setError("All fields are required");
       return;
     }
-    const token = localStorage.getItem("token");
     try {
       setLoading(true);
       const response = await fetch("/api/pos/create-dish/", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        credentials: "include",
         body: JSON.stringify({
           name: dishName,
           description: description,
@@ -115,14 +111,10 @@ const AddDishDialog = ({ children, onDishAdded, fetchByCategory }) => {
 
   //Function to pre-populate the category name
   const fetchCategoryName = async () => {
-    const token = localStorage.getItem("token");
     try {
       const res = await fetch(`/api/pos/fetch-category/${categoryId}`, {
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
+        credentials: "include",
       });
       if (!res.ok) {
         throw new Error("Failed to fetch category");

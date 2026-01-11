@@ -54,13 +54,9 @@ export const OrderBoard = () => {
         });
         return;
       }
-      const token = localStorage.getItem("token");
       const res = await fetch(`/api/pos/update-order-status/${order._id}`, {
         method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        credentials: "include",
         body: JSON.stringify({ status: newStatus }),
       });
       if (!res.ok) throw new Error("Failed to update order status");

@@ -53,14 +53,10 @@ const Dishes = () => {
   const handleGridView = () => setListView(false);
 
   const fetchCategoryName = async () => {
-    const token = localStorage.getItem("token");
     try {
       const res = await fetch(`/api/pos/fetch-category/${categoryId}`, {
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
+        credentials: "include",
       });
       if (!res.ok) throw new Error("Failed to fetch category");
       const data = await res.json();

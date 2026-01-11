@@ -65,16 +65,12 @@ const EditCategoryDialog = ({
 
   //Function to update the category
   const handleSubmit = async () => {
-    const token = localStorage.getItem("token");
     try {
       setLoading(true);
       setError(false);
       const response = await fetch(`/api/pos/edit-category/${categoryId}`, {
         method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        credentials: "include",
         body: JSON.stringify({
           name: inputCategoryName,
           emoji: emoji,

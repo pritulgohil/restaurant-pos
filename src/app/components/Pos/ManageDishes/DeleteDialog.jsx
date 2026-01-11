@@ -21,13 +21,10 @@ export default function DeleteDialog({
   const { categoryId, fetchCategories } = useRestaurantContext();
 
   const onConfirm = async () => {
-    const token = localStorage.getItem("token");
     try {
       const response = await fetch(`/api/pos/delete-dish/${dishId}`, {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        credentials: "include",
       });
 
       const data = await response.json();

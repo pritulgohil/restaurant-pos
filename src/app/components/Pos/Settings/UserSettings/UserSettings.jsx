@@ -44,7 +44,6 @@ const UserSettings = () => {
     }));
   };
   const updateUserDetails = async () => {
-    const token = localStorage.getItem("token");
     try {
       setDetailsLoader(true);
       // First API Call: Update the user's firstname and lastname
@@ -52,10 +51,7 @@ const UserSettings = () => {
         `/api/auth/signup/${loggedInUser}`,
         {
           method: "PATCH",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
+          credentials: "include",
           body: JSON.stringify(updateUsername),
         }
       );
@@ -77,7 +73,6 @@ const UserSettings = () => {
   };
 
   const updateUserPassword = async () => {
-    const token = localStorage.getItem("token");
     try {
       const passwordUpdateResponse = await fetch(
         `/api/auth/change-password/${loggedInUser}`,

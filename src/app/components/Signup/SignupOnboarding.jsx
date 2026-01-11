@@ -47,17 +47,13 @@ const SignupOnboarding = () => {
 
   const onSubmit = async (data) => {
     // Get token from the localStorage
-    const token = localStorage.getItem("token");
     try {
       // First API Call: Update the user's firstname and lastname
       const userUpdateResponse = await fetch(
         `/api/auth/signup/${loggedInUser}`,
         {
           method: "PATCH",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
+          credentials: "include",
           body: JSON.stringify({
             firstname: data.firstName,
             lastname: data.lastName,

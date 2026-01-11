@@ -67,15 +67,11 @@ const EditDishDialog = ({
   const handleSave = async () => {
     setLoading(true);
     setError("");
-    const token = localStorage.getItem("token");
 
     try {
       const res = await fetch(`/api/pos/edit-dish/${dish._id}`, {
         method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
+        credentials: "include",
         body: JSON.stringify(formData),
       });
 

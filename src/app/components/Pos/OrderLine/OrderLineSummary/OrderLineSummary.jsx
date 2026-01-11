@@ -91,13 +91,9 @@ const OrderLineSummary = () => {
         orderType: orderType,
       };
 
-      const token = localStorage.getItem("token");
       const res = await fetch("/api/pos/create-order", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        credentials: "include",
         body: JSON.stringify(enrichedOrder),
       });
 

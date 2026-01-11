@@ -1,10 +1,7 @@
-export const updateRestaurantAPI = async ({ restaurantId, token, payload }) => {
+export const updateRestaurantAPI = async ({ restaurantId, payload }) => {
   const res = await fetch(`/api/pos/update-restaurant/${restaurantId}`, {
     method: "PATCH",
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
+    credentials: "include",
     body: JSON.stringify(payload),
   });
 
@@ -17,13 +14,10 @@ export const updateRestaurantAPI = async ({ restaurantId, token, payload }) => {
   return data;
 };
 
-export const fetchRestaurantAPI = async ({ loginId, token }) => {
+export const fetchRestaurantAPI = async ({ loginId }) => {
   const res = await fetch(`/api/pos/fetch-restaurant/${loginId}`, {
     method: "GET",
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
+    credentials: "include",
   });
 
   const data = await res.json();
