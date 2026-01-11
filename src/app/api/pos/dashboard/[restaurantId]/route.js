@@ -4,28 +4,18 @@ import Order from "@/models/order";
 import Table from "@/models/table";
 import Dish from "@/models/dish";
 import Category from "@/models/category";
-import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import { DateTime } from "luxon";
+import { verifyAuth } from "@/lib/verifyAuth";
 
-const JWT_SECRET = process.env.JWT_SECRET;
-const TIME_ZONE = "America/Toronto"; // London, Ontario
+const TIME_ZONE = "America/Toronto";
 
 export async function GET(req, { params }) {
   try {
     await dbConnect();
-
-    // ============================
-    // Authorization
-    // ============================
-    const authHeader = req.headers.get("authorization");
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    const token = authHeader.split(" ")[1];
+    let decoded;
     try {
-      jwt.verify(token, JWT_SECRET);
+      decoded = verifyAuth(req);
     } catch {
       return NextResponse.json(
         { error: "Invalid or expired token" },
