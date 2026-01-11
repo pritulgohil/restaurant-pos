@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 import User from "@/models/user";
 import mongoose from "mongoose";
-import jwt from "jsonwebtoken"; // JWT library for token verification
+import { verifyAuth } from "@/lib/verifyAuth";
 
 export async function PATCH(req, { params }) {
   try {
@@ -31,22 +31,8 @@ export async function PATCH(req, { params }) {
       );
     }
 
-    // Extract the JWT token from the request headers
-    const authHeader = req.headers.get("Authorization");
-
-    // If no token is provided
-    if (!authHeader) {
-      return NextResponse.json(
-        { error: "Authorization token is required" },
-        { status: 401 }
-      );
-    }
-
-    // Extract the token from the header (Bearer token)
-    const token = authHeader.split(" ")[1];
-
     // Verify the token using the secret key (replace 'your-secret-key' with your actual secret)
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = verifyAuth(req);
 
     // If the decoded userId does not match the requested userId, it's not authorized
     if (decoded.userId !== userId) {

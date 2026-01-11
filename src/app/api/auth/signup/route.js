@@ -28,7 +28,6 @@ export async function POST(req) {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-
     const newUser = await User.create({ email, password: hashedPassword });
 
     const token = jwt.sign(
@@ -37,15 +36,29 @@ export async function POST(req) {
       { expiresIn: "12h" }
     );
 
-    return NextResponse.json(
+    const res = NextResponse.json(
       {
-        message: "User created successfully and logged in",
+        message: "User created successfully",
         userId: newUser._id,
-        token,
       },
       { status: 201 }
     );
+
+    res.cookies.set({
+      name: "auth_token",
+      value: token,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 12,
+    });
+
+    return res;
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }
