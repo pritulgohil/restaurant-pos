@@ -2,10 +2,7 @@ import { NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 import Category from "@/models/category";
 import Dish from "@/models/dish";
-import jwt from "jsonwebtoken";
 import { verifyAuth } from "@/lib/verifyAuth";
-
-const JWT_SECRET = process.env.JWT_SECRET;
 
 export async function GET(req, { params }) {
   try {
