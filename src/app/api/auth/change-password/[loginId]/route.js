@@ -3,17 +3,13 @@ import bcrypt from "bcryptjs";
 import dbConnect from "@/lib/dbConnect";
 import User from "@/models/user";
 import mongoose from "mongoose";
-import jwt from "jsonwebtoken";
-
-const JWT_SECRET = process.env.JWT_SECRET;
+import { verifyAuth } from "@/lib/verifyAuth";
 
 export async function POST(req, { params }) {
   try {
     await dbConnect();
 
     const { loginId } = await params;
-
-    console.log("loginId param:", loginId);
 
     if (!loginId || !mongoose.Types.ObjectId.isValid(loginId)) {
       return NextResponse.json(
@@ -22,16 +18,10 @@ export async function POST(req, { params }) {
       );
     }
 
-    const authHeader = req.headers.get("authorization");
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    const token = authHeader.split(" ")[1];
     let decoded;
 
     try {
-      decoded = jwt.verify(token, JWT_SECRET);
+      decoded = verifyAuth(req);
     } catch {
       return NextResponse.json(
         { error: "Invalid or expired token" },

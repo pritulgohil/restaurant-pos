@@ -73,13 +73,9 @@ const ManageOrders = () => {
   const fetchOrders = async () => {
     try {
       setTableOrdersLoader(true);
-      const token = localStorage.getItem("token");
       const response = await fetch(`/api/pos/fetch-all-orders/${restaurant}`, {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        credentials: "include",
       });
 
       if (!response.ok) {

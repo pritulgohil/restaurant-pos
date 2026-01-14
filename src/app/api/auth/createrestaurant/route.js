@@ -1,10 +1,22 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 import Restaurant from "@/models/restaurant";
+import { verifyAuth } from "@/lib/verifyAuth";
 
 export async function POST(req) {
   try {
     await dbConnect();
+
+    let decoded;
+
+    try {
+      decoded = verifyAuth(req);
+    } catch (err) {
+      return NextResponse.json(
+        { error: "Invalid or expired token" },
+        { status: 401 }
+      );
+    }
 
     const { restaurantName, cuisineType, userId } = await req.json();
 
@@ -18,7 +30,7 @@ export async function POST(req) {
     const newRestaurant = new Restaurant({
       restaurantName,
       cuisineType,
-      userId, // Store the loggedInUser ID
+      userId,
     });
 
     await newRestaurant.save();

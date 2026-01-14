@@ -46,10 +46,9 @@ const ManageTable = () => {
     if (!restaurant) return;
     try {
       setTableLoader(true);
-      const token = localStorage.getItem("token");
       const res = await fetch(`/api/pos/fetch-tables/${restaurant}`, {
         method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
+        credentials: "include",
       });
 
       const data = await res.json();

@@ -21,9 +21,8 @@ export const AuthProvider = ({ children }) => {
 
   const refreshUser = async () => {
     if (!loggedInUser) return;
-    const token = localStorage.getItem("token");
     try {
-      const data = await fetchUser(loggedInUser, token);
+      const data = await fetchUser(loggedInUser);
       setUser({
         firstname: data.firstname,
         lastname: data.lastname,

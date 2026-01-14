@@ -84,17 +84,12 @@ export function ViewOrderDialog({
   const handleUpdate = async () => {
     setIsUpdating(true);
 
-    const token = localStorage.getItem("token");
-
     try {
       const response = await fetch(
         `/api/pos/update-order-status/${order._id}`,
         {
           method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+          credentials: "include",
           body: JSON.stringify({ status }),
         }
       );

@@ -75,15 +75,11 @@ export const RestaurantProvider = ({ children }) => {
   }, [restaurantCuisine]);
 
   const fetchCategories = async () => {
-    const token = localStorage.getItem("token");
     try {
       setOrderLineCategoryLoader(true);
       const res = await fetch(`/api/pos/fetch-categories/${restaurant}`, {
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
+        credentials: "include",
       });
       if (!res.ok) throw new Error("Failed to fetch categories");
       const data = await res.json();
@@ -97,15 +93,11 @@ export const RestaurantProvider = ({ children }) => {
   };
 
   const fetchAllDishes = async () => {
-    const token = localStorage.getItem("token");
     try {
       setOrderLineDishLoader(true);
       const res = await fetch(`/api/pos/fetch-all-dishes/${restaurant}`, {
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
+        credentials: "include",
       });
 
       const data = await res.json();
@@ -129,15 +121,11 @@ export const RestaurantProvider = ({ children }) => {
 
   const fetchDishByCategory = async (categoryIdParam = categoryId) => {
     setDishes([]);
-    const token = localStorage.getItem("token");
     try {
       setOrderLineDishLoader(true);
       const res = await fetch(`/api/pos/fetch-dish/${categoryIdParam}`, {
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
+        credentials: "include",
       });
 
       if (!res.ok) {
@@ -160,15 +148,11 @@ export const RestaurantProvider = ({ children }) => {
     categoryOrderIdParam = orderLineCategoryId
   ) => {
     setDishes([]);
-    const token = localStorage.getItem("token");
     try {
       setOrderLineDishLoader(true);
       const res = await fetch(`/api/pos/fetch-dish/${categoryOrderIdParam}`, {
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
+        credentials: "include",
       });
 
       if (!res.ok) {
@@ -188,15 +172,11 @@ export const RestaurantProvider = ({ children }) => {
   };
 
   const fetchAllOrders = async () => {
-    const token = localStorage.getItem("token");
     try {
       setOrderLineSliderLoader(true);
       const res = await fetch(`/api/pos/fetch-all-orders/${restaurant}`, {
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
+        credentials: "include",
       });
 
       const data = await res.json();
@@ -219,12 +199,9 @@ export const RestaurantProvider = ({ children }) => {
   };
 
   const updateRestaurant = async ({ restaurantId, payload }) => {
-    const token = localStorage.getItem("token");
-
     try {
       const data = await updateRestaurantAPI({
         restaurantId,
-        token,
         payload,
       });
 
@@ -236,9 +213,8 @@ export const RestaurantProvider = ({ children }) => {
   };
 
   const fetchRestaurant = async (loginId) => {
-    const token = localStorage.getItem("token");
     try {
-      const data = await fetchRestaurantAPI({ loginId, token });
+      const data = await fetchRestaurantAPI({ loginId });
       if (Array.isArray(data) && data.length > 0) {
         setRestaurant(data[0]._id);
         setRestaurantName(data[0].restaurantName);

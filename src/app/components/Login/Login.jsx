@@ -56,6 +56,7 @@ const Login = () => {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify(data),
       });
 
@@ -63,9 +64,6 @@ const Login = () => {
 
       if (response.ok) {
         setSignupState(true);
-
-        // Saving the JWT token in localStorage
-        localStorage.setItem("token", result.token);
 
         // Saving logged in UserID in localStorage and state
         localStorage.setItem("loggedInUser", result.user.userId);
@@ -91,14 +89,10 @@ const Login = () => {
   }, [loggedInUser]);
 
   const fetchRestaurant = async () => {
-    const token = localStorage.getItem("token");
     try {
       const res = await fetch(`/api/pos/fetch-restaurant/${loggedInUser}`, {
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
+        credentials: "include",
       });
 
       if (!res.ok) {

@@ -25,19 +25,13 @@ export function NotificationProvider({ children }) {
     restaurantId,
     notificationDescription,
   }) => {
-    const token = localStorage.getItem("token");
-    if (!token) throw new Error("User is not authenticated");
-
     try {
       setLoading(true);
       setError(null);
 
       const res = await fetch("/api/notification/create-notification", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        credentials: "include",
         body: JSON.stringify({
           notificationSender,
           orderId,
@@ -62,9 +56,6 @@ export function NotificationProvider({ children }) {
   };
 
   const fetchNotifications = async ({ restaurantId, reset = false }) => {
-    const token = localStorage.getItem("token");
-    if (!token) throw new Error("User is not authenticated");
-
     try {
       setLoading(true);
       setError(null);
@@ -80,10 +71,7 @@ export function NotificationProvider({ children }) {
         `/api/notification/fetch-notification/${restaurantId}?page=${currentPage}&limit=6`,
         {
           method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
+          credentials: "include",
         }
       );
 

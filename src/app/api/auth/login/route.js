@@ -28,6 +28,7 @@ export async function POST(req) {
       password,
       existingUser.password
     );
+
     if (!isPasswordValid) {
       return NextResponse.json(
         { error: "Invalid credentials" },
@@ -36,20 +37,37 @@ export async function POST(req) {
     }
 
     const token = jwt.sign(
-      { userId: existingUser._id, email: existingUser.email },
+      {
+        userId: existingUser._id.toString(),
+        email: existingUser.email,
+      },
       JWT_SECRET,
       { expiresIn: "12h" }
     );
 
-    return NextResponse.json(
+    const response = NextResponse.json(
       {
         message: "Login successful",
         user: { userId: existingUser._id },
-        token,
       },
       { status: 200 }
     );
+
+    response.cookies.set({
+      name: "auth_token",
+      value: token,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 12, // 12 hours
+    });
+    return response;
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error("Login error:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }

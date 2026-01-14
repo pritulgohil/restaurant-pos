@@ -16,14 +16,10 @@ const DeleteCategoryDialog = ({ fetchAllDishes, setIsOpen }) => {
   const { categoryId, setCategoryId, fetchCategories } = useRestaurantContext();
 
   const handleDelete = async () => {
-    const token = localStorage.getItem("token");
     try {
       const response = await fetch(`/api/pos/delete-category/${categoryId}`, {
         method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        credentials: "include",
       });
       const data = await response.json();
       fetchAllDishes();

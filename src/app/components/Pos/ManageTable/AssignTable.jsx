@@ -70,8 +70,6 @@ export default function AssignTable({
     setLoading(true);
 
     try {
-      const token = localStorage.getItem("token");
-
       const payload = {
         customerName,
         peopleCount: Number(peopleCount),
@@ -79,10 +77,7 @@ export default function AssignTable({
 
       const res = await fetch(`/api/pos/update-table/${table._id}`, {
         method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        credentials: "include",
         body: JSON.stringify(payload),
       });
 
@@ -114,14 +109,9 @@ export default function AssignTable({
     setAssignLoading(type);
 
     try {
-      const token = localStorage.getItem("token");
-
       const res = await fetch(`/api/pos/unassign-table/${table._id}`, {
         method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        credentials: "include",
       });
 
       if (!res.ok) return;
@@ -142,14 +132,9 @@ export default function AssignTable({
   const handlePayment = async () => {
     setPaymentAssignLoading(true);
     try {
-      const token = localStorage.getItem("token");
-
       const res = await fetch(`/api/pos/update-table/${table._id}`, {
         method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        credentials: "include",
         body: JSON.stringify({
           paymentStatus: true,
         }),

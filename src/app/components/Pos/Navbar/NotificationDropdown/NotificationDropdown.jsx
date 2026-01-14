@@ -52,14 +52,9 @@ export default function NotificationDropdown() {
     setDeletingId(notificationId);
 
     try {
-      const token = localStorage.getItem("token");
-      if (!token) throw new Error("Not authenticated");
-
       await fetch(`/api/notification/delete-notification/${notificationId}`, {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        credentials: "include",
       });
 
       setTimeout(() => {
@@ -77,15 +72,9 @@ export default function NotificationDropdown() {
     setReadingId(notificationId);
 
     try {
-      const token = localStorage.getItem("token");
-      if (!token) throw new Error("Not authenticated");
-
       await fetch(`/api/notification/read-notification`, {
         method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
+        credentials: "include",
         body: JSON.stringify({ notificationId }),
       });
       setTimeout(() => {
@@ -102,15 +91,9 @@ export default function NotificationDropdown() {
     setMarkAllLoading(true);
 
     try {
-      const token = localStorage.getItem("token");
-      if (!token) throw new Error("Not authenticated");
-
       await fetch(`/api/notification/read-notification`, {
         method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
+        credentials: "include",
         body: JSON.stringify({ restaurantId: restaurant }),
       });
       setTimeout(() => {

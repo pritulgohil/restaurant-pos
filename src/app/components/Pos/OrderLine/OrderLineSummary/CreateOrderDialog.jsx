@@ -54,12 +54,8 @@ const CreateOrderDialog = () => {
       const fetchTables = async () => {
         setTablesList([]);
         try {
-          const token = localStorage.getItem("token");
           const res = await fetch(`/api/pos/fetch-tables/${restaurant}`, {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
+            credentials: "include",
           });
 
           if (!res.ok) return;

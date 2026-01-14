@@ -15,9 +15,7 @@ const Page = () => {
     const fetchDashboard = async () => {
       try {
         const res = await fetch(`/api/pos/dashboard/${restaurant}`, {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
+          credentials: "include",
         });
 
         if (!res.ok) {
