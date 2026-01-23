@@ -20,12 +20,11 @@ const Sidebar = () => {
   const pathname = usePathname();
   const [logoutState, setLogoutState] = useState(false);
   const { setLoggedInUser } = useAuthContext();
-  const { setCategoryId, setCategories, setDishes, setRestaurant } =
+  const { setCategoryId, setCategories, setDishes, setRestaurant, mobileView } =
     useRestaurantContext();
 
   const handleLogout = async () => {
     setLogoutState(true);
-
     try {
       await fetch("/api/auth/logout", {
         method: "POST",
@@ -53,7 +52,9 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className={`${styles.mainContainer} shadow-md`}>
+      <div
+        className={`${mobileView ? styles.mainContainerShow : styles.mainContainer} shadow-md`}
+      >
         <div className={styles.topSidebar}>
           <ul>
             <li
@@ -65,7 +66,13 @@ const Sidebar = () => {
               onClick={() => handleNavigation("/pos/dashboard")}
             >
               <LayoutDashboard className={styles.sidebarIcon} />
-              Dashboard
+              <div
+                className={
+                  mobileView ? styles.sidebarLabelShow : styles.sidebarLabel
+                }
+              >
+                Dashboard
+              </div>
             </li>
             <li
               className={` ${
@@ -76,7 +83,13 @@ const Sidebar = () => {
               onClick={() => handleNavigation("/pos/order-line")}
             >
               <ArrowRightLeft className={styles.sidebarIcon} />
-              Order Line
+              <div
+                className={
+                  mobileView ? styles.sidebarLabelShow : styles.sidebarLabel
+                }
+              >
+                Order Line
+              </div>
             </li>
             <li
               className={` ${
@@ -87,7 +100,13 @@ const Sidebar = () => {
               onClick={() => handleNavigation("/pos/order-board")}
             >
               <ClipboardList className={styles.sidebarIcon} />
-              Order Board
+              <div
+                className={
+                  mobileView ? styles.sidebarLabelShow : styles.sidebarLabel
+                }
+              >
+                Order Board
+              </div>
             </li>
             <li
               className={` ${
@@ -98,7 +117,13 @@ const Sidebar = () => {
               onClick={() => handleNavigation("/pos/manage-table")}
             >
               <TableCellsMerge className={styles.sidebarIcon} />
-              Manage Table
+              <div
+                className={
+                  mobileView ? styles.sidebarLabelShow : styles.sidebarLabel
+                }
+              >
+                Manage Table
+              </div>
             </li>
             <li
               className={` ${
@@ -109,7 +134,13 @@ const Sidebar = () => {
               onClick={() => handleNavigation("/pos/manage-dishes")}
             >
               <Soup className={styles.sidebarIcon} />
-              Manage Dishes
+              <div
+                className={
+                  mobileView ? styles.sidebarLabelShow : styles.sidebarLabel
+                }
+              >
+                Manage Dishes
+              </div>
             </li>
             <li
               className={` ${
@@ -120,7 +151,13 @@ const Sidebar = () => {
               onClick={() => handleNavigation("/pos/manage-orders")}
             >
               <History className={styles.sidebarIcon} />
-              Manage Orders
+              <div
+                className={
+                  mobileView ? styles.sidebarLabelShow : styles.sidebarLabel
+                }
+              >
+                Manage Orders
+              </div>
             </li>
           </ul>
         </div>
@@ -135,24 +172,51 @@ const Sidebar = () => {
               onClick={() => handleNavigation("/pos/settings/user")}
             >
               <Settings className={styles.sidebarIcon} />
-              Settings
+              <div
+                className={
+                  mobileView ? styles.sidebarLabelShow : styles.sidebarLabel
+                }
+              >
+                Settings
+              </div>
             </li>
-            <li onClick={() => handleNavigation("/coming-soon")}>
+            <li
+              onClick={() => handleNavigation("/coming-soon")}
+              className={styles.sidebarItem}
+            >
               <Globe className={styles.sidebarIcon} />
-              Help Center
+              <div
+                className={
+                  mobileView ? styles.sidebarLabelShow : styles.sidebarLabel
+                }
+              >
+                Help Center
+              </div>
             </li>
-            <li onClick={handleLogout}>
+            <li onClick={handleLogout} className={styles.sidebarItem}>
               {logoutState ? (
                 <>
                   <LoaderCircle
                     className={`animate-spin ${styles.sidebarIcon}`}
                   />
-                  Logging out...
+                  <div
+                    className={
+                      mobileView ? styles.sidebarLabelShow : styles.sidebarLabel
+                    }
+                  >
+                    Logging out...
+                  </div>
                 </>
               ) : (
                 <>
                   <LogOut className={styles.sidebarIcon} />
-                  Logout
+                  <div
+                    className={
+                      mobileView ? styles.sidebarLabelShow : styles.sidebarLabel
+                    }
+                  >
+                    Logout
+                  </div>
                 </>
               )}
             </li>

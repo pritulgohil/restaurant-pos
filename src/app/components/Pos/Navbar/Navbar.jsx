@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import styles from "./Navbar.module.css";
-import { Bell, ChevronDown, Check, SquarePlus } from "lucide-react";
+import { ChevronDown, Check, SquarePlus, Menu } from "lucide-react";
 import { useAuthContext } from "@/context/AuthContext";
 import { useRestaurantContext } from "@/context/RestaurantContext";
 import {
@@ -19,7 +19,7 @@ import { useNotification } from "@/context/NotificationContext";
 const Navbar = () => {
   const router = useRouter();
   const { loggedInUser, user, setUser, refreshUser } = useAuthContext();
-  const { restaurantName, restaurant } = useRestaurantContext();
+  const { restaurantName, restaurant, setMobileView } = useRestaurantContext();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const handleAddRestaurant = () => {
     router.push("/coming-soon");
@@ -34,9 +34,16 @@ const Navbar = () => {
     fetchNotifications({ restaurantId: restaurant, reset: true });
   }, [loggedInUser]);
 
+  const handleHamburgerMenu = () => {
+    setMobileView((prev) => !prev);
+  };
+
   return (
     <div className={`${styles.mainContainer} shadow-sm`}>
       <div className={styles.logoContainer}>
+        <div className={styles.hamburgerIcon}>
+          <Menu onClick={handleHamburgerMenu} />
+        </div>
         <h1>Plates Up</h1>
       </div>
       <div className={styles.adminContainer}>
