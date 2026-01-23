@@ -12,8 +12,15 @@
   margin-top: 68px;
 }
 
+/* Resoltion - 768px x 1024px
+Device - iPad  */
+
 @media (max-width: 768px), (max-width: 1024px) {
   .componentContainer {
     margin-left: 40px;
+  }
+
+  .sidebarContainer {
+    width: unset;
   }
 }

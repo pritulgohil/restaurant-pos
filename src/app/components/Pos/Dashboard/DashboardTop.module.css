@@ -14,6 +14,7 @@
   margin-top: 24px;
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .overviewCard {
@@ -90,4 +91,17 @@
   height: 8px;
   border-radius: 50%;
   background-color: #ff4d4f;
+}
+
+/* Resoltion - 768px x 1024px
+Device - iPad  */
+
+@media (max-width: 768px), (max-width: 1024px) {
+  .overviewCard {
+    width: 48%;
+  }
+
+  .overviewCardsContainer {
+    gap: 24px;
+  }
 }
