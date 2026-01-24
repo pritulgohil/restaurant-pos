@@ -96,12 +96,13 @@
 /* Resoltion - 768px x 1024px
 Device - iPad  */
 
-@media (max-width: 768px), (max-width: 1024px) {
+@media (max-width: 768px) {
   .overviewCard {
     width: 48%;
   }
 
   .overviewCardsContainer {
     gap: 24px;
+    justify-content: space-evenly;
   }
 }

@@ -54,3 +54,43 @@
   font-size: 24px;
   font-weight: 600;
 }
+
+/* Resoltion - 768px x 1024px
+Device - iPad  */
+
+@media (max-width: 768px) {
+  .mainContainer {
+    flex-direction: column;
+  }
+
+  .leftSideContainer,
+  .rightSideContainer {
+    width: 100%;
+  }
+
+  .cardsContainer {
+    gap: 12px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .leftSideContainer,
+  .rightSideContainer {
+    width: 100%;
+  }
+
+  .leftSideContainer {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cardsContainer {
+    gap: 12px;
+    width: 100%;
+    height: calc(100% - 48px);
+  }
+
+  .card {
+    padding: 12px;
+  }
+}
