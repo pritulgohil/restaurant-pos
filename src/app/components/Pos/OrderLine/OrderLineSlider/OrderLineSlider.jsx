@@ -67,7 +67,7 @@ const OrderLineSlider = () => {
     {
       label: "Dine-in",
       count: formatCount(
-        (orders || []).filter((o) => o.orderType === "Dine-in").length
+        (orders || []).filter((o) => o.orderType === "Dine-in").length,
       ),
       style: styles.dineIn,
       borderStyle: styles.dineInCapsule,
@@ -75,7 +75,7 @@ const OrderLineSlider = () => {
     {
       label: "Queued",
       count: formatCount(
-        (orders || []).filter((o) => o.status === "Queued").length
+        (orders || []).filter((o) => o.status === "Queued").length,
       ),
       style: styles.waitlist,
       borderStyle: styles.waitlistCapsule,
@@ -83,7 +83,7 @@ const OrderLineSlider = () => {
     {
       label: "Takeaway",
       count: formatCount(
-        (orders || []).filter((o) => o.orderType === "Takeaway").length
+        (orders || []).filter((o) => o.orderType === "Takeaway").length,
       ),
       style: styles.takeaway,
       borderStyle: styles.takeawayCapsule,
@@ -91,7 +91,7 @@ const OrderLineSlider = () => {
     {
       label: "Served",
       count: formatCount(
-        (orders || []).filter((o) => o.status === "Completed").length
+        (orders || []).filter((o) => o.status === "Completed").length,
       ),
       style: styles.served,
       borderStyle: styles.servedCapsule,
@@ -109,13 +109,13 @@ const OrderLineSlider = () => {
 
   // Filter orders based on selected capsule
   let filteredOrders = [...(orders || [])].sort(
-    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
   );
 
   const filterInfo = capsuleFilterMap[selectedCapsule];
   if (filterInfo) {
     filteredOrders = filteredOrders.filter(
-      (order) => order[filterInfo.field] === filterInfo.value
+      (order) => order[filterInfo.field] === filterInfo.value,
     );
   }
 

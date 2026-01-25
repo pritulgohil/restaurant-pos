@@ -225,3 +225,43 @@
     width: 32.4%;
   }
 }
+
+/* Resoltion - 768px x 1024px
+Device - iPad  */
+
+@media (max-width: 768px), (max-width: 1024px) {
+  .capsule {
+    display: inline-flex;
+    white-space: nowrap;
+  }
+
+  .cardContainer {
+    width: 100%;
+  }
+
+  .cardSliderContainer {
+    width: 100%;
+  }
+
+  .mainContainer {
+    overflow-x: hidden;
+  }
+}
+
+/* Resoltion - 1024px x 768px
+Device - iPad  - Landscape */
+
+@media (max-width: 1024px) {
+  .card {
+    width: 24%;
+  }
+}
+
+/* Resoltion - 768px x 1024px
+Device - iPad  - Portrait */
+
+@media (max-width: 768px) {
+  .card {
+    width: 32%;
+  }
+}

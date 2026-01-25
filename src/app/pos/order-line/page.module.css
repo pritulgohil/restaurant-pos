@@ -14,3 +14,16 @@
   position: fixed;
   right: 0;
 }
+
+/* Resoltion - 768px x 1024px
+Device - iPad  */
+
+@media (max-width: 768px), (max-width: 1024px) {
+  .leftSide {
+    width: 100%;
+  }
+
+  .rightSide {
+    display: none;
+  }
+}

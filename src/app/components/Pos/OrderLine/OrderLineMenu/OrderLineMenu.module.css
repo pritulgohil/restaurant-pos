@@ -154,3 +154,12 @@
     width: 18.8%;
   }
 }
+
+/* Resoltion - 768px x 1024px
+Device - iPad  */
+
+@media (max-width: 768px), (max-width: 1024px) {
+  .mainContainer {
+    display: none;
+  }
+}
