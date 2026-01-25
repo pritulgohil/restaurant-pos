@@ -15,15 +15,58 @@
   right: 0;
 }
 
+@media (max-width: 1024px) {
+  .rightSideToggle {
+    width: 40%;
+  }
+}
+
+@media (max-width: 768px) {
+  .rightSideToggle {
+    width: 60%;
+  }
+}
+
 /* Resoltion - 768px x 1024px
 Device - iPad  */
 
 @media (max-width: 768px), (max-width: 1024px) {
+  .leftSideToggle {
+    width: 100%;
+    opacity: 0.5;
+    pointer-events: none;
+    filter: blur(2px);
+    transition: opacity 0.3s ease;
+  }
+
   .leftSide {
     width: 100%;
+    transition: opacity 0.3s ease;
   }
 
   .rightSide {
     display: none;
+  }
+
+  .rightSideToggle {
+    background-color: whitesmoke;
+    padding: 24px;
+    overflow: hidden;
+    position: fixed;
+    right: 0;
+    box-shadow:
+      0 20px 25px -5px rgba(0, 0, 0, 0.1),
+      0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    transform: translateX(100%);
+    animation: slideIn 0.35s ease forwards;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
   }
 }

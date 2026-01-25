@@ -7,6 +7,13 @@
   font-family: "Epilogue";
   font-weight: 400;
   font-size: 18px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.mobileOrderLineSummaryTrigger {
+  display: none;
 }
 
 .capsuleContainer {
@@ -196,6 +203,10 @@
   animation: pulseBlue 1.8s infinite ease-in-out;
 }
 
+.iPadOrderLineSummaryTrigger {
+  display: none;
+}
+
 @keyframes pulseBlue {
   0% {
     box-shadow: 0 0 0 0 rgba(25, 118, 210, 0.5);
@@ -218,7 +229,7 @@
   }
 
   .cardContainer {
-    width: 850px;
+    width: 860px;
   }
 
   .cardPlaceholder {
@@ -245,6 +256,10 @@ Device - iPad  */
 
   .mainContainer {
     overflow-x: hidden;
+  }
+
+  .iPadOrderLineSummaryTrigger {
+    display: block;
   }
 }
 

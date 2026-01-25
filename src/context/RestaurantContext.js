@@ -25,6 +25,7 @@ export const RestaurantProvider = ({ children }) => {
   const [orderLineDishLoader, setOrderLineDishLoader] = useState(false);
   const [occupancyPercentage, setOccupancyPercentage] = useState(0);
   const [mobileView, setMobileView] = useState(false);
+  const [orderLineSummaryVisible, setOrderLineSummaryVisible] = useState(false);
 
   // Load localStorage values on client only
   useEffect(() => {
@@ -272,6 +273,8 @@ export const RestaurantProvider = ({ children }) => {
         fetchRestaurant,
         mobileView,
         setMobileView,
+        orderLineSummaryVisible,
+        setOrderLineSummaryVisible,
       }}
     >
       {children}
