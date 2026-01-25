@@ -15,11 +15,17 @@
   right: 0;
 }
 
+/* Resoltion - 768px x 1024px
+Device - iPad - Landscape */
+
 @media (max-width: 1024px) {
   .rightSideToggle {
     width: 40%;
   }
 }
+
+/* Resoltion - 768px x 1024px
+Device - iPad - Portrait */
 
 @media (max-width: 768px) {
   .rightSideToggle {

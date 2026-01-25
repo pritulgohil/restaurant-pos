@@ -270,6 +270,10 @@ Device - iPad  - Landscape */
   .card {
     width: 24%;
   }
+
+  .skeletonCard {
+    width: 24%;
+  }
 }
 
 /* Resoltion - 768px x 1024px

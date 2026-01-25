@@ -241,3 +241,21 @@
     width: 24%;
   }
 }
+
+/* Resoltion - 768px x 1024px
+Device - iPad - Portrait */
+
+@media (max-width: 1024px) {
+  .orderCard {
+    width: 32%;
+  }
+}
+
+/* Resoltion - 768px x 1024px
+Device - iPad - Landscape */
+
+@media (max-width: 768px) {
+  .orderCard {
+    width: 48.5%;
+  }
+}
