@@ -9,7 +9,7 @@
   font-size: 18px;
   display: flex;
   align-items: center;
-  gap: 16px;
+  justify-content: space-between;
 }
 
 .mobileOrderLineSummaryTrigger {
