@@ -5,6 +5,8 @@ import styles from "./CategorySidebar.module.css";
 import AddCategoryDialog from "./AddCategoryDialog";
 import { useRestaurantContext } from "@/context/RestaurantContext";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
+import { CircleX } from "lucide-react";
 
 const CategorySidebar = () => {
   const {
@@ -14,6 +16,8 @@ const CategorySidebar = () => {
     totalDishCount,
     fetchCategories,
     orderLineCategoryLoader,
+    dishesCategoryVisible,
+    setDishesCategoryVisible,
   } = useRestaurantContext();
 
   // Setting null on clicking All Dishes category
@@ -25,9 +29,24 @@ const CategorySidebar = () => {
     fetchCategories();
   }, []);
 
+  const handleTableToggle = () => {
+    setDishesCategoryVisible(!dishesCategoryVisible);
+  };
+
   return (
     <div className={styles.mainContainer}>
       <div className={styles.subContainer}>
+        <div className={styles.tableListTrigger}>
+          <Button
+            variant="outline"
+            size="sm"
+            className="rounded-full"
+            onClick={handleTableToggle}
+          >
+            Close Table List
+            <CircleX />
+          </Button>
+        </div>
         <div className={styles.headerContainer}>
           <h2>Dishes Category</h2>
         </div>

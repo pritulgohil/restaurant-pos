@@ -13,6 +13,7 @@ import {
   SquarePen,
   Trash2,
   Pencil,
+  PanelRightOpen,
 } from "lucide-react";
 import { DialogTrigger } from "@/components/ui/dialog";
 import AddDishDialog from "@/app/components/Pos/ManageDishes/AddDishDialog";
@@ -47,6 +48,8 @@ const Dishes = () => {
     fetchDishByCategory,
     dishCountbyCategory,
     orderLineDishLoader,
+    dishesCategoryVisible,
+    setDishesCategoryVisible,
   } = useRestaurantContext();
 
   const handleListView = () => setListView(true);
@@ -95,6 +98,10 @@ const Dishes = () => {
     );
   });
 
+  const handleTableToggle = () => {
+    setDishesCategoryVisible(!dishesCategoryVisible);
+  };
+
   return (
     <>
       <div className={styles.mainContainer}>
@@ -103,8 +110,6 @@ const Dishes = () => {
             <div className={styles.componentHeader}>
               <h2>Manage Dishes</h2>
             </div>
-          </div>
-          <div className={styles.rightSide}>
             <div className={styles.searchbarContainer}>
               <Input
                 type="text"
@@ -120,11 +125,24 @@ const Dishes = () => {
             >
               <DialogTrigger asChild>
                 <Button>
-                  <SquarePlus className="mr-2" />
-                  Add New Dishes
+                  <SquarePlus />
+                  Add Dish
                 </Button>
               </DialogTrigger>
             </AddDishDialog>
+          </div>
+          <div className={styles.rightSide}>
+            <div className={styles.iPadOrderLineSummaryTrigger}>
+              <Button
+                variant="outline"
+                size="sm"
+                className="rounded-full"
+                onClick={handleTableToggle}
+              >
+                Toggle Categories
+                <PanelRightOpen />
+              </Button>
+            </div>
           </div>
         </div>
 

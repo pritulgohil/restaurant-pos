@@ -1,17 +1,25 @@
 "use client";
 
-import { useState } from "react";
 import CategorySidebar from "@/app/components/Pos/ManageDishes/CategorySidebar";
 import styles from "./page.module.css";
 import DishesCards from "@/app/components/Pos/ManageDishes/DishesCards";
+import { useRestaurantContext } from "@/context/RestaurantContext";
 
 const page = () => {
-  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
+  const { dishesCategoryVisible } = useRestaurantContext();
   return (
     <>
       <div className={styles.mainContainer}>
-        <CategorySidebar />
-        <DishesCards />
+        <div
+          className={`${styles.categorySidebar} ${dishesCategoryVisible ? styles.visible : styles.hidden}`}
+        >
+          <CategorySidebar />
+        </div>
+        <div
+          className={`${styles.dishesCards} ${dishesCategoryVisible ? styles.blur : ""}`}
+        >
+          <DishesCards />
+        </div>
       </div>
     </>
   );
