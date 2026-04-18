@@ -58,7 +58,7 @@ const SignupOnboarding = () => {
             firstname: data.firstName,
             lastname: data.lastName,
           }),
-        }
+        },
       );
 
       const userUpdateResult = await userUpdateResponse.json();
@@ -91,7 +91,7 @@ const SignupOnboarding = () => {
 
         // Navigate to POS
         setTimeout(() => {
-          router.push("/pos");
+          router.push("/pos/dashboard/");
         }, 2000);
       } else {
         console.error("Restaurant creation error:", restaurantResult.error);
