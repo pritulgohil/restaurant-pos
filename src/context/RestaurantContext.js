@@ -24,6 +24,10 @@ export const RestaurantProvider = ({ children }) => {
   const [orderLineCategoryLoader, setOrderLineCategoryLoader] = useState(false);
   const [orderLineDishLoader, setOrderLineDishLoader] = useState(false);
   const [occupancyPercentage, setOccupancyPercentage] = useState(0);
+  const [mobileView, setMobileView] = useState(false);
+  const [orderLineSummaryVisible, setOrderLineSummaryVisible] = useState(false);
+  const [tableListVisible, setTableListVisible] = useState(false);
+  const [dishesCategoryVisible, setDishesCategoryVisible] = useState(false);
 
   // Load localStorage values on client only
   useEffect(() => {
@@ -66,7 +70,7 @@ export const RestaurantProvider = ({ children }) => {
       if (restaurantCuisine) {
         localStorage.setItem(
           "restaurantCuisine",
-          JSON.stringify(restaurantCuisine)
+          JSON.stringify(restaurantCuisine),
         );
       } else {
         localStorage.removeItem("restaurantCuisine");
@@ -109,7 +113,7 @@ export const RestaurantProvider = ({ children }) => {
       } else {
         console.error(
           "Failed to fetch dishes:",
-          data.message || res.statusText
+          data.message || res.statusText,
         );
       }
     } catch (err) {
@@ -145,7 +149,7 @@ export const RestaurantProvider = ({ children }) => {
   };
 
   const orderLineFetchDishByCategory = async (
-    categoryOrderIdParam = orderLineCategoryId
+    categoryOrderIdParam = orderLineCategoryId,
   ) => {
     setDishes([]);
     try {
@@ -188,7 +192,7 @@ export const RestaurantProvider = ({ children }) => {
       } else {
         console.error(
           "Failed to fetch orders:",
-          data.message || res.statusText
+          data.message || res.statusText,
         );
       }
     } catch (err) {
@@ -269,6 +273,14 @@ export const RestaurantProvider = ({ children }) => {
         setRestaurantCuisine,
         updateRestaurant,
         fetchRestaurant,
+        mobileView,
+        setMobileView,
+        orderLineSummaryVisible,
+        setOrderLineSummaryVisible,
+        tableListVisible,
+        setTableListVisible,
+        dishesCategoryVisible,
+        setDishesCategoryVisible,
       }}
     >
       {children}

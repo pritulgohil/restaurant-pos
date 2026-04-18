@@ -222,6 +222,14 @@
   gap: 12px;
 }
 
+.tableListTrigger {
+  display: none;
+}
+
+.iPadOrderLineSummaryTrigger {
+  display: none;
+}
+
 @media (min-width: 1600px) {
   .leftSideContainer {
     width: 30%;
@@ -245,5 +253,102 @@
 @media (max-width: 1600px) {
   .leftSideContainer {
     width: 30%;
+  }
+}
+
+/* Resoltion - 768px x 1024px
+Device - iPad  - Landscape */
+
+@media (max-width: 1024px) {
+  .leftSideContainerToggle {
+    width: 35%;
+  }
+}
+
+/* Resoltion - 768px x 1024px
+Device - iPad - Portrait */
+
+@media (max-width: 768px) {
+  .leftSideContainerToggle {
+    width: 50%;
+  }
+}
+
+/* Resoltion - 768px x 1024px
+Device - iPad  */
+
+@media (max-width: 768px), (max-width: 1024px) {
+  .mainContainer {
+    position: relative;
+  }
+
+  .leftSideContainer {
+    display: none;
+  }
+
+  .leftSideContainerToggle {
+    position: absolute;
+    right: 0px;
+    z-index: 10;
+    box-shadow:
+      0 20px 25px -5px rgba(0, 0, 0, 0.1),
+      0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    height: calc(100vh - 70px);
+    background-color: #f0f0f0;
+    padding: 16px;
+    overflow: hidden;
+    transform: translateX(100%);
+    animation: slideIn 0.35s ease forwards;
+  }
+
+  .rightSideContainer {
+    width: 100%;
+    transition: opacity 0.3s ease;
+  }
+
+  .rightSideContainerToggle {
+    width: 100%;
+    filter: blur(2px);
+    opacity: 0.5;
+    padding: 24px;
+    transition: opacity 0.3s ease;
+  }
+
+  .pageHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .addTableButtonContainer {
+    position: absolute;
+    right: 0px;
+  }
+
+  .tableListTrigger {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+  }
+
+  .searchBarContainer {
+    margin-top: 20px;
+  }
+
+  .customerContainer {
+    height: calc(100vh - 250px);
+  }
+
+  .iPadOrderLineSummaryTrigger {
+    display: flex;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
   }
 }

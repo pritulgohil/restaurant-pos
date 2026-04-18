@@ -77,7 +77,6 @@
 }
 
 .menuCard {
-  /* width: 19.1%; */
   width: calc(20% - 10px);
   height: 180px;
   border: 1px solid gainsboro;
@@ -152,5 +151,18 @@
 
   .menuCard {
     width: 18.8%;
+  }
+}
+
+/* Resoltion - 768px x 1024px
+Device - iPad - Portrait */
+
+@media (max-width: 768px) {
+  .categoryCard {
+    width: 23.5%;
+  }
+
+  .menuCard {
+    width: 23.5%;
   }
 }

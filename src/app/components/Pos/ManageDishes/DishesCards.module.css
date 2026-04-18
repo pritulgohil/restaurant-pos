@@ -310,3 +310,52 @@
 .editIcon {
   width: 18px;
 }
+
+.iPadOrderLineSummaryTrigger {
+  display: none;
+}
+
+/* Resoltion - 768px x 1024px
+Device - iPad - Landscape */
+
+@media (max-width: 1024px) {
+  .plusCardContainer {
+    width: 23.2%;
+  }
+  .addDishCardContainer {
+    width: 23.2%;
+  }
+  .plusCardContainerList {
+    width: 48.8%;
+  }
+  .addDishCardContainerList {
+    width: 48.8%;
+  }
+  .iPadOrderLineSummaryTrigger {
+    display: flex;
+  }
+}
+
+/* Resoltion - 768px x 1024px
+Device - iPad - Portrait */
+
+@media (max-width: 768px) {
+  .plusCardContainer {
+    width: 31.1%;
+  }
+  .addDishCardContainer {
+    width: 31.1%;
+  }
+  .plusCardContainerList {
+    width: 100%;
+  }
+  .addDishCardContainerList {
+    width: 100%;
+  }
+  .searchInput {
+    width: 200px;
+  }
+  .iPadOrderLineSummaryTrigger {
+    display: flex;
+  }
+}

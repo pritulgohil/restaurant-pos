@@ -2,3 +2,53 @@
   width: 100%;
   display: flex;
 }
+
+.categorySidebar {
+  width: 20%;
+}
+
+.dishesCards {
+  width: 80%;
+}
+
+/* Resoltion - 768px x 1024px
+Device - iPad  */
+
+@media (max-width: 768px), (max-width: 1024px) {
+  .visible {
+    position: absolute;
+    right: 0;
+    z-index: 100;
+    width: 300px;
+    box-shadow:
+      0 20px 25px -5px rgba(0, 0, 0, 0.1),
+      0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    transform: translateX(100%);
+    animation: slideIn 0.35s ease forwards;
+    background-color: white;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .dishesCards {
+    position: relative;
+    width: 100%;
+  }
+
+  .blur {
+    filter: blur(2px);
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+  }
+
+  @keyframes slideIn {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+}

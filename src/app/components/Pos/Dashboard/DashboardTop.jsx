@@ -87,7 +87,7 @@ const DashboardTop = ({ data }) => {
 
           <div className={styles.cardData}>
             {data ? (
-              data.orders?.today?.count ?? 0
+              (data.orders?.today?.count ?? 0)
             ) : (
               <Skeleton className="w-full h-9 inline-block" />
             )}
@@ -144,8 +144,8 @@ const DashboardTop = ({ data }) => {
                       occupancyPercentage <= 33
                         ? "border-blue-500"
                         : occupancyPercentage <= 66
-                        ? "border-amber-500"
-                        : "border-red-500"
+                          ? "border-amber-500"
+                          : "border-red-500"
                     }`}
                   />
                   <span
@@ -153,19 +153,19 @@ const DashboardTop = ({ data }) => {
                       occupancyPercentage <= 33
                         ? "bg-blue-500"
                         : occupancyPercentage <= 66
-                        ? "bg-amber-500"
-                        : "bg-red-500"
+                          ? "bg-amber-500"
+                          : "bg-red-500"
                     }`}
                   />
                 </div>
-                Currently at{" "}
+                Currently{" "}
                 <span
                   className={
                     occupancyPercentage <= 33
                       ? "text-blue-500"
                       : occupancyPercentage <= 66
-                      ? "text-amber-500"
-                      : "text-red-500"
+                        ? "text-amber-500"
+                        : "text-red-500"
                   }
                 >
                   {occupancyPercentage}%

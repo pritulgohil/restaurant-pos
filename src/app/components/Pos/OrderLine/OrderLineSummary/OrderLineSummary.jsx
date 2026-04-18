@@ -10,6 +10,7 @@ import {
   LoaderCircle,
   Utensils,
   ShoppingBag,
+  CircleX,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRestaurantContext } from "@/context/RestaurantContext";
@@ -28,6 +29,7 @@ const OrderLineSummary = () => {
     orderLine,
     setOrderLine,
     restaurant,
+    setOrderLineSummaryVisible,
   } = useRestaurantContext();
   const { sendNotification, fetchNotifications } = useNotification();
 
@@ -58,7 +60,7 @@ const OrderLineSummary = () => {
 
   const subtotal = Object.values(orderLine?.dishes || {}).reduce(
     (acc, dish) => acc + dish.price * dish.quantity,
-    0
+    0,
   );
 
   const tax = subtotal * 0.13;
@@ -67,7 +69,7 @@ const OrderLineSummary = () => {
 
   const totalItems = Object.values(orderLine?.dishes || {}).reduce(
     (total, dish) => total + dish.quantity,
-    0
+    0,
   );
 
   const handleDeleteOrderLine = () => {
@@ -128,7 +130,7 @@ const OrderLineSummary = () => {
             method: "PATCH",
             credentials: "include",
             body: JSON.stringify(tablePayload),
-          }
+          },
         );
 
         if (!tableRes.ok) {
@@ -141,7 +143,7 @@ const OrderLineSummary = () => {
         orderId: data._id,
         restaurantId: restaurant,
         notificationDescription: `New order #${data._id.slice(
-          -6
+          -6,
         )} has been placed.`,
       });
     } catch (error) {
@@ -150,8 +152,23 @@ const OrderLineSummary = () => {
     }
   };
 
+  const handleSummaryToggle = () => {
+    setOrderLineSummaryVisible(false);
+  };
+
   return (
     <div className={styles.mainContainer}>
+      <div className={styles.summaryTrigger}>
+        <Button
+          variant="outline"
+          size="sm"
+          className="rounded-full"
+          onClick={handleSummaryToggle}
+        >
+          Close Summary
+          <CircleX />
+        </Button>
+      </div>
       <div className={styles.summaryTopContainer}>
         <div className={styles.bottomCard}>
           <div className={styles.sectionHeader}>Order Type</div>
@@ -290,7 +307,7 @@ const OrderLineSummary = () => {
               <div className={styles.topContainer}>
                 <div className={styles.sectionHeader}>Total Payable</div>
                 <div className={styles.totalPayment}>{`$${totalPayable.toFixed(
-                  2
+                  2,
                 )}`}</div>
               </div>
             </div>

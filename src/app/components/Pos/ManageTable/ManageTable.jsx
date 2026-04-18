@@ -9,6 +9,8 @@ import {
   ListOrdered,
   Check,
   SquarePlus,
+  PanelRightOpen,
+  CircleX,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AddTableDialog from "./AddTableDialog";
@@ -20,8 +22,13 @@ import { useNotification } from "@/context/NotificationContext";
 import useOccupancyNotification from "@/hooks/useOccupancyNotification";
 
 const ManageTable = () => {
-  const { restaurant, occupancyPercentage, setOccupancyPercentage } =
-    useRestaurantContext();
+  const {
+    restaurant,
+    occupancyPercentage,
+    setOccupancyPercentage,
+    tableListVisible,
+    setTableListVisible,
+  } = useRestaurantContext();
   const [tables, setTables] = useState([]);
   const [assignDialogOpen, setAssignDialogOpen] = useState(false);
   const [selectedTable, setSelectedTable] = useState(null);
@@ -36,7 +43,7 @@ const ManageTable = () => {
     const totalSeats = tables.reduce((sum, table) => sum + table.occupancy, 0);
     const totalPeople = tables.reduce(
       (sum, table) => sum + table.peopleCount,
-      0
+      0,
     );
 
     return Math.round((totalPeople / totalSeats) * 100);
@@ -99,10 +106,31 @@ const ManageTable = () => {
     );
   });
 
+  const handleTableToggle = () => {
+    setTableListVisible(!tableListVisible);
+  };
+
   return (
     <div className={styles.mainContainer}>
       {/* LEFT SIDE */}
-      <div className={styles.leftSideContainer}>
+      <div
+        className={
+          tableListVisible
+            ? styles.leftSideContainerToggle
+            : styles.leftSideContainer
+        }
+      >
+        <div className={styles.tableListTrigger}>
+          <Button
+            variant="outline"
+            size="sm"
+            className="rounded-full"
+            onClick={handleTableToggle}
+          >
+            Close Table List
+            <CircleX />
+          </Button>
+        </div>
         <div className={styles.searchBarContainer}>
           <div className={styles.searchBar}>
             <Input
@@ -161,7 +189,7 @@ const ManageTable = () => {
                       {table.isOccupied
                         ? (() => {
                             const timeString = new Date(
-                              table.updatedAt?.$date || table.updatedAt
+                              table.updatedAt?.$date || table.updatedAt,
                             ).toLocaleTimeString([], {
                               hour: "numeric",
                               minute: "2-digit",
@@ -241,9 +269,27 @@ const ManageTable = () => {
       </div>
 
       {/* RIGHT SIDE */}
-      <div className={styles.rightSideContainer}>
-        <h2 className={styles.ManageTableHeader}>Manage Table</h2>
-
+      <div
+        className={
+          tableListVisible
+            ? styles.rightSideContainerToggle
+            : styles.rightSideContainer
+        }
+      >
+        <div className={styles.pageHeader}>
+          <h2 className={styles.ManageTableHeader}>Manage Table</h2>
+          <div className={styles.iPadOrderLineSummaryTrigger}>
+            <Button
+              variant="outline"
+              size="sm"
+              className="rounded-full"
+              onClick={handleTableToggle}
+            >
+              Toggle Table List
+              <PanelRightOpen />
+            </Button>
+          </div>
+        </div>
         <div className={styles.tableLegendContainer}>
           <div className={styles.tableLegendItem}>
             <div className={styles.OccupiedIndicator}></div>
@@ -259,7 +305,7 @@ const ManageTable = () => {
         <div className={styles.tableCanvasContainer}>
           {tableLoader ? (
             // Render skeleton or loader while loading
-            <div className="flex flex-wrap gap-24">
+            <div className="flex flex-wrap gap-24 flex justify-center">
               {Array.from({ length: 8 }).map((_, idx) => (
                 <div
                   key={idx}

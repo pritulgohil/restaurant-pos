@@ -1,12 +1,17 @@
-.mainContainer {
+.mainContainer,
+.mainContainerShow {
+  position: fixed;
+  left: 0;
+  top: 66px;
   width: 200px;
-  height: calc(100vh - 68px);
-  font-family: "Epilogue";
+  height: calc(100vh - 66px);
+  z-index: 50;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  position: fixed;
-  top: 66px;
+  background: white;
+  font-family: "Epilogue";
+  transition: width 0.1s ease-in-out;
 }
 
 .topSidebar {
@@ -75,4 +80,47 @@
 .sidebarItem:hover {
   background-color: rgb(242, 242, 242);
   border-radius: 4px;
+}
+
+/* Resoltion - 768px x 1024px
+Device - iPad  */
+
+@media (max-width: 768px), (max-width: 1024px) {
+  .mainContainer {
+    height: calc(100vh - 54px);
+    width: 70px;
+    align-items: center;
+  }
+
+  .mainContainerShow {
+    height: calc(100vh - 54px);
+    align-items: center;
+  }
+
+  .sidebarLabel {
+    display: none;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.2s ease 0.3s;
+  }
+
+  .sidebarLabelShow {
+    display: flex;
+    opacity: 1;
+    pointer-events: none;
+    transition: opacity 3s ease;
+  }
+
+  .sidebarIcon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .topSidebar {
+    width: 100%;
+  }
+
+  .bottomSidebar {
+    width: 100%;
+  }
 }
