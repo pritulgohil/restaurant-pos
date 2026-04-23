@@ -88,6 +88,19 @@
   height: 18px;
 }
 
+.credentialsContainer {
+  font-size: 14px;
+  color: gray;
+  margin-top: 8px;
+  border: 1px solid #e0e0e0;
+  padding: 24px 16px;
+  border-radius: 8px;
+}
+
+.credItem {
+  margin-top: 8px;
+}
+
 /* 🔳 Large Screen Styles */
 @media (min-width: 1800px) {
   .formContainer {

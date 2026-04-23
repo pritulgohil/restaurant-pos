@@ -202,6 +202,16 @@ const Login = () => {
                 )}
               </div>
             </div>
+            <div className={styles.credentialsContainer}>
+              For walkthrough purposes, you can use the following credentials to
+              log in:
+              <div className={styles.credItem}>
+                <div className={styles.credItemField}>
+                  Email: pritulgohil@gmail.com
+                </div>
+                <div className={styles.credItemField}>Password: tvrt17sqdp</div>
+              </div>
+            </div>
           </form>
         </Form>
       </div>
